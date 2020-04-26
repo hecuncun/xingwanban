@@ -37,7 +37,6 @@ class GuideActivity : BaseActivity() {
     }
 
     override fun initListener() {
-
     }
 
     private fun jumpToMain() {
