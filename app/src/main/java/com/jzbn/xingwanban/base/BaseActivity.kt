@@ -81,7 +81,7 @@ abstract class BaseActivity :AppCompatActivity(){
 
     private fun initToolBar() {
         if (toolbar != null) {
-            toolbar.setNavigationIcon(R.mipmap.icon_return)
+            toolbar.setNavigationIcon(R.mipmap.back)
             toolbar.title = ""
             setSupportActionBar(toolbar)
             toolbar.setNavigationOnClickListener(View.OnClickListener {

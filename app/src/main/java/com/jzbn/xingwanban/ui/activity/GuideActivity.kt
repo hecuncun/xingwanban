@@ -1,6 +1,7 @@
 package com.jzbn.xingwanban.ui.activity
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.jzbn.xingwanban.R
@@ -31,7 +32,8 @@ class GuideActivity : BaseActivity() {
         viewList.add(view3)
         viewpager.adapter=GuidePageAdapter(viewList as ArrayList<View>)
         view3.btn_finish.setOnClickListener {
-            jumpToMain()
+           // jumpToMain()
+            jumpToLogin()
             finish()
         }
     }
@@ -41,6 +43,11 @@ class GuideActivity : BaseActivity() {
 
     private fun jumpToMain() {
         val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+    private fun jumpToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
