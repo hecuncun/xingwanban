@@ -53,7 +53,7 @@ class App : MultiDexApplication() {
         LitePal.initialize(this)
 
         //BUGly初始化
-        CrashReport.initCrashReport(applicationContext, "6ed7ce60df", false)
+       // CrashReport.initCrashReport(applicationContext, "6ed7ce60df", false)
     }
 
     private fun setupLeakCanary(): RefWatcher? {

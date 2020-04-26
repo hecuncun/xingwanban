@@ -1,5 +1,6 @@
 package com.jzbn.xingwanban.ui.activity
 
+import com.jzbn.xingwanban.R
 import com.jzbn.xingwanban.base.BaseActivity
 
 /**
@@ -7,18 +8,18 @@ import com.jzbn.xingwanban.base.BaseActivity
  */
 class LoginActivity:BaseActivity() {
     override fun attachLayoutRes(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       return R.layout.activity_login
     }
 
     override fun initData() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun initView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun initListener() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }
