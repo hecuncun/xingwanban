@@ -40,6 +40,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.GuideActivity" />
+        <activity android:name=".ui.activity.LoginOtherActivity" />
 
         <!--设计图大小-->
         <meta-data
