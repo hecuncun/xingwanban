@@ -29,5 +29,8 @@ class LoginActivity:BaseActivity() {
         tv_other_login.setOnClickListener {
            startActivity(Intent(this,LoginOtherActivity::class.java))
         }
+        toolbar_right_tv.setOnClickListener {
+            startActivity(Intent(this,MainActivity::class.java))
+        }
     }
 }
