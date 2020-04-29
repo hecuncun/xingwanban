@@ -25,6 +25,12 @@ class FullScreenDialog(context: Context) : Dialog(context) {
         iv_cancel.setOnClickListener {
             dismiss()
         }
+        ll_edit.setOnClickListener {//编辑
+            dismiss()
+        }
+        ll_camera.setOnClickListener { //
+            dismiss()
+        }
     }
 
 }
