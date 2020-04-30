@@ -1,7 +1,6 @@
 package com.jzbn.xingwanban.ui.activity
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.jzbn.xingwanban.R
@@ -12,6 +11,7 @@ import kotlinx.android.synthetic.main.guide_3.view.*
 
 /**
  * Created by hecuncun on 2020/4/26
+ *  应用MD5:  1E:AF:26:44:95:30:BA:22:2D:8E:3C:84:50:A9:94:BC
  */
 class GuideActivity : BaseActivity() {
     private var viewList = mutableListOf<View>()
@@ -20,7 +20,6 @@ class GuideActivity : BaseActivity() {
     }
 
     override fun initData() {
-
     }
 
     override fun initView() {
