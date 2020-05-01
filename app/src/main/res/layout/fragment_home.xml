@@ -11,9 +11,9 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="84dp"
             android:layout_marginLeft="15dp"
+            android:layout_weight="2"
             android:background="@drawable/bg_yellow_gradient_2"
             android:gravity="center"
             android:orientation="horizontal">
@@ -34,10 +34,10 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="84dp"
-            android:gravity="center"
             android:layout_marginLeft="14dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -47,27 +47,30 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:text="拍摄"
-                    android:textColor="@color/color_gray_F9F9F9"
-                    android:textSize="18sp" />
-
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/icon_camera" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="拍摄"
+                    android:textColor="@color/color_gray_F9F9F9"
+                    android:textSize="18sp" />
+
+
             </LinearLayout>
 
         </LinearLayout>
+
         <LinearLayout
-            android:layout_marginLeft="15dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="84dp"
-           android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -77,21 +80,37 @@
                 android:background="@drawable/bg_lan_gradient"
                 android:gravity="center"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:text="拍摄"
-                    android:textColor="@color/color_gray_F9F9F9"
-                    android:textSize="18sp" />
-
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/icon_scan" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="扫一扫"
+                    android:textColor="@color/color_gray_F9F9F9"
+                    android:textSize="18sp" />
+
+
             </LinearLayout>
 
         </LinearLayout>
+
+
     </LinearLayout>
+    <TextView
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="10dp"
+        android:gravity="center"
+        android:background="@drawable/bg_gray_333_rect"
+        android:textColor="@color/color_gray_F9F9F9"
+        android:text="您有新消息"/>
+
 </LinearLayout>
