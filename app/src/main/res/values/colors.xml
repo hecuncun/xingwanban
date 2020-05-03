@@ -10,8 +10,11 @@
     <color name="color_gray_231F1F">#231F1F</color>
     <color name="color_gray_CCCCCC">#CCCCCC</color>
     <color name="color_gray_727273">#727273</color>
+    <color name="color_gray_979797">#979797</color>
     <color name="color_gray_999999">#999999</color>
     <color name="color_gray_333333">#333333</color>
     <color name="color_gray_151516">#151516</color>
+    <color name="color_gray_303234">#303234</color>
+    <color name="color_gray_979899">#979899</color>
     <color name="color_gray_transparent">#99000000</color>
 </resources>

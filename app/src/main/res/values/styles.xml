@@ -20,5 +20,9 @@
         <item name="android:windowBackground">@null</item>
         <item name="android:windowDisablePreview">true</item>
     </style>
-
+    <!--限制字数的EditText-->
+    <declare-styleable name="LimitScrollEditText">
+        <attr name="hint" format="string"/>
+        <attr name="maxLength" format="integer"/>
+    </declare-styleable>
 </resources>

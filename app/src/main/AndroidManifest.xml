@@ -41,6 +41,12 @@
         </activity>
         <activity android:name="com.cvnchina.xingwanban.ui.activity.GuideActivity" />
         <activity android:name="com.cvnchina.xingwanban.ui.activity.LoginOtherActivity" />
+        <activity android:name=".ui.activity.PersonInfoActivity" />
+        <activity android:name=".ui.activity.AgeDescriptionActivity"/>
+        <activity android:name=".ui.activity.InfoEditActivity" />
+        <activity android:name=".ui.activity.AboutUsActivity" />
+        <activity android:name=".ui.activity.AgreementActivity" />
+        <activity android:name=".ui.activity.ContactUsActivity" />
 
         <!--设计图大小-->
         <meta-data

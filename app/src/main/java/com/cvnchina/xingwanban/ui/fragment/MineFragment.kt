@@ -1,8 +1,11 @@
 package com.cvnchina.xingwanban.ui.fragment
 
+import android.content.Intent
 import android.view.View
 import com.cvnchina.xingwanban.R
+import com.cvnchina.xingwanban.ui.activity.*
 import com.lhzw.bluetooth.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_mine.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 /**
@@ -23,6 +26,25 @@ class MineFragment :BaseFragment(){
     }
 
     override fun initListener() {
+        iv_head_photo.setOnClickListener {
+          startActivity(Intent(activity, PersonInfoActivity::class.java))
+        }
+        ll_person_info.setOnClickListener {
+            startActivity(Intent(activity, InfoEditActivity::class.java))
+        }
+        tv_about.setOnClickListener {
+            startActivity(Intent(activity, AboutUsActivity::class.java))
+        }
+        tv_agreement.setOnClickListener {
+            startActivity(Intent(activity, AgreementActivity::class.java))
+        }
+        tv_good_evaluate.setOnClickListener { //给个好评
+
+        }
+        tv_contact.setOnClickListener { //联系我们
+            startActivity(Intent(activity, ContactUsActivity::class.java))
+        }
+
     }
 
     override fun lazyLoad() {
