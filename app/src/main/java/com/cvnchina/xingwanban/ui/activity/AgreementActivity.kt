@@ -1,7 +1,9 @@
 package com.cvnchina.xingwanban.ui.activity
 
+import android.content.Intent
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_agreement.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 /**
@@ -22,6 +24,11 @@ class AgreementActivity :BaseActivity() {
     }
 
     override fun initListener() {
-
+        tv_user_agreement.setOnClickListener {
+            startActivity(Intent(this, UserAgreementActivity::class.java))
+        }
+        tv_private.setOnClickListener {
+         //   startActivity(Intent(this, UserPrivateActivity::class.java))
+        }
     }
 }

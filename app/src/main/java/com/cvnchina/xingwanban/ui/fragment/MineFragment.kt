@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.View
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.ui.activity.*
+import com.cvnchina.xingwanban.utils.CommonUtil
 import com.lhzw.bluetooth.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_mine.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -39,7 +40,8 @@ class MineFragment :BaseFragment(){
             startActivity(Intent(activity, AgreementActivity::class.java))
         }
         tv_good_evaluate.setOnClickListener { //给个好评
-
+            CommonUtil.toMarket(activity!!,"com.cvnchina.xingwanban",null)
+            //CommonUtil.toMarket(activity!!,"com.tencent.mm",null)
         }
         tv_contact.setOnClickListener { //联系我们
             startActivity(Intent(activity, ContactUsActivity::class.java))

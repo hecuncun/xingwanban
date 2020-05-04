@@ -1,7 +1,9 @@
 package com.cvnchina.xingwanban.utils
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.text.TextUtils
 import android.util.TypedValue
 import android.view.View
@@ -123,6 +125,22 @@ object CommonUtil {
         }
         return result
 
+    }
+
+    fun toMarket(context: Context,appPkg:String,marketPkg:String?):Boolean{
+        val uri= Uri.parse("market://details?id=$appPkg")
+        val intent =Intent(Intent.ACTION_VIEW,uri)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        if (marketPkg!=null){
+            intent.setPackage(marketPkg)
+        }
+        try {
+            context.startActivity(intent)
+            return true
+        }catch (e:Exception){
+            e.printStackTrace()
+            return false
+        }
     }
 
 }
