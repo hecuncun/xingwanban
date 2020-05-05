@@ -28,7 +28,7 @@ class AgreementActivity :BaseActivity() {
             startActivity(Intent(this, UserAgreementActivity::class.java))
         }
         tv_private.setOnClickListener {
-         //   startActivity(Intent(this, UserPrivateActivity::class.java))
+            startActivity(Intent(this, UserPrivateActivity::class.java))
         }
     }
 }

@@ -25,4 +25,10 @@
         <attr name="hint" format="string"/>
         <attr name="maxLength" format="integer"/>
     </declare-styleable>
+
+    <style name="horizontalGrayLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/color_gray_333333</item>
+    </style>
 </resources>
