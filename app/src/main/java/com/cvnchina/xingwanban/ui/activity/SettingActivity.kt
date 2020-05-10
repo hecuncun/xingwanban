@@ -47,6 +47,10 @@ class SettingActivity : BaseActivity() {
             val intent =Intent(this,FeedBackActivity::class.java)
             startActivity(intent)
         }
+        rl_logout.setOnClickListener { //退出登录
+            isLogin=false
+            token=""
+        }
 
     }
 }

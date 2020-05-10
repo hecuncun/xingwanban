@@ -3,6 +3,11 @@ package com.cvnchina.xingwanban.ui.fragment
 import android.content.Intent
 import android.view.View
 import com.cvnchina.xingwanban.R
+import com.cvnchina.xingwanban.bean.PersonalInfoBean
+import com.cvnchina.xingwanban.glide.GlideUtils
+import com.cvnchina.xingwanban.net.CallbackObserver
+import com.cvnchina.xingwanban.net.SLMRetrofit
+import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
 import com.cvnchina.xingwanban.ui.activity.*
 import com.cvnchina.xingwanban.utils.CommonUtil
 import com.flyco.dialog.widget.ActionSheetDialog
@@ -75,5 +80,30 @@ class MineFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+        //请求个人信息
+        val personalInfoCall = SLMRetrofit.instance.api.personalInfoCall()
+        personalInfoCall.compose(ThreadSwitchTransformer()).subscribe(object:
+            CallbackObserver<PersonalInfoBean>(){
+            override fun onSucceed(t: PersonalInfoBean, desc: String) {
+                //初始化个人信息
+                initPersonalInfo(t)
+            }
+
+            override fun onFailed() {
+            }
+        })
+    }
+
+    /**
+     * 设置个人信息
+     */
+    private fun initPersonalInfo(t: PersonalInfoBean) {
+        GlideUtils.showCircle(iv_head_photo,t.headPic,R.mipmap.icon_def_head)
+        tv_nick_name.text=t.nickName
+        tv_id.text=t.id
+        tv_sex.text=t.sex
+        tv_age.text=t.age
+        tv_star.text=t.constellation
+        tv_city.text=t.location
     }
 }

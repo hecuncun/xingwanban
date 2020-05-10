@@ -1,6 +1,10 @@
 package com.cvnchina.xingwanban.net;
 
+import com.cvnchina.xingwanban.base.BaseBean;
 import com.cvnchina.xingwanban.base.BaseNoDataBean;
+import com.cvnchina.xingwanban.bean.MsgCountBean;
+import com.cvnchina.xingwanban.bean.PersonalInfoBean;
+import com.cvnchina.xingwanban.bean.TokenBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.POST;
@@ -20,6 +24,26 @@ public interface Api {
      */
     @POST("vms/appapi/sysMgr/getCode")
     Observable<BaseNoDataBean> phoneCodeCall(@Query("phone") String phone);
+
+    /**
+     * 登录
+     *
+     * @param phone
+     * @param code
+     * @return
+     */
+    @POST("vms/appapi/sysMgr/phoneLogin")
+    Observable<TokenBean> loginCall(@Query("phone") String phone, @Query("code") String code);
+
+    /**
+     * 获取未读消息数
+     * @return
+     */
+    @POST("vms/appapi/sysMgr/getUnReadMsgCount")
+    Observable<MsgCountBean> msgCountCall();
+
+    @POST("vms/appapi/account/get")
+    Observable<BaseBean<PersonalInfoBean>> personalInfoCall();
 //
 //    /**
 //     * 用户注册
@@ -32,15 +56,7 @@ public interface Api {
 //    @POST("appUserBase/insertSelective")
 //    Observable<BaseBean<UserInfoBean>> registerCall(@Query("phone") String phone, @Query("code") String code, @Query("pwd") String pwd);
 //
-//    /**
-//     * 登录
-//     *
-//     * @param phone
-//     * @param pwd
-//     * @return
-//     */
-//    @POST("appUserBase/logoin")
-//    Observable<BaseBean<UserInfoBean>> loginCall(@Query("phone") String phone, @Query("pwd") String pwd);
+
 //
 //    /**
 //     * 重置密码

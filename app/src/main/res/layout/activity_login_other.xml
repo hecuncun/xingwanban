@@ -36,12 +36,14 @@
             android:textSize="15sp" />
 
         <EditText
+            android:inputType="phone"
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@null"
             android:hint="请输入您的手机号"
+            android:textSize="15sp"
             android:padding="10dp"
             android:textColor="@color/color_gray_CCCCCC"
             android:textColorHint="@color/white"
@@ -71,6 +73,7 @@
             android:textSize="15sp" />
 
         <EditText
+            android:inputType="number"
             android:id="@+id/et_code"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -78,6 +81,7 @@
             android:layout_weight="1"
             android:background="@null"
             android:hint="请输入验证码"
+            android:textSize="15sp"
             android:padding="10dp"
             android:textColor="@color/white"
             android:textColorHint="@color/color_gray_CCCCCC"
@@ -89,166 +93,44 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="10dp"
+            android:textSize="12sp"
             android:text="获取验证码"
-            android:textColor="@color/color_gray_CCCCCC" />
+            android:textColor="@drawable/selector_tv_yellow_ccc" />
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_confirm"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/bg_gray_btn"
+        android:enabled="false"
+        android:background="@drawable/selector_btn_yellow_gray"
         android:gravity="center"
         android:text="确认"
         android:textColor="@color/white"
         android:textSize="18sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="50dp"
+    <LinearLayout
         android:layout_marginTop="20dp"
-        android:layout_marginRight="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="登录即表示阅读并同意登录即表示阅读并同意登录即表示阅读并同意登录即表示阅读并同意登录即表示阅读并同意"
-        android:textColor="@color/white"
-        android:textSize="12sp" />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="确认即表示您同意了 "
+            android:textColor="@color/color_gray_F9F9F9"/>
 
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_marginTop="100dp"-->
-<!--        android:text="使用其它方式登录"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="15sp" />-->
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="center_vertical"-->
-<!--        android:layout_marginLeft="60dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_marginRight="60dp"-->
-<!--        android:orientation="horizontal">-->
-
-<!--        <RelativeLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:layout_weight="1"-->
-<!--            android:gravity="center_vertical">-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_wx"-->
-<!--                android:layout_width="48dp"-->
-<!--                android:layout_height="48dp"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:src="@mipmap/wx" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:background="@drawable/bg_white_btn"-->
-<!--                android:paddingLeft="6dp"-->
-<!--                android:paddingTop="2dp"-->
-<!--                android:paddingRight="6dp"-->
-<!--                android:paddingBottom="2dp"-->
-<!--                android:text="上次使用"-->
-<!--                android:textColor="@color/color_primary_yellow" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@+id/iv_wx"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginTop="@dimen/dp_10"-->
-<!--                android:text="微博"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="15sp" />-->
-<!--        </RelativeLayout>-->
-
-<!--        <RelativeLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:layout_weight="1"-->
-<!--            android:gravity="center_vertical">-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_qq"-->
-<!--                android:layout_width="48dp"-->
-<!--                android:layout_height="48dp"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:src="@mipmap/qq" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:background="@drawable/bg_white_btn"-->
-<!--                android:paddingLeft="6dp"-->
-<!--                android:paddingTop="2dp"-->
-<!--                android:paddingRight="6dp"-->
-<!--                android:paddingBottom="2dp"-->
-<!--                android:text="上次使用"-->
-<!--                android:textColor="@color/color_primary_yellow" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/iv_qq"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginTop="@dimen/dp_10"-->
-<!--                android:text="QQ"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="15sp" />-->
-<!--        </RelativeLayout>-->
-
-<!--        <RelativeLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:layout_weight="1"-->
-<!--            android:gravity="center_vertical">-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_wb"-->
-<!--                android:layout_width="48dp"-->
-<!--                android:layout_height="48dp"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:src="@mipmap/wb" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:background="@drawable/bg_white_btn"-->
-<!--                android:paddingLeft="6dp"-->
-<!--                android:paddingTop="2dp"-->
-<!--                android:paddingRight="6dp"-->
-<!--                android:paddingBottom="2dp"-->
-<!--                android:text="上次使用"-->
-<!--                android:textColor="@color/color_primary_yellow" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/iv_wb"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginTop="@dimen/dp_10"-->
-<!--                android:text="微博"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="15sp" />-->
-<!--        </RelativeLayout>-->
-
-<!--    </LinearLayout>-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="《用户条款与隐私协议》"
+            android:textColor="@color/color_primary_yellow"
+            android:textSize="12sp" />
+    </LinearLayout>
 
 </LinearLayout>

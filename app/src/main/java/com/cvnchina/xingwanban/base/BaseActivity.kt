@@ -39,6 +39,8 @@ abstract class BaseActivity :AppCompatActivity(){
      */
     protected var isLogin: Boolean by Preference(Constant.LOGIN_KEY, false)
 
+    protected var token: String by Preference(Constant.TOKEN, "")
+
     /**
      * 布局文件id
      */

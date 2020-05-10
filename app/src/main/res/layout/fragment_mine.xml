@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_primary_bar"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -16,6 +17,7 @@
         android:src="@mipmap/icon_def_head" />
 
     <TextView
+        android:id="@+id/tv_nick_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -25,6 +27,7 @@
         android:textSize="15sp" />
 
     <TextView
+        android:id="@+id/tv_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -41,6 +44,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_gray_151516_r5"
@@ -52,6 +56,7 @@
             android:textColor="@color/color_gray_CCCCCC" />
 
         <TextView
+            android:id="@+id/tv_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -64,6 +69,7 @@
             android:textColor="@color/color_gray_CCCCCC" />
 
         <TextView
+            android:id="@+id/tv_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -76,6 +82,7 @@
             android:textColor="@color/color_gray_CCCCCC" />
 
         <TextView
+            android:id="@+id/tv_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

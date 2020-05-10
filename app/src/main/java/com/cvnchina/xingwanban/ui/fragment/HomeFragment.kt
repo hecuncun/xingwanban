@@ -8,6 +8,11 @@ import com.aliyun.svideo.editor.bean.AlivcEditInputParam
 import com.aliyun.svideo.recorder.activity.AlivcSvideoRecordActivity
 import com.aliyun.svideo.recorder.bean.AlivcRecordInputParam
 import com.cvnchina.xingwanban.R
+import com.cvnchina.xingwanban.bean.MsgCountBean
+import com.cvnchina.xingwanban.ext.showToast
+import com.cvnchina.xingwanban.net.CallbackListObserver
+import com.cvnchina.xingwanban.net.SLMRetrofit
+import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
 import com.cvnchina.xingwanban.ui.activity.MsgActivity
 import com.lhzw.bluetooth.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -49,6 +54,26 @@ class HomeFragment :BaseFragment(), View.OnClickListener {
     }
 
     override fun lazyLoad() {
+        //获取未读消息数
+        if (isLogin){
+            val msgCountCall = SLMRetrofit.instance.api.msgCountCall()
+            msgCountCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackListObserver<MsgCountBean>(){
+                override fun onSucceed(t: MsgCountBean) {
+                    if (t.msg=="1"){
+                        if (t.count==0){tv_msg.visibility=View.GONE } else tv_msg.visibility=View.VISIBLE
+                        tv_msg.text="您有${t.count}条新消息"
+                    }else{
+                        showToast(t.msgCondition)
+                    }
+
+                }
+
+                override fun onFailed() {
+
+                }
+            })
+        }
+
     }
 
     override fun onClick(v: View) {

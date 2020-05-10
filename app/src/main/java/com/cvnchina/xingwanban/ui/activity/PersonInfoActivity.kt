@@ -64,7 +64,11 @@ class PersonInfoActivity : BaseActivity() {
                 ), PERMISS_REQUEST_CODE
             )
         }
+
+
     }
+
+
 
     override fun initView() {
         toolbar_title.text = "个人资料"
@@ -205,18 +209,23 @@ class PersonInfoActivity : BaseActivity() {
             setResetWhileWheel(false)
             setOnDatePickListener(OnYearMonthDayPickListener { year, month, day ->
                 showToast("$year-$month-$day")
-                var gen =""
-                if (year[0]=='1'){
-                    gen = year[2].toString() +"0"
-                }else{
-                    if (year[2]=='0'){
-                        gen = year[2].toString()+"0"
-                    }else{
-                        gen ="10"
+                var gen = ""
+                if (year[0] == '1') {
+                    gen = year[2].toString() + "0"
+                } else {
+                    if (year[2] == '0') {
+                        gen = year[2].toString() + "0"
+                    } else {
+                        gen = "10"
                     }
                 }
-                    tv_age.text="$gen 后"
-                 this@PersonInfoActivity.startActivity(Intent(this@PersonInfoActivity,AgeDescriptionActivity::class.java))
+                tv_age.text = "$gen 后"
+                this@PersonInfoActivity.startActivity(
+                    Intent(
+                        this@PersonInfoActivity,
+                        AgeDescriptionActivity::class.java
+                    )
+                )
             })
 //            setOnWheelListener(object : DatePicker.OnWheelListener {
 //                override fun onYearWheeled(index: Int, year: String) {
