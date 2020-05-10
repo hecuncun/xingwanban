@@ -4,24 +4,25 @@ package com.cvnchina.xingwanban.base;
  * Created by hecuncun on 2019/12/15
  */
 public class BaseNoDataBean {
-    private String code;
-    private String message;
+    private String msg;
+    private String msgCondition;
     private Object data;
 
-    public String getCode() {
-        return code;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getMessage() {
-        return message;
+
+    public String getMsgCondition() {
+        return msgCondition;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsgCondition(String msgCondition) {
+        this.msgCondition = msgCondition;
     }
 
     public Object getData() {

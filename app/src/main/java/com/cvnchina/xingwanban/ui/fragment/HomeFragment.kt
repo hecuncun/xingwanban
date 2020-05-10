@@ -1,8 +1,14 @@
 package com.cvnchina.xingwanban.ui.fragment
 
+import android.content.Intent
 import android.support.v4.app.FragmentTransaction
 import android.view.View
+import com.aliyun.svideo.editor.EditorMediaActivity
+import com.aliyun.svideo.editor.bean.AlivcEditInputParam
+import com.aliyun.svideo.recorder.activity.AlivcSvideoRecordActivity
+import com.aliyun.svideo.recorder.bean.AlivcRecordInputParam
 import com.cvnchina.xingwanban.R
+import com.cvnchina.xingwanban.ui.activity.MsgActivity
 import com.lhzw.bluetooth.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -26,6 +32,20 @@ class HomeFragment :BaseFragment(), View.OnClickListener {
         rl_works.setOnClickListener(this)
         rl_draft.setOnClickListener(this)
         rl_works.performClick()
+        tv_msg.setOnClickListener {
+            startActivity(Intent(activity, MsgActivity::class.java))
+        }
+
+        ll_edit.setOnClickListener {
+            val param = AlivcEditInputParam.Builder()
+                .build()
+            EditorMediaActivity.startImport(context, param)
+        }
+        ll_take.setOnClickListener {
+            val recordParam = AlivcRecordInputParam.Builder()
+                .build()
+            AlivcSvideoRecordActivity.startRecord(context, recordParam)
+        }
     }
 
     override fun lazyLoad() {

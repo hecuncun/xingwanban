@@ -31,6 +31,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/ll_edit"
                         android:layout_width="0dp"
                         android:layout_height="84dp"
                         android:layout_marginLeft="15dp"
@@ -62,6 +63,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/ll_take"
                             android:layout_width="84dp"
                             android:layout_height="84dp"
                             android:background="@drawable/bg_yellow_gradient"
@@ -124,6 +126,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_msg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"

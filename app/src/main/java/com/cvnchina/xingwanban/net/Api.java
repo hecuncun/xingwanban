@@ -1,19 +1,25 @@
 package com.cvnchina.xingwanban.net;
 
+import com.cvnchina.xingwanban.base.BaseNoDataBean;
+
+import io.reactivex.Observable;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+
 /**
  * Created by hecuncun on 2019/5/13
  */
 public interface Api {
 
-//    /**
-//     * 获取手机验证码
-//     *
-//     * @param phone
-//     * @param type  1：注册，2：重置密码
-//     * @return
-//     */
-//    @POST("appTcmnPhoneCode/insertSelective")
-//    Observable<BaseBean<RegisterBean>> registerCodeCall(@Query("phone") String phone, @Query("type") int type);
+    /**
+     * 获取手机验证码
+     *
+     * @param phone
+     * @param
+     * @return
+     */
+    @POST("vms/appapi/sysMgr/getCode")
+    Observable<BaseNoDataBean> phoneCodeCall(@Query("phone") String phone);
 //
 //    /**
 //     * 用户注册

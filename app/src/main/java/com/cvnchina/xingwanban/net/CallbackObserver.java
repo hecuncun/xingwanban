@@ -31,12 +31,12 @@ public abstract class CallbackObserver<T> implements Observer<BaseBean<T>> {
 
             if (tBaseResultBean.isSuccessed()) {
                 T t = tBaseResultBean.getData();
-                onSucceed(t,tBaseResultBean.getMessage());
+                onSucceed(t,tBaseResultBean.getMsgCondition());
             } else {
 
-                if (!TextUtils.isEmpty(tBaseResultBean.getMessage())){
-                    ToastUtils.showShort(tBaseResultBean.getMessage());
-                    Logger.e(tBaseResultBean.getMessage());
+                if (!TextUtils.isEmpty(tBaseResultBean.getMsgCondition())){
+                    ToastUtils.showShort(tBaseResultBean.getMsgCondition());
+                    Logger.e(tBaseResultBean.getMsgCondition());
                 }
                 onFailed();
             }
