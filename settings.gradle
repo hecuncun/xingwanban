@@ -1,5 +1,6 @@
 rootProject.name='xingwanban'
 include ':app'
+include ':lib-zxing'//二维码
 include ':AliyunVideoCommon'
 include ':AlivcMedia'//媒体资源选择库
 include ':AliyunSVideoBase'//短视频基础包
