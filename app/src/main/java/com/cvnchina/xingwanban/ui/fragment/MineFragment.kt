@@ -12,6 +12,9 @@ import com.cvnchina.xingwanban.ui.activity.*
 import com.cvnchina.xingwanban.utils.CommonUtil
 import com.flyco.dialog.widget.ActionSheetDialog
 import com.lhzw.bluetooth.base.BaseFragment
+import com.umeng.socialize.ShareAction
+import com.umeng.socialize.UMShareListener
+import com.umeng.socialize.bean.SHARE_MEDIA
 import kotlinx.android.synthetic.main.fragment_mine.*
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -72,11 +75,34 @@ class MineFragment : BaseFragment() {
                     //设置
                     startActivity(Intent(activity, SettingActivity::class.java))
                 }else{
-                    //分享
+                    //分享 https://developer.umeng.com/docs/128606/detail/129622
+                    ShareAction(activity).withText("hello").setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN)
+                        .setCallback(umShareListener).open();
                 }
             }
         }
 
+    }
+
+    private var umShareListener =object :UMShareListener{
+        /**
+         * @descrption 分享开始的回调
+         */
+        override fun onResult(p0: SHARE_MEDIA?) {//成功
+
+        }
+
+        override fun onCancel(p0: SHARE_MEDIA?) {
+
+        }
+
+        override fun onError(p0: SHARE_MEDIA?, p1: Throwable?) {
+
+        }
+
+        override fun onStart(p0: SHARE_MEDIA?) {
+
+        }
     }
 
     override fun lazyLoad() {
@@ -94,6 +120,9 @@ class MineFragment : BaseFragment() {
         })
     }
 
+    /**
+     * 设置个人信息
+     */
     /**
      * 设置个人信息
      */

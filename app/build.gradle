@@ -94,6 +94,8 @@ dependencies {
     }
     //二维码扫描
     implementation project(':lib-zxing')
+    //友盟第三方分享库
+    implementation project(':UMLibrary')
     //阿里云视频相关
     implementation project(':AliyunFileDownLoader')
     implementation project(':AliyunSVideoBase')

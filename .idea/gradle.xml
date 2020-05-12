@@ -22,6 +22,7 @@
             <option value="$PROJECT_DIR$/AliyunSVideoBase" />
             <option value="$PROJECT_DIR$/AliyunSvideoMusic" />
             <option value="$PROJECT_DIR$/AliyunVideoCommon" />
+            <option value="$PROJECT_DIR$/UMLibrary" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/lib-zxing" />
           </set>
