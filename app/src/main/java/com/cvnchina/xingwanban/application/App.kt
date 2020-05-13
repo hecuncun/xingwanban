@@ -72,17 +72,18 @@ class App : MultiDexApplication() {
          * 参数4:设备类型，UMConfigure.DEVICE_TYPE_PHONE为手机、UMConfigure.DEVICE_TYPE_BOX为盒子，默认为手机
          * 参数5:Push推送业务的secret
          */
-        // todo  替换
-        UMConfigure.init(this,"5afa5748f43e480cf40000a8","umeng",UMConfigure.DEVICE_TYPE_PHONE,"")
+        UMConfigure.init(this,"5eba4333dbc2ec080967a720","umeng",UMConfigure.DEVICE_TYPE_PHONE,"")
         /**
          * 设置组件化的Log开关
          * 参数: boolean 默认为false，如需查看LOG设置为true
          */
         UMConfigure.setLogEnabled(true)
+
+        PlatformConfig.setQQZone("101876978", "347bbe40406eb62c18b935f947fb39a2")
+        //微博此处有坑  https://api.weibo.com/oauth2/default.html 必须和微博开放平台设置的认证回调地址一致  否则授权不成功
+        PlatformConfig.setSinaWeibo("923520257", "7ffbb04094abc7e34a5da6af0ed12f51","https://api.weibo.com/oauth2/default.html")
         // todo  替换
-        PlatformConfig.setQQZone("101476089", "bf12db860a21d9e0ce217b37cbc1dec7")
-        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
-        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0")
         //BUGly初始化
        // CrashReport.initCrashReport(applicationContext, "6ed7ce60df", false)
     }

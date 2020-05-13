@@ -32,6 +32,7 @@
             android:src="@mipmap/icon_arrow_right" />
 
         <TextView
+            android:id="@+id/tv_cache_size"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/arrow_1"
@@ -124,6 +125,7 @@
     <View style="@style/horizontalGrayLine" />
 
     <RelativeLayout
+        android:id="@+id/rl_common_problem"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="15dp"

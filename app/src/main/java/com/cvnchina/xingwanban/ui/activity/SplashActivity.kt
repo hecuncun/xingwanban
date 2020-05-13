@@ -5,6 +5,11 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
+import com.cvnchina.xingwanban.bean.UpdateAppBean
+import com.cvnchina.xingwanban.glide.GlideUtils
+import com.cvnchina.xingwanban.net.CallbackObserver
+import com.cvnchina.xingwanban.net.SLMRetrofit
+import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
 import kotlinx.android.synthetic.main.activity_splash.*
 
 
@@ -17,6 +22,17 @@ class SplashActivity : BaseActivity() {
 
     override fun attachLayoutRes(): Int = R.layout.activity_splash
     override fun initData() {
+        //获取启动页图片
+        val updateAppCall = SLMRetrofit.instance.api.updateAppCall()
+        updateAppCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackObserver<UpdateAppBean>(){
+            override fun onSucceed(t: UpdateAppBean, desc: String?) {
+               GlideUtils.showPlaceholder(this@SplashActivity,iv_splash,t.androidPic3,R.mipmap.splash)
+            }
+
+            override fun onFailed() {
+
+            }
+        })
     }
 
     override fun initView() {

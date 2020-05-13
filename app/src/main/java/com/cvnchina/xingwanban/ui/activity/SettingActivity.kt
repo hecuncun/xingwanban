@@ -2,10 +2,13 @@ package com.cvnchina.xingwanban.ui.activity
 
 
 import android.content.Intent
+import android.os.Environment
 import android.view.View
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
 import com.cvnchina.xingwanban.ext.showToast
+import com.cvnchina.xingwanban.utils.FileSizeUtil
+import com.cvnchina.xingwanban.utils.FileUtils
 import com.cvnchina.xingwanban.widget.ClearCacheDialog
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -27,6 +30,7 @@ class SettingActivity : BaseActivity() {
 
     override fun initView() {
         toolbar_title.text = "设置"
+        tv_cache_size.text=FileSizeUtil.getAutoFileOrFilesSize(Environment.getExternalStorageDirectory().toString() + "/record/")
     }
 
     override fun initListener() {
@@ -34,6 +38,8 @@ class SettingActivity : BaseActivity() {
             clearCacheDialog?.show()
             clearCacheDialog?.setOnConfirmListener(View.OnClickListener {
                 showToast("缓存已清理完毕")
+                tv_cache_size.text="0KB"
+                FileUtils.deleteDirectory(Environment.getExternalStorageDirectory().toString() + "/record/")
                 clearCacheDialog!!.dismiss()
             })
         }
@@ -50,6 +56,11 @@ class SettingActivity : BaseActivity() {
         rl_logout.setOnClickListener { //退出登录
             isLogin=false
             token=""
+        }
+
+        rl_common_problem.setOnClickListener {
+            val intent =Intent(this,CommonProblemActivity::class.java)
+            startActivity(intent)
         }
 
     }

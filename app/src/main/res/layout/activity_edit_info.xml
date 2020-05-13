@@ -9,6 +9,7 @@
     <include layout="@layout/toolbar" />
 
     <com.cvnchina.xingwanban.widget.LimitScrollEditText
+        android:id="@+id/et_desc"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginLeft="15dp"

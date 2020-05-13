@@ -52,17 +52,6 @@
         android:layout_marginTop="15dp"
         android:background="@color/alivc_common_bg_black"
         android:scaleType="centerCrop" />
-
-    <com.cvnchina.xingwanban.widget.LimitScrollEditText
-        android:id="@+id/et_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        app:hint="填写标题会有更多赞哟~"
-        app:maxLength="20" />
-
     <View
         style="@style/horizontalGrayLine"
         android:layout_marginTop="10dp" />
@@ -73,7 +62,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
-        app:maxLength="100"
+        app:maxLength="80"
         app:hint="描述一下你的作品吧" />
 
     <View

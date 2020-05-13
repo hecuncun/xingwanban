@@ -1,26 +1,43 @@
 package com.cvnchina.xingwanban.ui.activity
 
 import android.content.Intent
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.support.v7.widget.GridLayoutManager
+import android.view.MotionEvent
+import android.view.View
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.adapter.ComImageAdapter
 import com.cvnchina.xingwanban.adapter.ComImageAdapter.onAddPicClickListener
 import com.cvnchina.xingwanban.adapter.FullyGridLayoutManager
 import com.cvnchina.xingwanban.base.BaseActivity
+import com.cvnchina.xingwanban.base.BaseNoDataBean
 import com.cvnchina.xingwanban.ext.showToast
+import com.cvnchina.xingwanban.net.CallbackListObserver
+import com.cvnchina.xingwanban.net.SLMRetrofit
+import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
+import com.cvnchina.xingwanban.utils.AudioRecordUtils
+import com.cvnchina.xingwanban.utils.FileUtils
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import kotlinx.android.synthetic.main.activity_feedback.*
 import kotlinx.android.synthetic.main.toolbar.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
-class FeedBackActivity:BaseActivity() {
+
+class FeedBackActivity : BaseActivity() {
 
     private var imageAdapter: ComImageAdapter? = null
     private var selectPhotoList = mutableListOf<LocalMedia>() //已选的照片集合
+    private var audioRecordUtils: AudioRecordUtils? = null
+    private var mediaPlayer: MediaPlayer? = null
     override fun attachLayoutRes(): Int {
-       return R.layout.activity_feedback
+        return R.layout.activity_feedback
     }
 
     override fun initData() {
@@ -28,17 +45,179 @@ class FeedBackActivity:BaseActivity() {
     }
 
     override fun initView() {
-        toolbar_title.text="用户反馈"
+        toolbar_title.text = "用户反馈"
         initRvPhoto()
+        audioRecordUtils = AudioRecordUtils()
+
+        //检查权限
+        if (checkPermissions(
+                arrayOf(
+                    android.Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.MODIFY_AUDIO_SETTINGS
+                )
+            )
+        ) {
+
+        } else {
+            requestPermission(
+                arrayOf(
+                    android.Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.MODIFY_AUDIO_SETTINGS
+                ), 0x55
+            )
+        }
+
+        //初始化音频播放器
+        mediaPlayer = MediaPlayer()
     }
+
+    private var voicePath = ""//录音文件
 
     override fun initListener() {
+        //录音回调
+        audioRecordUtils?.setOnAudioStatusUpdateListener(object :
+            AudioRecordUtils.OnAudioStatusUpdateListener {
+            override fun onUpdate(db: Double, time: Long) { //录音中....db为声音分贝，time为录音时长
+                tv_voice_time.text = (time / 1000).toString() + "''"
+            }
 
+            override fun onStop(filePath: String) {
+                voicePath = filePath
+                showToast("录音文件地址==$filePath")
+
+            }
+        })
+        iv_start_record.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        audioRecordUtils?.startRecord()
+                        ll_recording.visibility = View.VISIBLE
+                        ll_recorded.visibility = View.GONE
+                        tv_delete.visibility = View.GONE
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        audioRecordUtils?.stopRecord()
+                        ll_recording.visibility = View.GONE
+                        ll_recorded.visibility = View.VISIBLE
+                        tv_delete.visibility = View.VISIBLE
+                    }
+                }
+                return true
+            }
+        })
+
+        ll_recorded.setOnClickListener {
+            play()
+        }
+
+        tv_delete.setOnClickListener {
+            val del = FileUtils.DeleteFolder(voicePath)
+            if (del) {
+                tv_delete.visibility = View.GONE
+                voicePath = ""
+                ll_recorded.visibility = View.GONE
+                ll_recording.visibility = View.GONE
+                showToast("删除成功")
+            }
+
+        }
+        tv_confirm.setOnClickListener {
+            val content = et_content.textString
+            val phone = et_phone.text.toString().trim()
+            if (content.isNotEmpty() && phone.isNotEmpty()) {
+                if (voicePath.isNotEmpty()) {
+                    val file = File(voicePath)
+                    val requestFile: RequestBody =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                    //retrofit 上传文件api加上 @Multipart注解,然后下面这是个重点 参数1：上传文件的key，参数2：上传的文件名，参数3 请求头
+                    body = MultipartBody.Part.createFormData("record-file", file.name, requestFile)
+                }
+                if (selectPhotoList.isNotEmpty()) {
+                    for (item in selectPhotoList) {
+                        val file = File(item.compressPath)
+                        val requestFile: RequestBody =
+                            RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                        val bodyIv =
+                            MultipartBody.Part.createFormData("image-file", file.name, requestFile)
+                        bodyList.add(bodyIv)
+                    }
+                }
+
+                val feedbackCall =
+                    SLMRetrofit.instance.api.feedbackCall(content, body, bodyList, phone)
+                feedbackCall.compose(ThreadSwitchTransformer())
+                    .subscribe(object : CallbackListObserver<BaseNoDataBean>() {
+                        override fun onSucceed(t: BaseNoDataBean) {
+                            if (t.msg == "1") {
+                                showToast(t.msgCondition)
+                                finish()
+                            }
+                        }
+
+                        override fun onFailed() {
+
+                        }
+                    })
+            } else {
+                showToast("请填写完整")
+            }
+        }
     }
+
+    private var body: MultipartBody.Part? = null//文件
+    private var bodyList = mutableListOf<MultipartBody.Part>()
+    private var map = mutableMapOf<String, RequestBody>()//多图上传
+    private fun play() {
+        val file = File(voicePath) //确认音乐文件的存在
+        if (!file.exists()) return
+        try {
+            mediaPlayer!!.reset()
+            mediaPlayer!!.setDataSource(voicePath)
+            mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            mediaPlayer!!.prepareAsync() //异步的方式加载音乐文件
+            mediaPlayer!!.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
+                override fun onPrepared(mp: MediaPlayer?) {
+                    mediaPlayer!!.start() //准备好之后才能start
+                    ll_recorded.isEnabled = false
+                }
+
+            })
+            mediaPlayer!!.setOnCompletionListener(object : MediaPlayer.OnCompletionListener {
+                override fun onCompletion(mp: MediaPlayer?) {
+                    ll_recorded.isEnabled = true //播放完成后btn_play可用
+                }
+            })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun pause() {
+        if (mediaPlayer != null && !mediaPlayer!!.isPlaying) {
+            mediaPlayer!!.start()
+            return
+        }
+        if (mediaPlayer != null && mediaPlayer!!.isPlaying) {
+            mediaPlayer!!.pause()
+        }
+    }
+
+    private fun stop() {
+        if (mediaPlayer != null && mediaPlayer!!.isPlaying) {
+            mediaPlayer!!.stop()
+            mediaPlayer!!.release()
+            mediaPlayer = null
+        }
+    }
+
+
     private fun initRvPhoto() {
         val themeId = R.style.picture_default_style//相册的默认样式
-        rv_photo.layoutManager = FullyGridLayoutManager(this@FeedBackActivity, 3, GridLayoutManager.VERTICAL, false)
-        imageAdapter = ComImageAdapter(this@FeedBackActivity, onAddPicClickListener
+        rv_photo.layoutManager =
+            FullyGridLayoutManager(this@FeedBackActivity, 3, GridLayoutManager.VERTICAL, false)
+        imageAdapter = ComImageAdapter(
+            this@FeedBackActivity, onAddPicClickListener
         )
         imageAdapter!!.setList(selectPhotoList)
         imageAdapter!!.setSelectMax(3)
@@ -52,7 +231,10 @@ class FeedBackActivity:BaseActivity() {
                     1 ->
                         // 预览图片 可自定长按保存路径
                         //PictureSelector.create(MainActivity.this).themeStyle(themeId).externalPicturePreview(position, "/custom_file", selectList);
-                        PictureSelector.create(this@FeedBackActivity).themeStyle(themeId).openExternalPreview(position, selectPhotoList)
+                        PictureSelector.create(this@FeedBackActivity).themeStyle(themeId).openExternalPreview(
+                            position,
+                            selectPhotoList
+                        )
                     2 ->
                         // 预览视频
                         PictureSelector.create(this@FeedBackActivity).externalPictureVideo(media.getPath())
@@ -65,6 +247,7 @@ class FeedBackActivity:BaseActivity() {
 
         }
     }
+
     private val onAddPicClickListener = onAddPicClickListener {
         // 进入相册 以下是例子：不需要的api可以不写
         PictureSelector.create(this@FeedBackActivity)
@@ -101,10 +284,10 @@ class FeedBackActivity:BaseActivity() {
                     // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
                     if (selectPhotoList.size > 0) {
                         //val loadingView = LoadingView(this@FeedBackActivity)
-                       // loadingView.setLoadingTitle("上传中...")
-                       // loadingView.show()
-                        val sb  =   StringBuilder()
-                        var successNum = 0
+                        // loadingView.setLoadingTitle("上传中...")
+                        // loadingView.show()
+                        //                       val sb  =   StringBuilder()
+                        //                       var successNum = 0
 //                        for (i in selectPhotoList.indices){
 //                            //上传文件
 //                            val file = File(selectPhotoList[0].compressPath)
@@ -142,6 +325,16 @@ class FeedBackActivity:BaseActivity() {
                     imageAdapter!!.notifyDataSetChanged()
                 }
             }
+        }
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mediaPlayer != null && mediaPlayer!!.isPlaying) {
+            mediaPlayer!!.stop()
+            mediaPlayer!!.release()
+            mediaPlayer = null
         }
     }
 }

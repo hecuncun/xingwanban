@@ -2,18 +2,39 @@ package com.cvnchina.xingwanban.net;
 
 import com.cvnchina.xingwanban.base.BaseBean;
 import com.cvnchina.xingwanban.base.BaseNoDataBean;
+import com.cvnchina.xingwanban.bean.AgreementBean;
+import com.cvnchina.xingwanban.bean.CityCodeBean;
+import com.cvnchina.xingwanban.bean.DefaultHeadPhotoBean;
+import com.cvnchina.xingwanban.bean.MsgBean;
 import com.cvnchina.xingwanban.bean.MsgCountBean;
+import com.cvnchina.xingwanban.bean.NewPhotoBean;
 import com.cvnchina.xingwanban.bean.PersonalInfoBean;
+import com.cvnchina.xingwanban.bean.QABean;
 import com.cvnchina.xingwanban.bean.TokenBean;
+import com.cvnchina.xingwanban.bean.UpdateAppBean;
+
+import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 /**
  * Created by hecuncun on 2019/5/13
  */
 public interface Api {
+
+    /**
+     * app更新  启动页图片
+     */
+    @POST("vms/appapi/sysMgr/init")
+    Observable<BaseBean<UpdateAppBean>> updateAppCall();
+
 
     /**
      * 获取手机验证码
@@ -37,13 +58,75 @@ public interface Api {
 
     /**
      * 获取未读消息数
+     *
      * @return
      */
     @POST("vms/appapi/sysMgr/getUnReadMsgCount")
     Observable<MsgCountBean> msgCountCall();
 
+    /**
+     * 获取个人信息
+     *
+     * @return
+     */
     @POST("vms/appapi/account/get")
     Observable<BaseBean<PersonalInfoBean>> personalInfoCall();
+
+    /**
+     * 修改头像id接口
+     */
+    @POST("vms/appapi/account/editPic")
+    Observable<BaseBean<NewPhotoBean>> changeDefaultHeadPhotoCall(@Query("id") int id);
+
+    /**
+     * 修改自定义头像接口
+     */
+    @POST("vms/appapi/account/editPic")
+    @Multipart
+    Observable<BaseBean<NewPhotoBean>> changeHeadPhotoCall(@Part MultipartBody.Part file);
+
+    /**
+     * 获取默认头像
+     */
+    @POST("vms/appapi/account/getDefaultHeadPic")
+    Observable<DefaultHeadPhotoBean> defaultHeadPhotoCall();
+
+    /**
+     * 修改个人信息
+     */
+    @POST("vms/appapi/account/edit")
+    Observable<BaseBean<PersonalInfoBean>> editPersonalInfoCall(@QueryMap Map<String, String> map, @Query("sex") int sex);
+
+    /**
+     * 获取相关协议文本  协议类型 1-联系我们 2-用户协议 3-隐私协议 4-关于我们
+     */
+    @POST("vms/appapi/sysMgr/getAgreement")
+    Observable<BaseBean<AgreementBean>> agreementCall(@Query("type") String type);
+
+    /**
+     * 获取常见问题
+     */
+    @POST("vms/appapi/qa/page")
+    Observable<BaseBean<QABean>> commonProblemCall(@Query("pageNum") int pageNum, @Query("pageSize") int pageSize);
+
+    /**
+     * 获取省市code
+     */
+    @POST("vms/appapi/account/getProvinceAndCity")
+    Observable<CityCodeBean> cityCodeCall();
+
+    /**
+     * 一键反馈
+     */
+    @POST("vms/appapi/sysMgr/feedback")
+    @Multipart
+    Observable<BaseNoDataBean> feedbackCall(@Query("content") String content, @Part MultipartBody.Part file,@Part List<MultipartBody.Part> list, @Query("phone") String phone);
+
+    /**
+     * 消息列表
+     */
+    @POST("vms/appapi/sysNgr/msgList")
+    Observable<BaseBean<MsgBean>> msgListCall(@Query("pageNum") int pageNum, @Query("pageSize") int pageSize);
 //
 //    /**
 //     * 用户注册

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.View
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.bean.PersonalInfoBean
+import com.cvnchina.xingwanban.event.RefreshPersonalInfoEvent
 import com.cvnchina.xingwanban.glide.GlideUtils
 import com.cvnchina.xingwanban.net.CallbackObserver
 import com.cvnchina.xingwanban.net.SLMRetrofit
@@ -17,11 +18,14 @@ import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
 import kotlinx.android.synthetic.main.fragment_mine.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * Created by heCunCun on 2020/4/29
  */
 class MineFragment : BaseFragment() {
+    override fun useEventBus()=true
     private var moreDialog: ActionSheetDialog? = null
 
     companion object {
@@ -46,13 +50,23 @@ class MineFragment : BaseFragment() {
 
     override fun initListener() {
         iv_head_photo.setOnClickListener {
-            startActivity(Intent(activity, PersonInfoActivity::class.java))
+            val intent = Intent(activity, PersonInfoActivity::class.java)
+            intent.putExtra("personalInfoBean",personalInfoBean)
+            startActivity(intent)
         }
         ll_person_info.setOnClickListener {
             startActivity(Intent(activity, InfoEditActivity::class.java))
         }
+        tv_info_des.setOnClickListener {
+            val intent = Intent(activity, InfoEditActivity::class.java)
+            intent.putExtra("personalInfoBean",personalInfoBean)
+            startActivity(intent)
+        }
         tv_about.setOnClickListener {
-            startActivity(Intent(activity, AboutUsActivity::class.java))
+            //startActivity(Intent(activity, AboutUsActivity::class.java))
+            val intent = Intent(activity,WebViewActivity::class.java)
+            intent.putExtra("type",4)
+            startActivity(intent)
         }
         tv_agreement.setOnClickListener {
             startActivity(Intent(activity, AgreementActivity::class.java))
@@ -64,7 +78,9 @@ class MineFragment : BaseFragment() {
         }
         tv_contact.setOnClickListener {
             //联系我们
-            startActivity(Intent(activity, ContactUsActivity::class.java))
+            val intent = Intent(activity,WebViewActivity::class.java)
+            intent.putExtra("type",1)
+            startActivity(intent)
         }
         toolbar_right_img.setOnClickListener {
             //更多
@@ -106,10 +122,14 @@ class MineFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+        initPersonalInfo()
+    }
+
+    private fun initPersonalInfo() {
         //请求个人信息
         val personalInfoCall = SLMRetrofit.instance.api.personalInfoCall()
-        personalInfoCall.compose(ThreadSwitchTransformer()).subscribe(object:
-            CallbackObserver<PersonalInfoBean>(){
+        personalInfoCall.compose(ThreadSwitchTransformer()).subscribe(object :
+            CallbackObserver<PersonalInfoBean>() {
             override fun onSucceed(t: PersonalInfoBean, desc: String) {
                 //初始化个人信息
                 initPersonalInfo(t)
@@ -120,13 +140,13 @@ class MineFragment : BaseFragment() {
         })
     }
 
+
     /**
      * 设置个人信息
      */
-    /**
-     * 设置个人信息
-     */
+    private var personalInfoBean:PersonalInfoBean?=null
     private fun initPersonalInfo(t: PersonalInfoBean) {
+        personalInfoBean=t
         GlideUtils.showCircle(iv_head_photo,t.headPic,R.mipmap.icon_def_head)
         tv_nick_name.text=t.nickName
         tv_id.text=t.id
@@ -134,5 +154,18 @@ class MineFragment : BaseFragment() {
         tv_age.text=t.age
         tv_star.text=t.constellation
         tv_city.text=t.location
+        if (t.signature.isEmpty()){
+          ll_person_info.visibility=View.VISIBLE
+            tv_info_des.visibility=View.GONE
+        }else{
+            ll_person_info.visibility=View.GONE
+            tv_info_des.visibility=View.VISIBLE
+            tv_info_des.text=t.signature
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshPersonalInfo(event:RefreshPersonalInfoEvent){
+        initPersonalInfo()
     }
 }

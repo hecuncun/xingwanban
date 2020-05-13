@@ -12,8 +12,17 @@ import cn.qqtheme.framework.util.ConvertUtils
 import cn.qqtheme.framework.widget.WheelView.DividerConfig
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
+import com.cvnchina.xingwanban.bean.CityCodeBean
+import com.cvnchina.xingwanban.bean.DefaultHeadPhotoBean
+import com.cvnchina.xingwanban.bean.NewPhotoBean
+import com.cvnchina.xingwanban.bean.PersonalInfoBean
+import com.cvnchina.xingwanban.event.RefreshPersonalInfoEvent
 import com.cvnchina.xingwanban.ext.showToast
 import com.cvnchina.xingwanban.glide.GlideUtils
+import com.cvnchina.xingwanban.net.CallbackListObserver
+import com.cvnchina.xingwanban.net.CallbackObserver
+import com.cvnchina.xingwanban.net.SLMRetrofit
+import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
 import com.cvnchina.xingwanban.widget.EditNickNameDialog
 import com.cvnchina.xingwanban.widget.SelectHeadPhotoDialog
 import com.lljjcoder.Interface.OnCityItemClickListener
@@ -25,8 +34,14 @@ import com.lljjcoder.style.citypickerview.CityPickerView
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_person_info.*
 import kotlinx.android.synthetic.main.toolbar.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
+import java.io.File
 
 /**
  * Created by hecuncun on 2020-5-2
@@ -39,6 +54,8 @@ class PersonInfoActivity : BaseActivity() {
     private var pickerStart: OptionPicker? = null
     private var pickerSex: OptionPicker? = null
     private var datePicker: DatePicker? = null
+    private var map = mutableMapOf<String, String>()
+    private var sexCode = 1
     private val cityPickerView by lazy {
         CityPickerView()
     }
@@ -65,17 +82,53 @@ class PersonInfoActivity : BaseActivity() {
             )
         }
 
+        val personalInfoBean = intent.getParcelableExtra<PersonalInfoBean>("personalInfoBean")
+        initPersonalInfo(personalInfoBean)
+        //获取省市的code码
+        getCityCode()
 
     }
 
+    private var cityList = mutableListOf<CityCodeBean.DataBean.ChildAreaBean>()
+    private fun getCityCode() {
+        val cityCodeCall = SLMRetrofit.instance.api.cityCodeCall()
+        cityCodeCall.compose(ThreadSwitchTransformer())
+            .subscribe(object : CallbackListObserver<CityCodeBean>() {
+                override fun onSucceed(t: CityCodeBean) {
+                    if (t.msg == "1") {
+                        for (p in t.data) {
+                            cityList.addAll(p.childArea)
+                        }
+                    } else {
+                        showToast(t.msgCondition)
+                    }
+                }
 
+                override fun onFailed() {
+
+                }
+            })
+    }
+
+    private fun initPersonalInfo(t: PersonalInfoBean) {
+        GlideUtils.showCircle(iv_head_photo, t.headPic, R.mipmap.icon_def_head)
+        tv_nick_name.text = t.nickName
+        tv_id.text = t.id ?: "未知"
+        tv_sex.text = t.sex ?: "未知"
+        iv_sex.setImageResource(if (t.sex == "男") R.mipmap.icon_man else R.mipmap.icon_women)
+        sexCode = if ((t.sex == "男")) 1 else 2
+        tv_age.text = t.age ?: "未知"
+        tv_star.text = t.constellation ?: "未知"
+        tv_city.text = t.location ?: "未知"
+
+    }
 
     override fun initView() {
         toolbar_title.text = "个人资料"
         toolbar_right_tv.text = "保存"
         toolbar_right_tv.visibility = View.VISIBLE
         toolbar_right_tv.setTextColor(resources.getColor(R.color.color_primary_yellow))
-
+        getDefaultHeadPhoto()
         selectHeadPhotoDialog = SelectHeadPhotoDialog(this)
         editNickNameDialog = EditNickNameDialog(this)
         cityPickerView.init(this)
@@ -121,6 +174,7 @@ class PersonInfoActivity : BaseActivity() {
                 override fun onOptionPicked(index: Int, item: String) {
                     showToast("index=$index, item=$item")
                     tv_star.text = item
+                    map["constellation"] = item
                 }
             })
         }
@@ -163,9 +217,10 @@ class PersonInfoActivity : BaseActivity() {
             setCanceledOnTouchOutside(true)
             setOnOptionPickListener(object : OnOptionPickListener() {
                 override fun onOptionPicked(index: Int, item: String) {
-                    showToast("index=$index, item=$item")
+                    //   showToast("index=$index, item=$item")
                     tv_sex.text = item
                     iv_sex.setImageResource(if (index == 0) R.mipmap.icon_man else R.mipmap.icon_women)
+                    sexCode = if (index == 0) 1 else 2
                 }
             })
         }
@@ -181,7 +236,7 @@ class PersonInfoActivity : BaseActivity() {
             setTitleTextColor(resources.getColor(R.color.color_gray_333333))
             setTitleTextSize(15)
             setCancelTextColor(resources.getColor(R.color.color_gray_999999))
-            setCancelText("X")
+            setCancelText(" X ")
             setCancelTextSize(15)
             setSubmitTextColor(resources.getColor(R.color.color_gray_333333))
             setSubmitText("  确认  ")
@@ -209,6 +264,7 @@ class PersonInfoActivity : BaseActivity() {
             setResetWhileWheel(false)
             setOnDatePickListener(OnYearMonthDayPickListener { year, month, day ->
                 showToast("$year-$month-$day")
+                map["birthday"] = "$year-$month-$day"
                 var gen = ""
                 if (year[0] == '1') {
                     gen = year[2].toString() + "0"
@@ -244,9 +300,45 @@ class PersonInfoActivity : BaseActivity() {
 
     }
 
+    /**
+     * 服务器获取默认头像并显示
+     */
+    private fun getDefaultHeadPhoto() {
+        val defaultHeadPhotoCall = SLMRetrofit.instance.api.defaultHeadPhotoCall()
+        defaultHeadPhotoCall.compose(ThreadSwitchTransformer())
+            .subscribe(object : CallbackListObserver<DefaultHeadPhotoBean>() {
+                override fun onSucceed(t: DefaultHeadPhotoBean) {
+                    if (t.msg == "1") {
+                        Logger.e("默认头像size==${t.data}")
+                    } else {
+                        showToast(t.msgCondition)
+                    }
+                }
+
+                override fun onFailed() {
+
+                }
+            })
+    }
+
     override fun initListener() {
         toolbar_right_tv.setOnClickListener {
-            showToast("保存成功")
+            //保存修改
+            val editPersonalInfoCall = SLMRetrofit.instance.api.editPersonalInfoCall(map, sexCode)
+            editPersonalInfoCall.compose(ThreadSwitchTransformer())
+                .subscribe(object : CallbackObserver<PersonalInfoBean>() {
+                    override fun onSucceed(t: PersonalInfoBean?, desc: String?) {
+                        EventBus.getDefault().post(RefreshPersonalInfoEvent())
+                        showToast("保存成功")
+                        finish()
+                    }
+
+                    override fun onFailed() {
+
+                    }
+                })
+
+
         }
         selectHeadPhotoDialog?.setOnChoseListener(object : SelectHeadPhotoDialog.OnChoseListener {
             override fun select(resId: Int) {
@@ -285,6 +377,7 @@ class PersonInfoActivity : BaseActivity() {
                 when (resId) {
                     R.id.tv_confirm -> {
                         tv_nick_name.text = str
+                        map["nickName"] = str
                     }
                     R.id.iv_close -> {
 
@@ -368,7 +461,15 @@ class PersonInfoActivity : BaseActivity() {
                 if (district != null) {
                     sb.append(district.name)
                 }
+                for (c in cityList) {
+                    if (c.name == city!!.name) {
+                        map["cityCode"] = c.code
+                        showToast(c.code)
+                        Logger.e("所选城市的名称${city!!.name}===${c.code}")
+                    }
 
+
+                }
                 // tv_city.text = (sb.toString())
 
             }
@@ -392,12 +493,26 @@ class PersonInfoActivity : BaseActivity() {
                             selectList[0].compressPath,
                             R.mipmap.icon_def_head
                         )
-//                        //上传文件_hea
-//                        val file = File(selectList[0].compressPath)
-//                        Logger.e("图片地址==${selectList[0].compressPath}")
-//                        val requestFile: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-//                        //retrofit 上传文件api加上 @Multipart注解,然后下面这是个重点 参数1：上传文件的key，参数2：上传的文件名，参数3 请求头
-//                        val body: MultipartBody.Part = MultipartBody.Part.createFormData("upload", file.name, requestFile)
+//                        //上传文件
+                        val file = File(selectList[0].compressPath)
+                        Logger.e("图片地址==${selectList[0].compressPath}")
+                        val requestFile: RequestBody =
+                            RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                        //retrofit 上传文件api加上 @Multipart注解,然后下面这是个重点 参数1：上传文件的key，参数2：上传的文件名，参数3 请求头
+                        val body: MultipartBody.Part =
+                            MultipartBody.Part.createFormData("headPic", file.name, requestFile)
+                        val changeHeadPhotoCall = SLMRetrofit.instance.api.changeHeadPhotoCall(body)
+                        changeHeadPhotoCall.compose(ThreadSwitchTransformer())
+                            .subscribe(object : CallbackObserver<NewPhotoBean>() {
+                                override fun onSucceed(t: NewPhotoBean, desc: String) {
+                                    Logger.e("${t.headPic}")
+                                    showToast(desc)
+                                }
+
+                                override fun onFailed() {
+
+                                }
+                            })
 //                        val uploadCall = SLMRetrofit.getInstance().api.uploadCall(body)
 //                        uploadCall.compose(ThreadSwitchTransformer()).subscribe(object : CallbackObserver<ImgBean>() {
 //                            override fun onSucceed(t: ImgBean?, desc: String?) {

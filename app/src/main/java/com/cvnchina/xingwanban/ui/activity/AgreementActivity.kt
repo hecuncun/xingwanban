@@ -25,10 +25,14 @@ class AgreementActivity :BaseActivity() {
 
     override fun initListener() {
         tv_user_agreement.setOnClickListener {
-            startActivity(Intent(this, UserAgreementActivity::class.java))
+            val intent = Intent(this,WebViewActivity::class.java)
+            intent.putExtra("type",2)
+            startActivity(intent)
         }
         tv_private.setOnClickListener {
-            startActivity(Intent(this, UserPrivateActivity::class.java))
+            val intent = Intent(this,WebViewActivity::class.java)
+            intent.putExtra("type",3)
+            startActivity(intent)
         }
     }
 }
