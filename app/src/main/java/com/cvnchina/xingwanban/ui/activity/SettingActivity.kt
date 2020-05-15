@@ -6,9 +6,14 @@ import android.os.Environment
 import android.view.View
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
+import com.cvnchina.xingwanban.bean.UpdateAppBean
 import com.cvnchina.xingwanban.ext.showToast
+import com.cvnchina.xingwanban.net.CallbackObserver
+import com.cvnchina.xingwanban.net.SLMRetrofit
+import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
 import com.cvnchina.xingwanban.utils.FileSizeUtil
 import com.cvnchina.xingwanban.utils.FileUtils
+import com.cvnchina.xingwanban.utils.PackageUtils
 import com.cvnchina.xingwanban.widget.ClearCacheDialog
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -25,7 +30,30 @@ class SettingActivity : BaseActivity() {
 
     override fun initData() {
         clearCacheDialog= ClearCacheDialog(this)
+        getUpdateInfo()
+    }
+private var updateAppBean:UpdateAppBean?=null
+    private fun getUpdateInfo() {
+        //获取启动页图片
+        val updateAppCall = SLMRetrofit.instance.api.updateAppCall()
+        updateAppCall.compose(ThreadSwitchTransformer()).subscribe(object :
+            CallbackObserver<UpdateAppBean>(){
+            override fun onSucceed(t: UpdateAppBean, desc: String?) {
+                updateAppBean=t
+                tv_version.text=t.appVersion
+                val versionCode = PackageUtils.getVersionCode(this@SettingActivity)
+                if (t.appVersion.toInt()>versionCode){
+                    tv_dot.visibility=View.VISIBLE
+                }else{
+                    tv_dot.visibility=View.GONE
+                }
 
+            }
+
+            override fun onFailed() {
+
+            }
+        })
     }
 
     override fun initView() {
@@ -46,6 +74,7 @@ class SettingActivity : BaseActivity() {
 
         rl_app_update.setOnClickListener { //app检查更新
             val intent =Intent(this,AppUpdateActivity::class.java)
+            intent.putExtra("updateAppBean",updateAppBean)
             startActivity(intent)
         }
 

@@ -62,6 +62,8 @@
             android:textSize="15sp" />
 
         <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_dot"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@+id/tv_check"
             android:layout_width="8dp"
@@ -77,6 +79,7 @@
             android:src="@mipmap/icon_arrow_right" />
 
         <TextView
+            android:id="@+id/tv_version"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/arrow_2"

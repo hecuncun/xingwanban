@@ -42,7 +42,7 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name="com.cvnchina.xingwanban.ui.activity.MainActivity">
+        <activity android:name="com.cvnchina.xingwanban.ui.activity.MainActivity" android:launchMode="singleTop">
             <!--            <intent-filter>-->
             <!--                <action android:name="android.intent.action.MAIN" />-->
 

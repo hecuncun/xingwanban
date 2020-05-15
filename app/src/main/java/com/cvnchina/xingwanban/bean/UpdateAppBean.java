@@ -1,9 +1,12 @@
 package com.cvnchina.xingwanban.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by hecuncun on 2020-5-13
  */
-public class UpdateAppBean {
+public class UpdateAppBean implements Parcelable {
 
     /**
      * androidPic1 : http://***********init.jpg
@@ -138,4 +141,57 @@ public class UpdateAppBean {
     public void setUpdateDesc(String updateDesc) {
         this.updateDesc = updateDesc;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.androidPic1);
+        dest.writeString(this.androidPic2);
+        dest.writeString(this.androidPic3);
+        dest.writeString(this.iosPic1);
+        dest.writeString(this.iosPic2);
+        dest.writeString(this.iosPic3);
+        dest.writeString(this.iosPic4);
+        dest.writeString(this.iosPic5);
+        dest.writeString(this.iosPic6);
+        dest.writeString(this.appVersion);
+        dest.writeString(this.isForcedUpdate);
+        dest.writeString(this.downloadUrl);
+        dest.writeString(this.updateDesc);
+    }
+
+    public UpdateAppBean() {
+    }
+
+    protected UpdateAppBean(Parcel in) {
+        this.androidPic1 = in.readString();
+        this.androidPic2 = in.readString();
+        this.androidPic3 = in.readString();
+        this.iosPic1 = in.readString();
+        this.iosPic2 = in.readString();
+        this.iosPic3 = in.readString();
+        this.iosPic4 = in.readString();
+        this.iosPic5 = in.readString();
+        this.iosPic6 = in.readString();
+        this.appVersion = in.readString();
+        this.isForcedUpdate = in.readString();
+        this.downloadUrl = in.readString();
+        this.updateDesc = in.readString();
+    }
+
+    public static final Parcelable.Creator<UpdateAppBean> CREATOR = new Parcelable.Creator<UpdateAppBean>() {
+        @Override
+        public UpdateAppBean createFromParcel(Parcel source) {
+            return new UpdateAppBean(source);
+        }
+
+        @Override
+        public UpdateAppBean[] newArray(int size) {
+            return new UpdateAppBean[size];
+        }
+    };
 }

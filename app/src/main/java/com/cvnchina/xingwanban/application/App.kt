@@ -4,12 +4,12 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import android.support.multidex.BuildConfig
 import android.support.multidex.MultiDex
 import android.support.multidex.MultiDexApplication
 import android.util.Log
 import com.aliyun.common.httpfinal.QupaiHttpFinal
 import com.aliyun.svideo.downloader.DownloaderManager
+import com.cvnchina.xingwanban.BuildConfig
 import com.cvnchina.xingwanban.utils.LogCatStrategy
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger

@@ -37,6 +37,8 @@ class WorksFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+       //获取视频列表
+       // SLMRetrofit.instance.api.worksCall()
 
     }
     private fun initRv() {

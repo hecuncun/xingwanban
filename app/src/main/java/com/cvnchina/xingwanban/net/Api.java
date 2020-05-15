@@ -4,14 +4,19 @@ import com.cvnchina.xingwanban.base.BaseBean;
 import com.cvnchina.xingwanban.base.BaseNoDataBean;
 import com.cvnchina.xingwanban.bean.AgreementBean;
 import com.cvnchina.xingwanban.bean.CityCodeBean;
+import com.cvnchina.xingwanban.bean.ContentSortBean;
 import com.cvnchina.xingwanban.bean.DefaultHeadPhotoBean;
+import com.cvnchina.xingwanban.bean.LocationBean;
 import com.cvnchina.xingwanban.bean.MsgBean;
 import com.cvnchina.xingwanban.bean.MsgCountBean;
 import com.cvnchina.xingwanban.bean.NewPhotoBean;
 import com.cvnchina.xingwanban.bean.PersonalInfoBean;
 import com.cvnchina.xingwanban.bean.QABean;
+import com.cvnchina.xingwanban.bean.TalksBean;
 import com.cvnchina.xingwanban.bean.TokenBean;
 import com.cvnchina.xingwanban.bean.UpdateAppBean;
+import com.cvnchina.xingwanban.bean.UploadVideoBean;
+import com.cvnchina.xingwanban.bean.WorksBean;
 
 import java.util.List;
 import java.util.Map;
@@ -98,12 +103,6 @@ public interface Api {
     Observable<BaseBean<PersonalInfoBean>> editPersonalInfoCall(@QueryMap Map<String, String> map, @Query("sex") int sex);
 
     /**
-     * 获取相关协议文本  协议类型 1-联系我们 2-用户协议 3-隐私协议 4-关于我们
-     */
-    @POST("vms/appapi/sysMgr/getAgreement")
-    Observable<BaseBean<AgreementBean>> agreementCall(@Query("type") String type);
-
-    /**
      * 获取常见问题
      */
     @POST("vms/appapi/qa/page")
@@ -116,6 +115,12 @@ public interface Api {
     Observable<CityCodeBean> cityCodeCall();
 
     /**
+     * 获取相关协议文本  协议类型 1-联系我们 2-用户协议 3-隐私协议 4-关于我们
+     */
+    @POST("vms/appapi/sysMgr/getAgreement")
+    Observable<BaseBean<AgreementBean>> agreementCall(@Query("type") String type);
+
+    /**
      * 一键反馈
      */
     @POST("vms/appapi/sysMgr/feedback")
@@ -125,8 +130,51 @@ public interface Api {
     /**
      * 消息列表
      */
-    @POST("vms/appapi/sysNgr/msgList")
+    @POST("vms/appapi/sysMgr/msgList")
     Observable<BaseBean<MsgBean>> msgListCall(@Query("pageNum") int pageNum, @Query("pageSize") int pageSize);
+
+    /**
+     * 获取推荐标签话题
+     */
+    @POST("vms/appapi/video/getRecommendTags")
+    Observable<TalksBean> talksCall(@Query("name") String name);
+    /**
+     * 获取内容分类
+     */
+    @POST("vms/appapi/video/getColumnTree")
+    Observable<ContentSortBean> contentSortCall();
+
+    /**
+     * 获取位置
+     */
+    @POST("vms/appapi/video/addressSearch")
+    Observable<LocationBean>  locationCall(@Query("address") String address);
+
+    /**
+     * 获取我的作品列表
+     */
+     @POST("vms/appapi/video/getSelfVideo")
+     Observable<BaseBean<WorksBean>> worksCall(@Query("pageNum") int pageNum,@Query("pageSize") int pageSize);
+
+    /**
+     * 上传视频
+     */
+    @POST("vms/appapi/video/uploadVideo")
+    @Multipart
+    Observable<UploadVideoBean> uploadVideoCall(@Part MultipartBody.Part file);
+
+    /**
+     * 保存视频
+     */
+    @POST("vms/appapi/video/videoSave")
+    @Multipart
+    Observable<BaseNoDataBean>  saveVideoCall(@Query("videoId") int videoId,@Part MultipartBody.Part file,
+                                              @Query("title") String title,@Query("description") String description,
+                                              @Query("columns") String columns,@Query("tags") String tags,
+                                              @Query("city") String city,@Query("lat") String lat,
+                                              @Query("lng") String lng,@Query("isVisible") String isVisible,
+                                              @Query("address") String address);
+
 //
 //    /**
 //     * 用户注册

@@ -20,6 +20,7 @@
         android:textColor="@color/color_gray_F9F9F9"
         android:textSize="18sp"/>
     <TextView
+        android:id="@+id/tv_app_version"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,6 +29,7 @@
         android:textColor="@color/color_gray_F9F9F9"
         android:textSize="14sp"/>
     <TextView
+        android:id="@+id/tv_notify"
         android:layout_marginTop="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,6 +39,7 @@
         android:textSize="15sp"/>
 
     <TextView
+        android:id="@+id/tv_desc"
         android:layout_marginTop="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,6 +53,7 @@
         android:textColor="@color/color_gray_F9F9F9"
         android:textSize="15sp"/>
 <TextView
+    android:id="@+id/tv_update"
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="80dp"
     android:layout_width="160dp"

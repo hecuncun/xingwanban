@@ -25,7 +25,10 @@ class InfoEditActivity : BaseActivity() {
 
     override fun initData() {
         val personalInfoBean = intent.getParcelableExtra<PersonalInfoBean>("personalInfoBean")
-        sexCode=if ( (personalInfoBean.sex == "男")) 1 else 2
+        if (personalInfoBean!=null){
+            sexCode=if ( (personalInfoBean.sex == "男")) 1 else 2
+        }
+
     }
 
     override fun initView() {

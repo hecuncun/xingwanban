@@ -2,6 +2,8 @@ package com.cvnchina.xingwanban.ui.activity
 
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
+import com.cvnchina.xingwanban.bean.UpdateAppBean
+import kotlinx.android.synthetic.main.activity_app_update.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 /**
@@ -13,7 +15,10 @@ class AppUpdateActivity:BaseActivity() {
     }
 
     override fun initData() {
-
+        val bean = intent.getParcelableExtra<UpdateAppBean>("updateAppBean")
+        tv_desc.text=bean.updateDesc
+        tv_app_version.text=bean.appVersion
+        tv_notify.text="星顽半视频有新版本${bean.appVersion}更新啦！"
     }
 
     override fun initView() {
@@ -21,6 +26,8 @@ class AppUpdateActivity:BaseActivity() {
     }
 
     override fun initListener() {
-
+        tv_update.setOnClickListener {
+            //开始下载更新
+        }
     }
 }

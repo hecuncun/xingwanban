@@ -58,6 +58,7 @@
             android:text="05-10"/>
     </LinearLayout>
 <ImageView
+    android:id="@+id/iv_video"
     android:layout_width="84dp"
     android:layout_height="63dp"
     android:scaleType="centerCrop"
