@@ -7,17 +7,20 @@ import java.util.List;
  */
 public class WorksBean {
 
+
     /**
-     * dataList : [{"contId":"视频id","contSubTitle":"视频标题","contTags":[{"tagId":"标签ID","tagName":"标签"}],"ischeck":"审核状态n：不通过；y：通过","commentnums":"评论数","haszannums":"点赞数","overimageurl":"封面图URL","showType":"1竖屏2横屏","contDownUrl":"视频链接","createtime":"上传时间","hotComment":[{"userHeadPic":"用户头像url","userNickName":"用户昵称","content":"评论内容"}]}]
+     * list : [{"contId":"视频id","contSubTitle":"视频标题","contTags":[{"tagId":"标签ID","tagName":"标签"}],"ischeck":"n","commentnums":"评论数","haszannums":"点赞数","overimageurl":"封面图URL","showType":"1竖屏2横屏","contDownUrl":"视频链接","createtime":"上传时间","hotComment":[{"userHeadPic":"用户头像url","userNickName":"用户昵称","content":"评论内容"}]}]
      * total : 100
      * pageNum : 1
+     * pages : 2
      * pageSize : 10
      */
 
     private int total;
     private int pageNum;
+    private int pages;
     private int pageSize;
-    private List<DataListBean> dataList;
+    private List<ListBean> list;
 
     public int getTotal() {
         return total;
@@ -35,6 +38,14 @@ public class WorksBean {
         this.pageNum = pageNum;
     }
 
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
     public int getPageSize() {
         return pageSize;
     }
@@ -43,20 +54,20 @@ public class WorksBean {
         this.pageSize = pageSize;
     }
 
-    public List<DataListBean> getDataList() {
-        return dataList;
+    public List<ListBean> getList() {
+        return list;
     }
 
-    public void setDataList(List<DataListBean> dataList) {
-        this.dataList = dataList;
+    public void setList(List<ListBean> list) {
+        this.list = list;
     }
 
-    public static class DataListBean {
+    public static class ListBean {
         /**
          * contId : 视频id
          * contSubTitle : 视频标题
          * contTags : [{"tagId":"标签ID","tagName":"标签"}]
-         * ischeck : 审核状态n：不通过；y：通过
+         * ischeck : n
          * commentnums : 评论数
          * haszannums : 点赞数
          * overimageurl : 封面图URL

@@ -18,7 +18,13 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initData() {
+        if (checkPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.CAMERA,android.Manifest.permission.RECORD_AUDIO))){
 
+        }else{
+            requestPermission(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.CAMERA,android.Manifest.permission.RECORD_AUDIO),0x333)
+        }
     }
 
     override fun initView() {
