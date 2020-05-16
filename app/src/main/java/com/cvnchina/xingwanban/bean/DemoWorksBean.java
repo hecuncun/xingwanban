@@ -7,72 +7,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by hecuncun on 2020-5-14
+ * Created by hecuncun on 2020-5-16
  */
-public class WorksBean implements Parcelable {
+public class DemoWorksBean {
 
 
     /**
-     * list : [{"contId":"视频id","contSubTitle":"视频标题","contTags":[{"tagId":"标签ID","tagName":"标签"}],"ischeck":"n","commentnums":"评论数","haszannums":"点赞数","overimageurl":"封面图URL","showType":"1竖屏2横屏","contDownUrl":"视频链接","createtime":"上传时间","hotComment":[{"userHeadPic":"用户头像url","userNickName":"用户昵称","content":"评论内容"}]}]
-     * total : 100
-     * pageNum : 1
-     * pages : 2
-     * pageSize : 10
+     * msg : 1
+     * msgCondition : 获取成功
+     * data : [{"contId":"视频id","contSubTitle":"视频标题","contTags":[{"tagId":"标签ID","tagName":"标签"}],"ischeck":"审核状态n：不通过；y：通过","commentnums":"评论数","haszannums":"点赞数","overimageurl":"封面图URL","showType":"1竖屏2横屏","contDownUrl":"视频链接","createtime":"上传时间","hotComment":[{"userHeadPic":"用户头像url","userNickName":"用户昵称","content":"评论内容"}]}]
      */
 
-    private int total;
-    private int pageNum;
-    private int pages;
-    private int pageSize;
-    private List<ListBean> list;
+    private String msg;
+    private String msgCondition;
+    private List<DataBean> data;
 
-    public int getTotal() {
-        return total;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setTotal(int total) {
-        this.total = total;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public int getPageNum() {
-        return pageNum;
+    public String getMsgCondition() {
+        return msgCondition;
     }
 
-    public void setPageNum(int pageNum) {
-        this.pageNum = pageNum;
+    public void setMsgCondition(String msgCondition) {
+        this.msgCondition = msgCondition;
     }
 
-    public int getPages() {
-        return pages;
+    public List<DataBean> getData() {
+        return data;
     }
 
-    public void setPages(int pages) {
-        this.pages = pages;
+    public void setData(List<DataBean> data) {
+        this.data = data;
     }
 
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public List<ListBean> getList() {
-        return list;
-    }
-
-    public void setList(List<ListBean> list) {
-        this.list = list;
-    }
-
-    public static class ListBean implements Parcelable {
+    public static class DataBean implements Parcelable {
 
         /**
          * contId : 视频id
          * contSubTitle : 视频标题
          * contTags : [{"tagId":"标签ID","tagName":"标签"}]
-         * ischeck : n
+         * ischeck : 审核状态n：不通过；y：通过
          * commentnums : 评论数
          * haszannums : 点赞数
          * overimageurl : 封面图URL
@@ -182,7 +162,7 @@ public class WorksBean implements Parcelable {
             this.hotComment = hotComment;
         }
 
-        public static class ContTagsBean implements Parcelable {
+        public static class ContTagsBean {
             /**
              * tagId : 标签ID
              * tagName : 标签
@@ -206,41 +186,9 @@ public class WorksBean implements Parcelable {
             public void setTagName(String tagName) {
                 this.tagName = tagName;
             }
-
-            @Override
-            public int describeContents() {
-                return 0;
-            }
-
-            @Override
-            public void writeToParcel(Parcel dest, int flags) {
-                dest.writeString(this.tagId);
-                dest.writeString(this.tagName);
-            }
-
-            public ContTagsBean() {
-            }
-
-            protected ContTagsBean(Parcel in) {
-                this.tagId = in.readString();
-                this.tagName = in.readString();
-            }
-
-            public static final Creator<ContTagsBean> CREATOR = new Creator<ContTagsBean>() {
-                @Override
-                public ContTagsBean createFromParcel(Parcel source) {
-                    return new ContTagsBean(source);
-                }
-
-                @Override
-                public ContTagsBean[] newArray(int size) {
-                    return new ContTagsBean[size];
-                }
-            };
         }
 
-        public static class HotCommentBean implements Parcelable {
-
+        public static class HotCommentBean {
             /**
              * userHeadPic : 用户头像url
              * userNickName : 用户昵称
@@ -274,39 +222,6 @@ public class WorksBean implements Parcelable {
             public void setContent(String content) {
                 this.content = content;
             }
-
-            @Override
-            public int describeContents() {
-                return 0;
-            }
-
-            @Override
-            public void writeToParcel(Parcel dest, int flags) {
-                dest.writeString(this.userHeadPic);
-                dest.writeString(this.userNickName);
-                dest.writeString(this.content);
-            }
-
-            public HotCommentBean() {
-            }
-
-            protected HotCommentBean(Parcel in) {
-                this.userHeadPic = in.readString();
-                this.userNickName = in.readString();
-                this.content = in.readString();
-            }
-
-            public static final Creator<HotCommentBean> CREATOR = new Creator<HotCommentBean>() {
-                @Override
-                public HotCommentBean createFromParcel(Parcel source) {
-                    return new HotCommentBean(source);
-                }
-
-                @Override
-                public HotCommentBean[] newArray(int size) {
-                    return new HotCommentBean[size];
-                }
-            };
         }
 
         @Override
@@ -329,10 +244,10 @@ public class WorksBean implements Parcelable {
             dest.writeList(this.hotComment);
         }
 
-        public ListBean() {
+        public DataBean() {
         }
 
-        protected ListBean(Parcel in) {
+        protected DataBean(Parcel in) {
             this.contId = in.readString();
             this.contSubTitle = in.readString();
             this.ischeck = in.readString();
@@ -348,53 +263,16 @@ public class WorksBean implements Parcelable {
             in.readList(this.hotComment, HotCommentBean.class.getClassLoader());
         }
 
-        public static final Parcelable.Creator<ListBean> CREATOR = new Parcelable.Creator<ListBean>() {
+        public static final Parcelable.Creator<DataBean> CREATOR = new Parcelable.Creator<DataBean>() {
             @Override
-            public ListBean createFromParcel(Parcel source) {
-                return new ListBean(source);
+            public DataBean createFromParcel(Parcel source) {
+                return new DataBean(source);
             }
 
             @Override
-            public ListBean[] newArray(int size) {
-                return new ListBean[size];
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
             }
         };
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.total);
-        dest.writeInt(this.pageNum);
-        dest.writeInt(this.pages);
-        dest.writeInt(this.pageSize);
-        dest.writeTypedList(this.list);
-    }
-
-    public WorksBean() {
-    }
-
-    protected WorksBean(Parcel in) {
-        this.total = in.readInt();
-        this.pageNum = in.readInt();
-        this.pages = in.readInt();
-        this.pageSize = in.readInt();
-        this.list = in.createTypedArrayList(ListBean.CREATOR);
-    }
-
-    public static final Parcelable.Creator<WorksBean> CREATOR = new Parcelable.Creator<WorksBean>() {
-        @Override
-        public WorksBean createFromParcel(Parcel source) {
-            return new WorksBean(source);
-        }
-
-        @Override
-        public WorksBean[] newArray(int size) {
-            return new WorksBean[size];
-        }
-    };
 }

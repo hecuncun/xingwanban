@@ -7,7 +7,7 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -25,7 +25,13 @@
             android:text="#电影"
             android:textColor="@color/color_primary_yellow"
             android:textSize="12sp" />
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_move"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_close"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_title"
@@ -46,6 +52,20 @@
             android:src="@mipmap/ic_launcher"
             android:scaleType="centerCrop"
             android:layout_marginTop="15dp" />
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_yellow_btn_r2"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentRight="true"
+            android:text="审核中"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

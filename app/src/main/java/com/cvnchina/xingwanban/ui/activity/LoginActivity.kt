@@ -2,22 +2,26 @@ package com.cvnchina.xingwanban.ui.activity
 
 import android.content.Intent
 import android.view.View
+import com.alibaba.fastjson.JSON
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
+import com.cvnchina.xingwanban.ext.showToast
+import com.mobile.auth.gatewayauth.PhoneNumberAuthHelper
+import com.mobile.auth.gatewayauth.TokenResultListener
+import com.mobile.auth.gatewayauth.model.TokenRet
 import com.orhanobut.logger.Logger
 import com.umeng.socialize.UMAuthListener
 import com.umeng.socialize.UMShareAPI
 import com.umeng.socialize.bean.SHARE_MEDIA
-
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 /**
  * Created by hecuncun on 2020/4/25
  */
-class LoginActivity:BaseActivity() {
+class LoginActivity : BaseActivity() {
     override fun attachLayoutRes(): Int {
-       return R.layout.activity_login
+        return R.layout.activity_login
     }
 
     override fun initData() {
@@ -25,27 +29,72 @@ class LoginActivity:BaseActivity() {
     }
 
     override fun initView() {
-        toolbar_title.text="登录"
-        toolbar_right_tv.text="跳过"
-        toolbar_right_tv.visibility= View.VISIBLE
+        toolbar_title.text = "登录"
+        toolbar_right_tv.text = "跳过"
+        toolbar_right_tv.visibility = View.VISIBLE
+
+        initOneKey()
+    }
+
+    private var tokenListener: TokenResultListener? = null
+    private var mAlicomAuthHelper: PhoneNumberAuthHelper? = null
+    private fun initOneKey() {
+        tokenListener = object : TokenResultListener {
+            override fun onTokenSuccess(p0: String?) {
+                Logger.e("一键登录成功$p0")
+                var tokenRet: TokenRet? = null
+                try {
+                    tokenRet = JSON.parseObject<TokenRet>(p0, TokenRet::class.java)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                if (tokenRet != null && "600001" != tokenRet.code) {//600001唤起授权页成功
+                    token = tokenRet.token
+                    mAlicomAuthHelper!!.quitLoginPage()
+                }
+            }
+
+            override fun onTokenFailed(p0: String?) {
+                Logger.e("一键登录失败$p0")
+
+            }
+        }
+
+        mAlicomAuthHelper = PhoneNumberAuthHelper.getInstance(this, tokenListener)
+        mAlicomAuthHelper?.setAuthSDKInfo("pR5Qe8a9GOZy8h2GB0eglyRHIHQv+XKrc/0ChzuXT4MHXgnAZiNTzFam1QDur0TmsbQ7mbCrCvYCVbQtntSlZ9fjDgqbN6HNC6UOBMjW1S/Wg5FtcACCzMenXgrBCzFEJ4ynntHEsxCS/T40TUg/Apy2KyzUHjm/D27C75DJEZ0WSuAAowD2CaMWbU2+JGCO/RxrFKeZYN2iNaDzRvlsGDvvlRL39mwaLuAZIECQWEZkejOG5iWqJCg6q76ZKCg1Zft7TRe2CIj1fKmom8DtXpGiE2VKE3EdfAVCcq7U5MY=")
+        mAlicomAuthHelper?.setLoggerEnable(true)
     }
 
     override fun initListener() {
+        tv_one_key_login.setOnClickListener {
+            //一键登录
+            if (mAlicomAuthHelper!!.checkEnvAvailable()) {
+                mAlicomAuthHelper!!.getLoginToken(this, 5000);
+            }else{
+               showToast("当前网络不支持，请检测蜂窝网络后重试")
+            }
+        }
         tv_other_login.setOnClickListener {
-           startActivity(Intent(this,LoginOtherActivity::class.java))
+            startActivity(Intent(this, LoginOtherActivity::class.java))
         }
         toolbar_right_tv.setOnClickListener {
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
-        iv_qq.setOnClickListener {//QQ登录
-            UMShareAPI.get(this@LoginActivity).getPlatformInfo(this@LoginActivity, SHARE_MEDIA.QQ, authListener)
+        iv_qq.setOnClickListener {
+            //QQ登录
+            UMShareAPI.get(this@LoginActivity)
+                .getPlatformInfo(this@LoginActivity, SHARE_MEDIA.QQ, authListener)
         }
-        iv_wb.setOnClickListener {//微博
-            UMShareAPI.get(this@LoginActivity).getPlatformInfo(this@LoginActivity, SHARE_MEDIA.SINA, authListener)
+        iv_wb.setOnClickListener {
+            //微博
+            UMShareAPI.get(this@LoginActivity)
+                .getPlatformInfo(this@LoginActivity, SHARE_MEDIA.SINA, authListener)
         }
-        iv_wx.setOnClickListener {//微信
-            UMShareAPI.get(this@LoginActivity).getPlatformInfo(this@LoginActivity, SHARE_MEDIA.WEIXIN, authListener)
+        iv_wx.setOnClickListener {
+            //微信
+            UMShareAPI.get(this@LoginActivity)
+                .getPlatformInfo(this@LoginActivity, SHARE_MEDIA.WEIXIN, authListener)
         }
     }
 
@@ -73,7 +122,7 @@ class LoginActivity:BaseActivity() {
             for (key in map.keys) {
                 Logger.d("key值是：" + key + "  对应的具体值:" + map[key] + "\n")
 //              将取出的QQ账户信息存储到SharedPreferences中
-               // ShareUtils.putString(this@LoginActivity, key, map[key])
+                // ShareUtils.putString(this@LoginActivity, key, map[key])
             }
             Logger.d("登录成功")
         }

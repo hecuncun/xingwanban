@@ -6,6 +6,7 @@ import com.cvnchina.xingwanban.bean.AgreementBean;
 import com.cvnchina.xingwanban.bean.CityCodeBean;
 import com.cvnchina.xingwanban.bean.ContentSortBean;
 import com.cvnchina.xingwanban.bean.DefaultHeadPhotoBean;
+import com.cvnchina.xingwanban.bean.DemoWorksBean;
 import com.cvnchina.xingwanban.bean.LocationBean;
 import com.cvnchina.xingwanban.bean.MsgBean;
 import com.cvnchina.xingwanban.bean.MsgCountBean;
@@ -125,7 +126,7 @@ public interface Api {
      */
     @POST("vms/appapi/sysMgr/feedback")
     @Multipart
-    Observable<BaseNoDataBean> feedbackCall(@Query("content") String content, @Part MultipartBody.Part file,@Part List<MultipartBody.Part> list, @Query("phone") String phone);
+    Observable<BaseNoDataBean> feedbackCall(@Query("content") String content, @Part MultipartBody.Part file, @Part List<MultipartBody.Part> list, @Query("phone") String phone);
 
     /**
      * 消息列表
@@ -138,6 +139,7 @@ public interface Api {
      */
     @POST("vms/appapi/video/getRecommendTags")
     Observable<TalksBean> talksCall(@Query("name") String name);
+
     /**
      * 获取内容分类
      */
@@ -148,13 +150,13 @@ public interface Api {
      * 获取位置
      */
     @POST("vms/appapi/video/addressSearch")
-    Observable<LocationBean>  locationCall(@Query("address") String address);
+    Observable<LocationBean> locationCall(@Query("address") String address);
 
     /**
      * 获取我的作品列表
      */
-     @POST("vms/appapi/video/getSelfVideo")
-     Observable<BaseBean<WorksBean>> worksCall(@Query("pageNum") int pageNum,@Query("pageSize") int pageSize);
+    @POST("vms/appapi/video/getSelfVideo")
+    Observable<BaseBean<WorksBean>> worksCall(@Query("pageNum") int pageNum, @Query("pageSize") int pageSize);
 
     /**
      * 上传视频
@@ -168,13 +170,24 @@ public interface Api {
      */
     @POST("vms/appapi/video/videoSave")
     @Multipart
-    Observable<BaseNoDataBean>  saveVideoCall(@Query("videoId") int videoId,@Part MultipartBody.Part file,
-                                              @Query("title") String title,@Query("description") String description,
-                                              @Query("columns") String columns,@Query("tags") String tags,
-                                              @Query("city") String city,@Query("lat") String lat,
-                                              @Query("lng") String lng,@Query("isVisible") String isVisible,
-                                              @Query("address") String address);
+    Observable<BaseNoDataBean> saveVideoCall(@Query("videoId") int videoId, @Part MultipartBody.Part file,
+                                             @Query("title") String title, @Query("description") String description,
+                                             @Query("columns") String columns, @Query("tags") String tags,
+                                             @Query("city") String city, @Query("lat") String lat,
+                                             @Query("lng") String lng, @Query("isVisible") String isVisible,
+                                             @Query("address") String address);
 
+    /**
+     * 获取示例视频
+     */
+    @POST("vms/appapi/video/getExampleVideo")
+    Observable<DemoWorksBean> demoWorksCall();
+
+    /**
+     * 移除视频
+     */
+    @POST("vms/appapi/video/remove")
+    Observable<BaseNoDataBean> removeVideoCall(@Query("videoId") int videoId);
 //
 //    /**
 //     * 用户注册

@@ -1,14 +1,21 @@
 package com.cvnchina.xingwanban.ui.fragment
 
+import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.aliyun.svideo.common.baseAdapter.BaseQuickAdapter
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.adapter.WorksAdapter
+import com.cvnchina.xingwanban.base.BaseNoDataBean
+import com.cvnchina.xingwanban.bean.DemoWorksBean
 import com.cvnchina.xingwanban.bean.WorksBean
+import com.cvnchina.xingwanban.ext.showToast
+import com.cvnchina.xingwanban.net.CallbackListObserver
 import com.cvnchina.xingwanban.net.CallbackObserver
 import com.cvnchina.xingwanban.net.SLMRetrofit
 import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
+import com.cvnchina.xingwanban.ui.activity.PlayerActivity
+import com.cvnchina.xingwanban.utils.BeanUtils
 import com.lhzw.bluetooth.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_works.*
 
@@ -16,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_works.*
  * Created by hecuncun on 2020-5-6
  */
 class WorksFragment : BaseFragment() {
-    private var currentPage = 1
+    private var currentPage = 0
     private var total = 0
     private var pageSize = 10
     private var listWorks = mutableListOf<WorksBean.ListBean>()
@@ -67,9 +74,62 @@ class WorksFragment : BaseFragment() {
                 })
 
         }, rv_works)
+
+        worksAdapter.setOnItemChildClickListener { adapter, view, position ->
+            val listBean = adapter.getItem(position) as WorksBean.ListBean
+            when (view.id) {
+                R.id.iv_start -> {
+                    val intent = Intent(activity, PlayerActivity::class.java)
+                    intent.putExtra("listBean", listBean)
+                    startActivity(intent)
+                }
+                R.id.iv_share -> {
+
+                }
+                R.id.iv_move->{
+                    //移除除视频
+                    val removeVideoCall =
+                        SLMRetrofit.instance.api.removeVideoCall(listBean.contId.toInt())
+                        removeVideoCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackListObserver<BaseNoDataBean>(){
+                        override fun onSucceed(t: BaseNoDataBean) {
+                           if (t.msg=="1"){
+                               showToast("删除成功")
+                               worksAdapter.remove(position)
+                           }else{
+                               showToast(t.msgCondition)
+                           }
+                        }
+
+                        override fun onFailed() {
+
+                        }
+                    })
+                }
+            }
+
+        }
     }
 
     override fun lazyLoad() {
+        //获取Demo
+        val demoWorksCall = SLMRetrofit.instance.api.demoWorksCall()
+        demoWorksCall.compose(ThreadSwitchTransformer())
+            .subscribe(object : CallbackListObserver<DemoWorksBean>() {
+                override fun onSucceed(t: DemoWorksBean) {
+                    if (t.msg=="1"){
+                        for (item in t.data){
+                            val bean = BeanUtils.modelA2B(item, WorksBean.ListBean::class.java)
+                            listWorks.add(bean)
+                        }
+                        worksAdapter.setNewData(listWorks)
+                    }
+                }
+
+                override fun onFailed() {
+
+                }
+
+            })
         //获取视频列表
         val worksCall = SLMRetrofit.instance.api.worksCall(currentPage, pageSize)
         worksCall.compose(ThreadSwitchTransformer())

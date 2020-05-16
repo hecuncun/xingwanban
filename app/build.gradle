@@ -41,10 +41,15 @@ android {
     packagingOptions {
 
     }
+//    java 8新特性  异步okhttp报错
+    compileOptions{
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.aar','*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -103,4 +108,6 @@ dependencies {
     implementation project(':AliyunEditor')
     implementation project (':AlivcLittleVideo')
     implementation project (':AliyunVideoCommon')
+    implementation 'cn.jzvd:jiaozivideoplayer:7.0.5'
+    implementation 'com.alibaba:fastjson:1.2.60'
 }
