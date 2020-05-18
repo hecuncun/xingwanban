@@ -54,9 +54,9 @@ class GuideActivity : BaseActivity() {
             override fun onPageSelected(position: Int) {
                 for (i in dotList.indices){
                     if (position==i){
-                      //  dotList[i].setImageResource()
+                        dotList[i].setImageResource(R.mipmap.icon_dot_selected)
                     }else{
-                       // dotList[i].setImageResource()
+                       dotList[i].setImageResource(R.mipmap.icon_dot_normal)
                     }
                 }
 
