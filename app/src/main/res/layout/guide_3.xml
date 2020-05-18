@@ -8,10 +8,16 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@mipmap/guide3" />
-    <Button
+    <TextView
+        android:layout_centerHorizontal="true"
         android:id="@+id/btn_finish"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_width="240dp"
+        android:layout_height="68dp"
+        android:layout_marginBottom="60dp"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"/>
+        android:text="马上体验"
+        android:textSize="38sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_yellow_btn_35r"/>
 </RelativeLayout>

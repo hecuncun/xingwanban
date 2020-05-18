@@ -13,21 +13,27 @@ import kotlinx.android.synthetic.main.dialog_evaluate.*
 /**
  * Created by hecuncun on 2020-5-16
  */
-class EvaluateDialog(context: Context):BottomSheetDialog(context), View.OnClickListener {
+class EvaluateDialog(context: Context,videoId:Int):BottomSheetDialog(context), View.OnClickListener {
     private var mList= mutableListOf<WorksBean.ListBean.HotCommentBean>()
     private var adapter:EvaluateAdapter?=null
-    private var commentId=-1
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.dialog_evaluate, null)
         setContentView(view)
         iv_close.setOnClickListener(this)
         tv_send.setOnClickListener(this)
+        initData()
         adapter= EvaluateAdapter()
         adapter?.setOnItemChildClickListener { adapter, view, position ->
           //  tv_send.visibility=View.VISIBLE
             //commentId=mList[position]
         }
     }
+
+    private fun initData() {
+        //根据视频id,获取评论列表
+
+    }
+
     fun setData(array: MutableList<WorksBean.ListBean.HotCommentBean>){
         mList=array
         //开始适配rv

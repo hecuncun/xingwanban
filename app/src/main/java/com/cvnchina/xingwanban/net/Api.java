@@ -2,11 +2,14 @@ package com.cvnchina.xingwanban.net;
 
 import com.cvnchina.xingwanban.base.BaseBean;
 import com.cvnchina.xingwanban.base.BaseNoDataBean;
+import com.cvnchina.xingwanban.base.OtherLoginBean;
 import com.cvnchina.xingwanban.bean.AgreementBean;
+import com.cvnchina.xingwanban.bean.BindPhoneBean;
 import com.cvnchina.xingwanban.bean.CityCodeBean;
 import com.cvnchina.xingwanban.bean.ContentSortBean;
 import com.cvnchina.xingwanban.bean.DefaultHeadPhotoBean;
 import com.cvnchina.xingwanban.bean.DemoWorksBean;
+import com.cvnchina.xingwanban.bean.EvaluateListBean;
 import com.cvnchina.xingwanban.bean.LocationBean;
 import com.cvnchina.xingwanban.bean.MsgBean;
 import com.cvnchina.xingwanban.bean.MsgCountBean;
@@ -188,6 +191,24 @@ public interface Api {
      */
     @POST("vms/appapi/video/remove")
     Observable<BaseNoDataBean> removeVideoCall(@Query("videoId") int videoId);
+
+    /**
+     * 三方登录
+     */
+    @POST("vms/appapi/sysMgr/otherLogin")
+    Observable<OtherLoginBean> otherLoginCall(@Query("type") int type,@Query("openId") String openId);
+
+    /**
+     * 绑定手机号
+     */
+    @POST("vms/appapi/sysMgr/bindPhone")
+    Observable<BindPhoneBean> bindPhoneCall(@Query("phone") String phone,@Query("code") String code);
+
+    /**
+     * 根据视频id获取评论
+     */
+    @POST("vms/appapi/video/getCommentsByVideoId")
+    Observable<BaseBean<EvaluateListBean>> evaluateListCall(@Query("videoId") int videoId,@Query("pageNum") int pageNum,@Query("pageSize") int pageSize);
 //
 //    /**
 //     * 用户注册

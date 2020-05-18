@@ -5,7 +5,11 @@ import android.view.View
 import com.alibaba.fastjson.JSON
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
+import com.cvnchina.xingwanban.base.OtherLoginBean
 import com.cvnchina.xingwanban.ext.showToast
+import com.cvnchina.xingwanban.net.CallbackListObserver
+import com.cvnchina.xingwanban.net.SLMRetrofit
+import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
 import com.mobile.auth.gatewayauth.PhoneNumberAuthHelper
 import com.mobile.auth.gatewayauth.TokenResultListener
 import com.mobile.auth.gatewayauth.model.TokenRet
@@ -49,8 +53,12 @@ class LoginActivity : BaseActivity() {
                     e.printStackTrace()
                 }
                 if (tokenRet != null && "600001" != tokenRet.code) {//600001唤起授权页成功
-                    token = tokenRet.token
+                    type = 4
+                    openId = tokenRet.token
                     mAlicomAuthHelper!!.quitLoginPage()
+
+//                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+//                    finish()
                 }
             }
 
@@ -70,8 +78,8 @@ class LoginActivity : BaseActivity() {
             //一键登录
             if (mAlicomAuthHelper!!.checkEnvAvailable()) {
                 mAlicomAuthHelper!!.getLoginToken(this, 5000);
-            }else{
-               showToast("当前网络不支持，请检测蜂窝网络后重试")
+            } else {
+                showToast("当前网络不支持，请检测蜂窝网络后重试")
             }
         }
         tv_other_login.setOnClickListener {
@@ -98,6 +106,8 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    private var openId: String? = null
+    private var type = 0//1-QQ,2微信,3微博,4阿里一键登录
     /**
      * 第三方登录回调
      */
@@ -108,7 +118,7 @@ class LoginActivity : BaseActivity() {
          * @param platform 第三方登录的平台名称
          */
         override fun onStart(platform: SHARE_MEDIA) {
-            Logger.d("登录的第三方平台是:" + platform)
+            Logger.e("登录的第三方平台是:" + platform)
         }
 
         /**
@@ -117,14 +127,32 @@ class LoginActivity : BaseActivity() {
          * @param action
          * @param map
          */
+
         override fun onComplete(platform: SHARE_MEDIA, action: Int, map: Map<String, String>) {
             //  遍历map集合，取出QQ登录后回调给我们的信息
             for (key in map.keys) {
-                Logger.d("key值是：" + key + "  对应的具体值:" + map[key] + "\n")
+                Logger.e("key值是：" + key + "  对应的具体值:" + map[key] + "\n")
 //              将取出的QQ账户信息存储到SharedPreferences中
                 // ShareUtils.putString(this@LoginActivity, key, map[key])
             }
-            Logger.d("登录成功")
+            when (platform) {
+                SHARE_MEDIA.QQ -> {
+                    type = 1
+                    openId = map["openid"]
+                }
+                SHARE_MEDIA.WEIXIN -> {
+                    type = 2
+                    //todo openId
+                }
+                SHARE_MEDIA.SINA -> {
+                    //todo openId
+                    type = 3
+                }
+            }
+            Logger.e("三方登录成功type==>$type<==openId==>$openId")
+            //调用三方成功拿到openId
+            doLoginAction()
+
         }
 
         /**
@@ -134,7 +162,7 @@ class LoginActivity : BaseActivity() {
          * @param t
          */
         override fun onError(platform: SHARE_MEDIA, action: Int, t: Throwable) {
-            Logger.d("登录失败" + t.message)
+            Logger.d("三方登录失败" + t.message)
         }
 
         /**
@@ -145,6 +173,34 @@ class LoginActivity : BaseActivity() {
         override fun onCancel(platform: SHARE_MEDIA, action: Int) {
             Logger.d("取消登录")
         }
+    }
+
+    /**
+     * 调三方其他登录接口
+     */
+    private fun doLoginAction() {
+        val otherLoginCall = SLMRetrofit.instance.api.otherLoginCall(type, openId)
+        otherLoginCall.compose(ThreadSwitchTransformer())
+            .subscribe(object : CallbackListObserver<OtherLoginBean>() {
+                override fun onSucceed(t: OtherLoginBean) {
+                    if (t.msg == "1") {
+                        if (t.isBindPhone == 1) {//已绑定手机号  直接进入主页面
+                            isLogin=true
+                            token = t.token
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            finish()
+                        } else {//未绑定  跳绑定页
+                            startActivity(Intent(this@LoginActivity, BindPhoneActivity::class.java))
+                        }
+                    } else {
+                        showToast(t.msgCondition)
+                    }
+                }
+
+                override fun onFailed() {
+
+                }
+            })
     }
 
     /**

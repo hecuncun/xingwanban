@@ -1,9 +1,11 @@
 package com.cvnchina.xingwanban.ui.activity
 
 import android.support.v4.app.FragmentTransaction
+import android.view.KeyEvent
 import android.view.View
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
+import com.cvnchina.xingwanban.ext.showToast
 import com.cvnchina.xingwanban.ui.fragment.HomeFragment
 import com.cvnchina.xingwanban.ui.fragment.MineFragment
 import com.cvnchina.xingwanban.widget.FullScreenDialog
@@ -75,6 +77,19 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             transaction.hide(it)
         }
 
+    }
+    private var mExitTime: Long = 0
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis().minus(mExitTime) <= 2000) {
+                finish()
+            } else {
+                mExitTime = System.currentTimeMillis()
+                showToast("再按一次退出程序")
+            }
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
 

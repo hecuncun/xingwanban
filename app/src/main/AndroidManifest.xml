@@ -170,7 +170,8 @@
             android:launchMode="singleTop"
             android:screenOrientation="behind"
             android:theme="@style/authsdk_activity_dialog" ></activity>
-<!--一键登录阿里SDK-->
+        <activity android:name=".ui.activity.BindPhoneActivity" />
+        <!--一键登录阿里SDK-->
 
     </application>
 

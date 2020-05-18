@@ -38,6 +38,7 @@ abstract class BaseActivity :AppCompatActivity(){
      * check login
      */
     protected var isLogin: Boolean by Preference(Constant.LOGIN_KEY, false)
+    protected var isFirst: Boolean by Preference(Constant.LOGIN_KEY, true)
 
     protected var token: String by Preference(Constant.TOKEN, "")
 

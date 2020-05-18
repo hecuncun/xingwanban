@@ -36,10 +36,7 @@ class PlayerActivity : BaseActivity() {
             if (workBean!!.contTags.size > 0) {
                 tv_tag.text = workBean!!.contTags[0].tagName
             }
-
-
         }
-
     }
 
     override fun initView() {
@@ -76,15 +73,9 @@ class PlayerActivity : BaseActivity() {
         }
 
         tv_evaluate.setOnClickListener {
-            //弹窗回复评论
-            val hotComments = workBean?.hotComment
-            if (hotComments!=null){
-                val evaluateDialog = EvaluateDialog(this)
-                evaluateDialog.setData(hotComments)
+                val evaluateDialog = EvaluateDialog(this,workBean!!.contId.toInt())
                 evaluateDialog.show()
-            }else{
-                showToast("暂无评论")
-            }
+
 
 
 

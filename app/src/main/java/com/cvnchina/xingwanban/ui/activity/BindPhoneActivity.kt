@@ -3,11 +3,10 @@ package com.cvnchina.xingwanban.ui.activity
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
 import com.cvnchina.xingwanban.base.BaseNoDataBean
-import com.cvnchina.xingwanban.bean.TokenBean
+import com.cvnchina.xingwanban.bean.BindPhoneBean
 import com.cvnchina.xingwanban.ext.showToast
 import com.cvnchina.xingwanban.net.CallbackListObserver
 import com.cvnchina.xingwanban.net.SLMRetrofit
@@ -18,32 +17,22 @@ import kotlinx.android.synthetic.main.activity_login_other.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 /**
- * Created by hecuncun on 2020/4/27
+ * Created by hecuncun on 2020-5-17
  */
-class LoginOtherActivity : BaseActivity() {
-
+class BindPhoneActivity:BaseActivity() {
     private var countDownTimerUtils: CountDownTimerUtils? = null
-    override fun attachLayoutRes(): Int {
-        return R.layout.activity_login_other
-    }
+    override fun attachLayoutRes(): Int= R.layout.activity_bind_phone
 
     override fun initData() {
 
     }
 
     override fun initView() {
-        toolbar_title.text = "登录"
-        toolbar_right_tv.visibility = View.VISIBLE
-        toolbar_right_tv.text = "随便看看"
-        toolbar_right_tv.setTextColor(resources.getColor(R.color.color_gray_999999))
+        toolbar_title.text = "绑定手机号"
         countDownTimerUtils = CountDownTimerUtils(tv_get_code, 60000, 1000)//TextView计时器
     }
 
     override fun initListener() {
-        toolbar_right_tv.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-
         tv_get_code.setOnClickListener {
             //获取手机验证码
             val phone = et_phone.text.toString().trim()
@@ -102,30 +91,29 @@ class LoginOtherActivity : BaseActivity() {
             }
         })
 
-        tv_confirm.setOnClickListener {
-            //登录
-            val observable = SLMRetrofit.instance.api.loginCall(
+        tv_confirm.setOnClickListener { //绑定手机号
+            val bindPhoneCall = SLMRetrofit.instance.api.bindPhoneCall(
                 et_phone.text.toString().trim(),
-                 et_code.text.toString().trim()
+                et_code.text.toString().trim()
             )
-            observable.compose(ThreadSwitchTransformer())
-                .subscribe(object : CallbackListObserver<TokenBean>() {
-                    override fun onSucceed(t: TokenBean) {
-                        showToast(t.msgCondition)
-                        if (t.msg == "1") {//保存token
-                            token = t.token
-                            isLogin=true
-                            startActivity(Intent(this@LoginOtherActivity,MainActivity::class.java))
-                        }
+            bindPhoneCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackListObserver<BindPhoneBean>(){
+                override fun onSucceed(t: BindPhoneBean) {
+                   if (t.msg=="1"){
+                       token=t.token
+                       isLogin=true
+                       startActivity(Intent(this@BindPhoneActivity,MainActivity::class.java))
+                       finish()
+                   }else{
+                       showToast(t.msgCondition)
+                   }
+                }
 
+                override fun onFailed() {
 
-                    }
+                }
+            })
 
-                    override fun onFailed() {
-
-                    }
-
-                })
         }
     }
+
 }

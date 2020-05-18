@@ -44,10 +44,17 @@ class SplashActivity : BaseActivity() {
                 }
 
                 override fun onAnimationEnd(p0: Animation?) {
-                   // jumpToMain()
-                    jumpToGuide()
+                    if (isFirst){
+                        jumpToGuide()
+                    }else{
+                        if (isLogin){
+                            jumpToMain()
+                        }else{
+                            jumpToLogin()
+                        }
 
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                    }
+                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 }
 
                 override fun onAnimationStart(p0: Animation?) {
@@ -63,6 +70,11 @@ class SplashActivity : BaseActivity() {
         startActivity(intent)
         finish()
 
+    }
+    private fun jumpToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun jumpToMain() {
