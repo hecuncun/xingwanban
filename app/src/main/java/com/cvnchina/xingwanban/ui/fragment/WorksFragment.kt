@@ -122,6 +122,11 @@ class WorksFragment : BaseFragment() {
                             listWorks.add(bean)
                         }
                         worksAdapter.setNewData(listWorks)
+                        if (listWorks.isEmpty()){
+                            ll_empty_view.visibility=View.VISIBLE
+                        }else{
+                            ll_empty_view.visibility=View.GONE
+                        }
                     }
                 }
 
@@ -138,6 +143,11 @@ class WorksFragment : BaseFragment() {
                     total = t.pages
                     listWorks.addAll(t.list)
                     worksAdapter.setNewData(listWorks)
+                    if (listWorks.isEmpty()){
+                        ll_empty_view.visibility=View.VISIBLE
+                    }else{
+                        ll_empty_view.visibility=View.GONE
+                    }
                 }
 
                 override fun onFailed() {

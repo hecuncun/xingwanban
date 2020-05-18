@@ -12,6 +12,7 @@ import com.aliyun.svideo.sdk.external.struct.common.AliyunVideoParam
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
 import com.cvnchina.xingwanban.base.BaseNoDataBean
+import com.cvnchina.xingwanban.bean.DraftBean
 import com.cvnchina.xingwanban.bean.LocationBean
 import com.cvnchina.xingwanban.bean.UploadVideoBean
 import com.cvnchina.xingwanban.event.SortEvent
@@ -73,7 +74,7 @@ class PublishActivity : BaseActivity() {
     /**
      * 先合成目标视频文件
      */
-    private fun startCompose() {
+    private fun startCompose(upload:Boolean) {
         progressDialog?.show()
         createAliyunCompose.compose(mConfigPath, videoPath, object : AliyunIComposeCallBack {
             override fun onComposeProgress(p0: Int) {
@@ -86,55 +87,63 @@ class PublishActivity : BaseActivity() {
                 //合成完成，上传接口
                 val file = File(videoPath)
                 Logger.e("视频地址==$videoPath")
-                val requestFile: RequestBody =
-                    RequestBody.create(MediaType.parse("multipart/form-data"), file)
-                //retrofit 上传文件api加上 @Multipart注解,然后下面这是个重点 参数1：上传文件的key，参数2：上传的文件名，参数3 请求头
-                val body: MultipartBody.Part =
-                    MultipartBody.Part.createFormData("video-file", file.name, requestFile)
-                val uploadVideoCall = SLMRetrofit.instance.api.uploadVideoCall(body)
-                uploadVideoCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackListObserver<UploadVideoBean>(){
-                    override fun onSucceed(t: UploadVideoBean) {
-                       //上传成功后再真个和接口上传视频
-                        Logger.e("视频上传成功")
-                        showToast("上传视频成功${t.videoId}")
-                        if (t.msg!="1"){
-                            showToast(t.msgCondition)
-                            return
+                if (upload){
+                    val requestFile: RequestBody =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                    //retrofit 上传文件api加上 @Multipart注解,然后下面这是个重点 参数1：上传文件的key，参数2：上传的文件名，参数3 请求头
+                    val body: MultipartBody.Part =
+                        MultipartBody.Part.createFormData("video-file", file.name, requestFile)
+                    val uploadVideoCall = SLMRetrofit.instance.api.uploadVideoCall(body)
+                    uploadVideoCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackListObserver<UploadVideoBean>(){
+                        override fun onSucceed(t: UploadVideoBean) {
+                            //上传成功后再真个和接口上传视频
+                            Logger.e("视频上传成功")
+                            showToast("上传视频成功${t.videoId}")
+                            if (t.msg!="1"){
+                                showToast(t.msgCondition)
+                                return
+                            }
+                            val file2 = File(mThumbnailPath)
+                            val request: RequestBody =
+                                RequestBody.create(MediaType.parse("multipart/form-data"), file2)
+                            val body2: MultipartBody.Part = MultipartBody.Part.createFormData("image-file", file2.name, request)
+                            val saveVideoCall = SLMRetrofit.instance.api.saveVideoCall(
+                                t.videoId,
+                                body2,
+                                title,
+                                description,
+                                columns,
+                                tags,
+                                city,
+                                lat,
+                                lng,
+                                isVisible,
+                                address
+                            )
+                            saveVideoCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackListObserver<BaseNoDataBean>(){
+                                override fun onSucceed(t: BaseNoDataBean) {
+                                    showToast(t.msgCondition)
+                                    progressDialog?.dismiss()
+                                    startActivity(Intent(this@PublishActivity,MainActivity::class.java))
+                                }
+
+                                override fun onFailed() {
+                                    progressDialog?.dismiss()
+                                }
+                            })
                         }
-                        val file2 = File(mThumbnailPath)
-                        val request: RequestBody =
-                            RequestBody.create(MediaType.parse("multipart/form-data"), file2)
-                        val body2: MultipartBody.Part = MultipartBody.Part.createFormData("image-file", file2.name, request)
-                        val saveVideoCall = SLMRetrofit.instance.api.saveVideoCall(
-                            t.videoId,
-                            body2,
-                            title,
-                            description,
-                            columns,
-                            tags,
-                            city,
-                            lat,
-                            lng,
-                            isVisible,
-                            address
-                        )
-                        saveVideoCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackListObserver<BaseNoDataBean>(){
-                            override fun onSucceed(t: BaseNoDataBean) {
-                               showToast(t.msgCondition)
-                                progressDialog?.dismiss()
-                                startActivity(Intent(this@PublishActivity,MainActivity::class.java))
-                            }
 
-                            override fun onFailed() {
-                                progressDialog?.dismiss()
-                            }
-                        })
-                    }
+                        override fun onFailed() {
+                            progressDialog?.dismiss()
+                        }
+                    })
+                }else{
+                    //存数据库
+                    DraftBean(videoPath,title,tags,mThumbnailPath!!).save()
+                    progressDialog?.dismiss()
+                    startActivity(Intent(this@PublishActivity,MainActivity::class.java))
+                }
 
-                    override fun onFailed() {
-                        progressDialog?.dismiss()
-                    }
-                })
             }
 
             override fun onComposeError(p0: Int) {
@@ -172,13 +181,28 @@ class PublishActivity : BaseActivity() {
             description=et_title.textString
             if(title.isNotEmpty() && columns.isNotEmpty() && tags.isNotEmpty() && city.isNotEmpty() &&lat.isNotEmpty()&&lng.isNotEmpty()&&isVisible.isNotEmpty()&&address.isNotEmpty()){
                 //2.根据mConfigPath合成文件
-                startCompose()
+                startCompose(true)
                 //3.上传视频文件
                 //4.创建视频
             }else{
                 showToast("请把信息填写完成")
             }
 
+
+        }
+
+        tv_save.setOnClickListener {
+            //1.发布上传 先检查填写的条件完整
+            title=et_title.textString
+            description=et_title.textString
+            if(title.isNotEmpty() && columns.isNotEmpty() && tags.isNotEmpty() && city.isNotEmpty() &&lat.isNotEmpty()&&lng.isNotEmpty()&&isVisible.isNotEmpty()&&address.isNotEmpty()){
+                //2.根据mConfigPath合成文件
+                startCompose(false)
+                //3.上传视频文件
+                //4.创建视频
+            }else{
+                showToast("请把信息填写完成")
+            }
 
         }
 

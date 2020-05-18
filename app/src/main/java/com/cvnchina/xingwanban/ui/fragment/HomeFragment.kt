@@ -15,6 +15,7 @@ import com.cvnchina.xingwanban.net.CallbackListObserver
 import com.cvnchina.xingwanban.net.SLMRetrofit
 import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
 import com.cvnchina.xingwanban.ui.activity.MsgActivity
+import com.cvnchina.xingwanban.ui.activity.ScanLoginActivity
 import com.lhzw.bluetooth.base.BaseFragment
 import com.orhanobut.logger.Logger
 import com.uuzuche.lib_zxing.activity.CaptureActivity
@@ -165,6 +166,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                         val result = it.getString(CodeUtils.RESULT_STRING)
                         showToast("扫描结果为$result")
                         Logger.e("result=$result")
+                            //扫描成功进入扫码登录页
+                        val intent =Intent(activity, ScanLoginActivity::class.java)
+                        startActivity(intent)
                     } else {
                         showToast("扫描失败")
                     }

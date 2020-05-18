@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.adapter.GuidePageAdapter
 import com.cvnchina.xingwanban.base.BaseActivity
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.guide_3.view.*
  */
 class GuideActivity : BaseActivity() {
     private var viewList = mutableListOf<View>()
-    private val dotList = arrayListOf(iv1,iv2,iv3)
+    private val dotList = mutableListOf<ImageView>()
     override fun attachLayoutRes(): Int {
         return R.layout.activity_guide
     }
@@ -33,6 +34,9 @@ class GuideActivity : BaseActivity() {
         viewList.add(view1)
         viewList.add(view2)
         viewList.add(view3)
+        dotList.add(iv1)
+        dotList.add(iv2)
+        dotList.add(iv3)
         viewpager.adapter=GuidePageAdapter(viewList as ArrayList<View>)
         view3.btn_finish.setOnClickListener {
 

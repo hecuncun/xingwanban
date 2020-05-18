@@ -22,12 +22,18 @@ class WorksAdapter :
         helper.setText(R.id.tv_zan, item.haszannums)
             .setText(R.id.tv_evaluate, item.commentnums)
             .setText(R.id.tv_title, item.contSubTitle)
-            .setText(R.id.tv_date,item.createtime)
-            .setText(R.id.tv_state,if (item.ischeck=="n") "审核中" else "")
-                if (item.contTags.isNotEmpty()){
-                    helper.setText(R.id.tv_tag, item.contTags[0].tagName)//显示一个标签
-                }
-   helper.getView<TextView>(R.id.tv_state).visibility=if (item.ischeck=="n") View.VISIBLE else View.GONE
+            .setText(R.id.tv_date, item.createtime)
+            .setText(R.id.tv_state, if (item.ischeck == "n") "审核中" else "")
+        if (item.contTags.isNotEmpty()) {
+            helper.setText(R.id.tv_tag, item.contTags[0].tagName)//显示一个标签
+        }
+        val tvState = helper.getView<TextView>(R.id.tv_state)
+        tvState.visibility = if (item.ischeck == "y") View.GONE else View.VISIBLE
+        if (item.ischeck == "r") {
+            tvState.text = "审核中"
+        } else if (item.ischeck == "n") {
+            tvState.text = "审核不通过"
+        }
         helper.addOnClickListener(R.id.iv_start)
         helper.addOnClickListener(R.id.iv_share)
         helper.addOnClickListener(R.id.iv_move)
@@ -35,23 +41,22 @@ class WorksAdapter :
         GlideUtils.showRound(viCover, item.overimageurl, R.mipmap.ic_launcher, 8)
 
         val rv = helper.getView<RecyclerView>(R.id.recyclerView_evaluate)
-        val adapter2 =EvaluateAdapter()
+        val adapter2 = EvaluateAdapter()
         rv.run {
             layoutManager = LinearLayoutManager(App.context)
             adapter = adapter2
         }
-        if(item.hotComment!=null){
-            if (item.hotComment.size<4){
+        if (item.hotComment != null) {
+            if (item.hotComment.size < 4) {
                 adapter2.setNewData(item.hotComment)
-            }else{
-                var list2= mutableListOf<WorksBean.ListBean.HotCommentBean>()
-                for(i in 1..3){
+            } else {
+                var list2 = mutableListOf<WorksBean.ListBean.HotCommentBean>()
+                for (i in 1..3) {
                     list2.add(item.hotComment[i])
                 }
                 adapter2.setNewData(list2)
             }
         }
-
 
 
     }

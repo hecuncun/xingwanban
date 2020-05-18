@@ -37,6 +37,24 @@ class PlayerActivity : BaseActivity() {
                 tv_tag.text = workBean!!.contTags[0].tagName
             }
         }
+
+        val path = intent.getStringExtra("path")
+        val pathImg = intent.getStringExtra("thumbnailPath")
+        val title = intent.getStringExtra("title")
+        val tags = intent.getStringExtra("tags")
+        if (path!=null){
+            player.setUp(path,"",JzvdStd.SCREEN_FULLSCREEN)
+            Glide.with(this).load(pathImg).into(player.thumbImageView)
+            player.startVideo()
+            player.backButton.visibility = View.GONE
+            player.batteryTimeLayout.visibility = View.GONE
+            player.fullscreenButton.visibility = View.INVISIBLE
+            tv_zan.visibility =View.GONE
+            tv_evaluate.visibility = View.GONE
+            tv_title.text = title
+            tv_tag.text=tags
+        }
+
     }
 
     override fun initView() {
@@ -73,11 +91,9 @@ class PlayerActivity : BaseActivity() {
         }
 
         tv_evaluate.setOnClickListener {
-                val evaluateDialog = EvaluateDialog(this,workBean!!.contId.toInt())
+                val evaluateDialog = EvaluateDialog(this)
+                evaluateDialog.setVideoId(workBean!!.contId.toInt())
                 evaluateDialog.show()
-
-
-
 
         }
 

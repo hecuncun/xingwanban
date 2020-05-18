@@ -116,6 +116,7 @@ class LoginOtherActivity : BaseActivity() {
                             token = t.token
                             isLogin=true
                             startActivity(Intent(this@LoginOtherActivity,MainActivity::class.java))
+                            finish()
                         }
 
 
