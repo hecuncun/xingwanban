@@ -106,6 +106,7 @@ dependencies {
     implementation project(':AliyunSVideoBase')
     implementation project (":AliyunRecorder:record")
     implementation project(':AliyunEditor')
+    implementation project(':AlivcMedia')
     implementation project (':AlivcLittleVideo')
     implementation project (':AliyunVideoCommon')
     implementation 'cn.jzvd:jiaozivideoplayer:7.0.5'

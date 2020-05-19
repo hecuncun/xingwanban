@@ -18,15 +18,15 @@
 
         <ImageView
             android:id="@+id/iv1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_marginBottom="30dp"
             android:src="@mipmap/icon_dot_selected" />
 
         <ImageView
             android:id="@+id/iv2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="30dp"
             android:src="@mipmap/icon_dot_normal" />
@@ -34,8 +34,8 @@
 
         <ImageView
             android:id="@+id/iv3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="30dp"
             android:src="@mipmap/icon_dot_normal" />

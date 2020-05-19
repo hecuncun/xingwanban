@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 /**
  * Created by hecuncun on 2019/12/14
  *
- * type:协议类型 1-联系我们 2-用户协议 3-隐私协议 4-关于我们
+ * type:协议类型 1-联系我们 2-用户协议 3-隐私协议 4-关于我们  5.视频评论
  */
 class WebViewActivity : BaseActivity() {
     private var type = 0
@@ -40,6 +40,10 @@ class WebViewActivity : BaseActivity() {
             })
         }
 
+        if (type==5){
+            url=intent.getStringExtra("url")!!
+        }
+
     }
 
     /**
@@ -55,8 +59,7 @@ class WebViewActivity : BaseActivity() {
 
     override fun initView() {
         mWebView=findViewById(R.id.webView)
-        type = intent.extras.getInt("type")
-       // url = intent.extras.getString("url")
+        type = intent.extras!!.getInt("type")
         when(type){
             1-> toolbar_title.text="联系我们"
             2-> toolbar_title.text="用户协议"

@@ -14,8 +14,10 @@ import com.cvnchina.xingwanban.ext.showToast
 import com.cvnchina.xingwanban.net.CallbackListObserver
 import com.cvnchina.xingwanban.net.SLMRetrofit
 import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
+import com.cvnchina.xingwanban.ui.activity.LoginActivity
 import com.cvnchina.xingwanban.ui.activity.MsgActivity
 import com.cvnchina.xingwanban.ui.activity.ScanLoginActivity
+import com.cvnchina.xingwanban.ui.activity.WebViewActivity
 import com.lhzw.bluetooth.base.BaseFragment
 import com.orhanobut.logger.Logger
 import com.uuzuche.lib_zxing.activity.CaptureActivity
@@ -48,22 +50,41 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         rl_draft.setOnClickListener(this)
         rl_works.performClick()
         tv_msg.setOnClickListener {
-            startActivity(Intent(activity, MsgActivity::class.java))
+            if (isLogin){
+                startActivity(Intent(activity, MsgActivity::class.java))
+            }else{
+                startActivity(Intent(activity,LoginActivity::class.java))
+            }
+
         }
 
         ll_edit.setOnClickListener {
-            val param = AlivcEditInputParam.Builder()
-                .build()
-            EditorMediaActivity.startImport(context, param)
+            if (isLogin){
+                val param = AlivcEditInputParam.Builder()
+                    .build()
+                EditorMediaActivity.startImport(context, param)
+            }else{
+                startActivity(Intent(activity,LoginActivity::class.java))
+            }
+
         }
         ll_take.setOnClickListener {
-            val recordParam = AlivcRecordInputParam.Builder()
-                .build()
-            AlivcSvideoRecordActivity.startRecord(context, recordParam)
+            if (isLogin){
+                val recordParam = AlivcRecordInputParam.Builder()
+                    .build()
+                AlivcSvideoRecordActivity.startRecord(context, recordParam)
+            }else{
+                startActivity(Intent(activity,LoginActivity::class.java))
+            }
+
         }
         ll_scan.setOnClickListener {
             //二维码扫描
-            jumpToScannerActivity()
+            if (isLogin){
+                jumpToScannerActivity()
+            }else{
+                startActivity(Intent(activity, LoginActivity::class.java))
+            }
         }
     }
 
@@ -132,6 +153,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 transaction.show(worksFragment!!)
             }
             R.id.rl_draft -> {
+                if (!isLogin){
+                    startActivity(Intent(activity, LoginActivity::class.java))
+                    return
+                }
                 tv_draft.setTextColor(resources.getColor(R.color.color_gray_F9F9F9))
                 tv_works.setTextColor(resources.getColor(R.color.color_gray_999999))
                 iv_works.visibility = View.INVISIBLE
@@ -164,11 +189,34 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 data.extras?.let {
                     if (it.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                         val result = it.getString(CodeUtils.RESULT_STRING)
-                        showToast("扫描结果为$result")
-                        Logger.e("result=$result")
-                            //扫描成功进入扫码登录页
-                        val intent =Intent(activity, ScanLoginActivity::class.java)
-                        startActivity(intent)
+                        Logger.e("二维码==$result")
+                        if (result!=null){
+                            val str1=result.substring(0,result.indexOf("&doType="))
+                            val str2 =result.substring(str1.length+1,result.length)
+                            var url=""
+                            val imei=result.substring(result.indexOf("&imei=")+6,result.indexOf("&video_id="))
+                            Logger.e("imei==$imei")
+                            when(str2){
+                                "comment"->{//H5页面
+                                    url=str1
+                                    val intent =Intent(activity,WebViewActivity::class.java)
+                                    intent.putExtra("type",5)
+                                    intent.putExtra("url",url)
+                                    startActivity(intent)
+                                }
+                                "login"->{
+                                    //扫描成功进入扫码登录页
+                                    val intent =Intent(activity, ScanLoginActivity::class.java)
+                                    intent.putExtra("imei",imei)
+                                    startActivity(intent)
+                                }
+                                else->{
+                                    showToast("不是目标二维码$result")
+                                }
+                            }
+                        }
+
+
                     } else {
                         showToast("扫描失败")
                     }

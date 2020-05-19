@@ -28,6 +28,9 @@
         android:layout_gravity="center_horizontal"
         android:text="为保障账户安全，请确保是本人操作"/>
     <TextView
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:id="@+id/tv_login"
         android:layout_marginTop="180dp"
         android:textSize="18sp"
         android:textColor="@color/white"
@@ -37,6 +40,7 @@
         android:layout_height="48dp"
         android:text="确认登录"/>
     <TextView
+        android:id="@+id/tv_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"

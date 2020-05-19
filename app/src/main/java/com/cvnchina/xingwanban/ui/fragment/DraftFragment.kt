@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import com.aliyun.svideo.media.MediaInfo
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.adapter.DraftAdapter
 import com.cvnchina.xingwanban.bean.DraftBean
@@ -11,6 +12,7 @@ import com.cvnchina.xingwanban.ui.activity.PlayerActivity
 import com.lhzw.bluetooth.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_draft.*
 import org.litepal.LitePal
+import java.util.*
 
 /**
  * Created by hecuncun on 2020-5-6
@@ -42,12 +44,29 @@ class DraftFragment : BaseFragment() {
                     startActivity(intent)
                 }
                 R.id.tv_edit -> {
+                    //进入视频编辑页
+                    // 跳转到下一个页面
+                    val mediaInfo= MediaInfo()
+                    mediaInfo.filePath = draftBean.path
+                    mediaInfo.mimeType="video"
+                    val infoList: ArrayList<MediaInfo> = ArrayList<com.aliyun.svideo.media.MediaInfo>()
+                    infoList.add(mediaInfo)
+                    val intent = Intent()
+                    intent.setClassName(activity, "com.aliyun.svideo.editor.editor.EditorActivity")
+                    intent.putParcelableArrayListExtra("mediaInfos", infoList)
+                    activity?.startActivity(intent)
 
                 }
                 R.id.iv_move->{
                     //移除除视频
                     draftBean.delete()
                     mAdapter.remove(position)
+                    list.remove(draftBean)
+                    if (list.isEmpty()){
+                        ll_empty_view.visibility=View.VISIBLE
+                    }else{
+                        ll_empty_view.visibility=View.GONE
+                    }
                 }
             }
         }

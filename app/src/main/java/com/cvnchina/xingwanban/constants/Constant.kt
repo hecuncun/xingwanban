@@ -7,6 +7,7 @@ object Constant{
     const val SUCCESSED_CODE="1"
     const val BASE_URL="http://10.1.17.75:8055"
     const val LOGIN_KEY = "login"
+    const val IS_FIRST = "isFirst"
     const val TOKEN = "token"
 //    const val UID = "uid"
 //    const val TEMP_UID = "tempUid"

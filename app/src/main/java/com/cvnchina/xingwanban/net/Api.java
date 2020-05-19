@@ -209,6 +209,12 @@ public interface Api {
      */
     @POST("vms/appapi/video/getCommentsByVideoId")
     Observable<BaseBean<EvaluateListBean>> evaluateListCall(@Query("videoId") int videoId,@Query("pageNum") int pageNum,@Query("pageSize") int pageSize);
+
+    /**
+     * 扫码登录
+     */
+    @POST("vms/appapi/sysMgr/scanLogin")
+    Observable<BaseNoDataBean> scanLoginCall(@Query("imei") String imei);
 //
 //    /**
 //     * 用户注册

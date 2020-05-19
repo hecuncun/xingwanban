@@ -10,6 +10,7 @@ import com.cvnchina.xingwanban.glide.GlideUtils
 import com.cvnchina.xingwanban.net.CallbackObserver
 import com.cvnchina.xingwanban.net.SLMRetrofit
 import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_splash.*
 
 
@@ -36,6 +37,7 @@ class SplashActivity : BaseActivity() {
     }
 
     override fun initView() {
+        Logger.e("isFirst==$isFirst,isLogin==$isLogin,token=$token")
         alphaAnimation = AlphaAnimation(0.3F, 1.0F)
         alphaAnimation?.run {
             duration = 2000

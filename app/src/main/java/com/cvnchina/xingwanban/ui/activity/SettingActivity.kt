@@ -85,6 +85,7 @@ private var updateAppBean:UpdateAppBean?=null
         rl_logout.setOnClickListener { //退出登录
             isLogin=false
             token=""
+            startActivity(Intent(this@SettingActivity,LoginActivity::class.java))
         }
 
         rl_common_problem.setOnClickListener {

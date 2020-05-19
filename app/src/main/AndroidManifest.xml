@@ -51,7 +51,7 @@
             <!--                <category android:name="android.intent.category.LAUNCHER" />-->
             <!--            </intent-filter>-->
         </activity>
-        <activity android:name="com.cvnchina.xingwanban.ui.activity.LoginActivity" />
+        <activity android:name="com.cvnchina.xingwanban.ui.activity.LoginActivity"  android:launchMode="singleTop"/>
         <activity android:name="com.cvnchina.xingwanban.ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
