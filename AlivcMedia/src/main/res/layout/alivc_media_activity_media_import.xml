@@ -88,12 +88,30 @@
             android:layout_marginLeft="@dimen/alivc_common_margin_2"
             />
 
+<!--        <Button-->
+<!--            android:id="@+id/btn_next_step"-->
+<!--            android:text="@string/alivc_media_next_camera_roll_import"-->
+<!--            android:textColor="@color/alivc_common_font_white"-->
+<!--            android:textSize="@dimen/alivc_common_font_12"-->
+<!--            android:background="@drawable/aliyun_media_shape_next_button"-->
+<!--            android:paddingLeft="@dimen/alivc_common_padding_8"-->
+<!--            android:paddingRight="@dimen/alivc_common_padding_8"-->
+<!--            android:paddingTop="@dimen/alivc_common_padding_4"-->
+<!--            android:paddingBottom="@dimen/alivc_common_padding_4"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_marginRight="@dimen/alivc_common_margin_8"-->
+<!--            android:layout_marginTop="@dimen/alivc_common_margin_8"-->
+<!--            android:minHeight="0dp"-->
+<!--            android:minWidth="0dp"-->
+<!--            />-->
         <Button
             android:id="@+id/btn_next_step"
             android:text="@string/alivc_media_next_camera_roll_import"
             android:textColor="@color/alivc_common_font_white"
             android:textSize="@dimen/alivc_common_font_12"
-            android:background="@drawable/aliyun_media_shape_next_button"
+            android:background="@drawable/bg_next_btn_r2"
             android:paddingLeft="@dimen/alivc_common_padding_8"
             android:paddingRight="@dimen/alivc_common_padding_8"
             android:paddingTop="@dimen/alivc_common_padding_4"

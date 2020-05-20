@@ -81,11 +81,14 @@
         <!--底部动图mv对应的按钮图片-->
         <item name="magicImage">@mipmap/alivc_svideo_icon_gif_effect</item>
         <!--拍摄按钮图片 - 未开始拍摄-->
-        <item name="videoShootImageNormal">@mipmap/alivc_svideo_bg_record_storp</item>
+<!--        <item name="videoShootImageNormal">@mipmap/alivc_svideo_bg_record_storp</item>-->
+        <item name="videoShootImageNormal">@mipmap/my_icon_stop</item>
         <!--拍摄按钮图片 - 拍摄中-->
-        <item name="videoShootImageShooting">@mipmap/alivc_svideo_bg_record_pause</item>
+<!--        <item name="videoShootImageShooting">@mipmap/alivc_svideo_bg_record_pause</item>-->
+        <item name="videoShootImageShooting">@mipmap/my_icon_start</item>
         <!--拍摄按钮图片 - 长按中-->
-        <item name="videoShootImageLongPressing">@mipmap/alivc_svideo_bg_record_start</item>
+<!--        <item name="videoShootImageLongPressing">@mipmap/alivc_svideo_bg_record_start</item>-->
+        <item name="videoShootImageLongPressing">@mipmap/my_icon_recording</item>
         <!--回删对应的图片-->
         <item name="deleteImage">@mipmap/alivc_svideo_icon_delete</item>
         <!--拍摄中红点对应的图片-->

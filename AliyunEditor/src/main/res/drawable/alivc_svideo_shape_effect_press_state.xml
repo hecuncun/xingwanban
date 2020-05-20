@@ -5,4 +5,5 @@
         android:width="@dimen/alivc_common_size_icon_40"
         android:height="@dimen/alivc_common_size_icon_40" />
     <solid android:color="@color/alivc_common_bg_cyan_light" />
+    <solid android:color="@color/color_primary_yellow" />
 </shape>

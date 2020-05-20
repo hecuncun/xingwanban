@@ -92,10 +92,13 @@
     <style name="NextBtnStyle">
         <item name="android:gravity">center</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">@dimen/alivc_common_font_12</item>
-        <item name="android:background">@drawable/alivc_svideo_bg_next</item>
-        <item name="android:layout_height">27dp</item>
-        <item name="android:layout_width">@dimen/alivc_common_width_tv_60</item>
+        <item name="android:textSize">@dimen/alivc_common_font_15</item>
+<!--        <item name="android:background">@drawable/alivc_svideo_bg_next</item>-->
+        <item name="android:background">@color/color_primary_yellow</item>
+<!--        <item name="android:layout_height">27dp</item>-->
+        <item name="android:layout_height">32dp</item>
+<!--        <item name="android:layout_width">@dimen/alivc_common_width_tv_60</item>-->
+        <item name="android:layout_width">66dp</item>
         <item name="android:text">@string/alivc_base_svideo_next</item>
     </style>
 </resources>

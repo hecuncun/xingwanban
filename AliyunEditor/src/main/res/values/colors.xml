@@ -66,6 +66,7 @@
     
 
     <color name="alivc_edit_animation_filter_color1">#E6FBDE38</color>
+<!--    <color name="alivc_edit_animation_filter_color2">#E662B6FE</color>-->
     <color name="alivc_edit_animation_filter_color2">#E662B6FE</color>
     <color name="alivc_edit_animation_filter_color3">#E6FEA933</color>
     <color name="alivc_edit_animation_filter_color4">#E6F35C4B</color>

@@ -4,7 +4,8 @@
     <!--其他一些常用颜色，除字体、背景色、线-->
     <color name="alivc_common_white">#ffffffff</color>
     <color name="alivc_common_gray_999">#999</color>
-    <color name="alivc_common_cyan_light">#00C1DE</color>
+<!--    <color name="alivc_common_cyan_light">#00C1DE</color>-->
+    <color name="alivc_common_cyan_light">#F37E00</color>
 
     <!--公用字体颜色-->
     <color name="alivc_common_font_black">#000000</color>
@@ -19,7 +20,8 @@
     <color name="alivc_common_font_gray_75">#757575</color>
     <color name="alivc_common_font_gray_333">#333</color>
     <color name="alivc_common_font_red">#FC4347</color>
-    <color name="alivc_common_font_cyan_light">#00C1DE</color>
+<!--    <color name="alivc_common_font_cyan_light">#00C1DE</color>-->
+    <color name="alivc_common_font_cyan_light">#F37E00</color>
     <color name="alivc_common_font_gray_333333">#333333</color>
     <color name="alivc_common_font_red_wine">#FE4110</color>
     <color name="alivc_common_font_gray_999">#999999</color>
@@ -56,8 +58,10 @@
     <color name="alivc_common_bg_black_alpha_80">#CC000000</color>
     <color name="alivc_common_bg_black_alpha_90">#E3000000</color>
     <color name="alivc_common_bg_orange">#FC7729</color>
-    <color name="alivc_common_bg_cyan">#119797</color>
-    <color name="alivc_common_bg_cyan_light">#00C1DE</color>
+<!--    <color name="alivc_common_bg_cyan">#119797</color>-->
+    <color name="alivc_common_bg_cyan">#F37E00</color>
+<!--    <color name="alivc_common_bg_cyan_light">#00C1DE</color>-->
+    <color name="alivc_common_bg_cyan_light">#F37E00</color>
     <color name="alivc_common_bg_red">#FC4347</color>
     <color name="alivc_common_bg_red_darker">#FE4110</color>
     <color name="alivc_common_bg_pink">#EF4B81</color>
@@ -67,7 +71,8 @@
     <color name="alivc_common_line_gray_bright">#D7D8D9</color>
     <color name="alivc_common_line_gray_light">#C3C5C6</color>
     <color name="alivc_common_line_gray_darker">#aaa</color>
-    <color name="alivc_common_line_cyan_light">#00C1DE</color>
+<!--    <color name="alivc_common_line_cyan_light">#00C1DE</color>-->
+    <color name="alivc_common_line_cyan_light">#F37E00</color>
     <color name="alivc_common_line_white_alpha_30">#4DFFFFFF</color>
     <color name="alivc_common_line_red">#FFff0000</color>
 

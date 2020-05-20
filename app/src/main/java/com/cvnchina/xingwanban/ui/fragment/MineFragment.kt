@@ -1,6 +1,7 @@
 package com.cvnchina.xingwanban.ui.fragment
 
 import android.content.Intent
+import android.graphics.Color
 import android.view.View
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.bean.PersonalInfoBean
@@ -43,6 +44,7 @@ class MineFragment : BaseFragment() {
         moreDialog = ActionSheetDialog(activity, arrayOf("设置", "分享"), null)
         moreDialog?.run {
             isTitleShow(false)
+                .lvBgColor(Color.parseColor("#FFFFFF"))
             itemTextColor(resources.getColor(R.color.color_primary_bar))
             cancelText(resources.getColor(R.color.color_primary_bar))
         }

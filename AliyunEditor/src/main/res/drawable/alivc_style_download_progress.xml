@@ -10,7 +10,7 @@
         <clip>
             <shape>
                 <corners android:radius="@dimen/alivc_common_radius_2" />
-                <solid android:color="#00C1DE" />
+                <solid android:color="#F37E00" />
 
             </shape>
         </clip>
