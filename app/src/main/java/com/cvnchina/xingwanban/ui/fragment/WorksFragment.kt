@@ -114,7 +114,7 @@ class WorksFragment : BaseFragment() {
                 R.id.iv_move -> {
                     //移除除视频
                     val removeVideoCall =
-                        SLMRetrofit.instance.api.removeVideoCall(listBean.contId.toInt())
+                        SLMRetrofit.instance.api.deleteVideoCall(listBean.contId)
                     removeVideoCall.compose(ThreadSwitchTransformer())
                         .subscribe(object : CallbackListObserver<BaseNoDataBean>() {
                             override fun onSucceed(t: BaseNoDataBean) {
@@ -167,6 +167,9 @@ class WorksFragment : BaseFragment() {
             .subscribe(object : CallbackObserver<WorksBean>() {
                 override fun onSucceed(t: WorksBean, desc: String?) {
                     total = t.pages
+                    for (item in t.list){
+                        item.canDelete=false
+                    }
                     listWorks.addAll(t.list)
                     worksAdapter.setNewData(listWorks)
                     if (listWorks.isEmpty()) {

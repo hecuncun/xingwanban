@@ -83,7 +83,9 @@ class PersonInfoActivity : BaseActivity() {
         }
 
         val personalInfoBean = intent.getParcelableExtra<PersonalInfoBean>("personalInfoBean")
-        initPersonalInfo(personalInfoBean)
+        if (personalInfoBean != null) {
+            initPersonalInfo(personalInfoBean)
+        }
         //获取省市的code码
         getCityCode()
 

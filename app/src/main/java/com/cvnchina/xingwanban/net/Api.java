@@ -193,6 +193,12 @@ public interface Api {
     Observable<BaseNoDataBean> removeVideoCall(@Query("videoId") int videoId);
 
     /**
+     * 删除视频
+     */
+    @POST("vms/appapi/video/delete")
+    Observable<BaseNoDataBean>  deleteVideoCall(@Query("ids") String ids);
+
+    /**
      * 三方登录
      */
     @POST("vms/appapi/sysMgr/otherLogin")

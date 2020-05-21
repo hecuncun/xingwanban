@@ -68,6 +68,10 @@ public class WorksBean implements Parcelable {
 
     public static class ListBean implements Parcelable {
 
+        public boolean isCanDelete() {
+            return canDelete;
+        }
+
         /**
          * contId : 视频id
          * contSubTitle : 视频标题
@@ -81,7 +85,7 @@ public class WorksBean implements Parcelable {
          * createtime : 上传时间
          * hotComment : [{"userHeadPic":"用户头像url","userNickName":"用户昵称","content":"评论内容"}]
          */
-
+        public boolean canDelete=true;
         private String contId;
         private String contSubTitle;
         private String ischeck;

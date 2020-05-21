@@ -49,6 +49,7 @@ class WorksAdapter :
          helper.addOnClickListener(R.id.iv_share)
          helper.addOnClickListener(R.id.iv_move)
          helper.addOnClickListener(R.id.tv_cover)
+         helper.getView<ImageView>(R.id.iv_move).visibility= if (item.canDelete) View.VISIBLE else View.GONE
 
         val rv = helper.getView<RecyclerView>(R.id.recyclerView_evaluate)
         val adapter2 = EvaluateAdapter()
