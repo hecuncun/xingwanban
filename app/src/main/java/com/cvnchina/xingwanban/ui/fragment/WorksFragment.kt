@@ -3,6 +3,8 @@ package com.cvnchina.xingwanban.ui.fragment
 import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.widget.ImageView
+import cn.jzvd.JzvdStd
 import com.aliyun.svideo.common.baseAdapter.BaseQuickAdapter
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.adapter.WorksAdapter
@@ -17,6 +19,9 @@ import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
 import com.cvnchina.xingwanban.ui.activity.PlayerActivity
 import com.cvnchina.xingwanban.utils.BeanUtils
 import com.lhzw.bluetooth.base.BaseFragment
+import com.umeng.socialize.ShareAction
+import com.umeng.socialize.UMShareListener
+import com.umeng.socialize.bean.SHARE_MEDIA
 import kotlinx.android.synthetic.main.fragment_works.*
 
 /**
@@ -42,6 +47,8 @@ class WorksFragment : BaseFragment() {
     override fun initView(view: View) {
         initRv()
     }
+
+    private var isPlaying = false
 
     override fun initListener() {
         worksAdapter.disableLoadMoreIfNotFullPage(rv_works)
@@ -77,33 +84,52 @@ class WorksFragment : BaseFragment() {
 
         worksAdapter.setOnItemChildClickListener { adapter, view, position ->
             val listBean = adapter.getItem(position) as WorksBean.ListBean
+            val palyer = adapter.getViewByPosition(position, R.id.jz_player) as JzvdStd
+            val ivStart = adapter.getViewByPosition(position, R.id.iv_start) as ImageView
             when (view.id) {
                 R.id.iv_start -> {
+                    isPlaying = !isPlaying
+                    if (isPlaying) {
+                        ivStart.setImageResource(R.mipmap.icon_stop_play)
+                        palyer.startButton.performClick()
+                    } else {
+                        palyer.startButton.performClick()
+                        ivStart.setImageResource(R.mipmap.icon_play)
+                    }
+                    // worksAdapter.notifyItemChanged(position)
+
+                }
+                R.id.tv_cover -> {
                     val intent = Intent(activity, PlayerActivity::class.java)
                     intent.putExtra("listBean", listBean)
                     startActivity(intent)
                 }
                 R.id.iv_share -> {
-
+                    ShareAction(activity).withText("hello").setDisplayList(
+                        SHARE_MEDIA.SINA,
+                        SHARE_MEDIA.QQ,
+                        SHARE_MEDIA.WEIXIN)
+                        .setCallback(umShareListener).open();
                 }
-                R.id.iv_move->{
+                R.id.iv_move -> {
                     //移除除视频
                     val removeVideoCall =
                         SLMRetrofit.instance.api.removeVideoCall(listBean.contId.toInt())
-                        removeVideoCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackListObserver<BaseNoDataBean>(){
-                        override fun onSucceed(t: BaseNoDataBean) {
-                           if (t.msg=="1"){
-                               showToast("删除成功")
-                               worksAdapter.remove(position)
-                           }else{
-                               showToast(t.msgCondition)
-                           }
-                        }
+                    removeVideoCall.compose(ThreadSwitchTransformer())
+                        .subscribe(object : CallbackListObserver<BaseNoDataBean>() {
+                            override fun onSucceed(t: BaseNoDataBean) {
+                                if (t.msg == "1") {
+                                    showToast("删除成功")
+                                    worksAdapter.remove(position)
+                                } else {
+                                    showToast(t.msgCondition)
+                                }
+                            }
 
-                        override fun onFailed() {
+                            override fun onFailed() {
 
-                        }
-                    })
+                            }
+                        })
                 }
             }
 
@@ -116,16 +142,16 @@ class WorksFragment : BaseFragment() {
         demoWorksCall.compose(ThreadSwitchTransformer())
             .subscribe(object : CallbackListObserver<DemoWorksBean>() {
                 override fun onSucceed(t: DemoWorksBean) {
-                    if (t.msg=="1"){
-                        for (item in t.data){
+                    if (t.msg == "1") {
+                        for (item in t.data) {
                             val bean = BeanUtils.modelA2B(item, WorksBean.ListBean::class.java)
                             listWorks.add(bean)
                         }
                         worksAdapter.setNewData(listWorks)
-                        if (listWorks.isEmpty()){
-                            ll_empty_view.visibility=View.VISIBLE
-                        }else{
-                            ll_empty_view.visibility=View.GONE
+                        if (listWorks.isEmpty()) {
+                            ll_empty_view.visibility = View.VISIBLE
+                        } else {
+                            ll_empty_view.visibility = View.GONE
                         }
                     }
                 }
@@ -143,10 +169,10 @@ class WorksFragment : BaseFragment() {
                     total = t.pages
                     listWorks.addAll(t.list)
                     worksAdapter.setNewData(listWorks)
-                    if (listWorks.isEmpty()){
-                        ll_empty_view.visibility=View.VISIBLE
-                    }else{
-                        ll_empty_view.visibility=View.GONE
+                    if (listWorks.isEmpty()) {
+                        ll_empty_view.visibility = View.VISIBLE
+                    } else {
+                        ll_empty_view.visibility = View.GONE
                     }
                 }
 
@@ -164,5 +190,24 @@ class WorksFragment : BaseFragment() {
             adapter = worksAdapter
         }
     }
+    private var umShareListener =object : UMShareListener {
+        /**
+         * @descrption 分享开始的回调
+         */
+        override fun onResult(p0: SHARE_MEDIA?) {//成功
 
+        }
+
+        override fun onCancel(p0: SHARE_MEDIA?) {
+
+        }
+
+        override fun onError(p0: SHARE_MEDIA?, p1: Throwable?) {
+
+        }
+
+        override fun onStart(p0: SHARE_MEDIA?) {
+
+        }
+    }
 }

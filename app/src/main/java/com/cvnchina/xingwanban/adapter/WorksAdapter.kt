@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import cn.jzvd.JzvdStd
 import com.aliyun.svideo.common.baseAdapter.BaseQuickAdapter
 import com.aliyun.svideo.common.baseAdapter.BaseViewHolder
 import com.cvnchina.xingwanban.R
@@ -34,11 +35,20 @@ class WorksAdapter :
         } else if (item.ischeck == "n") {
             tvState.text = "审核不通过"
         }
-        helper.addOnClickListener(R.id.iv_start)
-        helper.addOnClickListener(R.id.iv_share)
-        helper.addOnClickListener(R.id.iv_move)
-        val viCover = helper.getView<ImageView>(R.id.iv_cover)
-        GlideUtils.showRound(viCover, item.overimageurl, R.mipmap.ic_launcher, 8)
+
+         val player = helper.getView<JzvdStd>(R.id.jz_player)
+         player.setUp(item.contDownUrl,"",JzvdStd.SCREEN_FULLSCREEN)
+         player.thumbImageView.scaleType=ImageView.ScaleType.CENTER_CROP
+         player.backButton.visibility = View.INVISIBLE
+         player.startButton.visibility=View.GONE
+         player.replayTextView.visibility=View.GONE
+         player.batteryTimeLayout.visibility = View.GONE
+         player.fullscreenButton.visibility = View.INVISIBLE
+         GlideUtils.showRound(player.thumbImageView,item.overimageurl,R.mipmap.ic_launcher,8)
+         helper.addOnClickListener(R.id.iv_start)
+         helper.addOnClickListener(R.id.iv_share)
+         helper.addOnClickListener(R.id.iv_move)
+         helper.addOnClickListener(R.id.tv_cover)
 
         val rv = helper.getView<RecyclerView>(R.id.recyclerView_evaluate)
         val adapter2 = EvaluateAdapter()
