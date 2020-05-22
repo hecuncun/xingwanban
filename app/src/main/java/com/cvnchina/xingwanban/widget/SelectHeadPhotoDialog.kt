@@ -5,6 +5,8 @@ import android.support.design.widget.BottomSheetDialog
 import android.view.LayoutInflater
 import android.view.View
 import com.cvnchina.xingwanban.R
+import com.cvnchina.xingwanban.bean.DefaultHeadPhotoBean
+import com.cvnchina.xingwanban.glide.GlideUtils
 import kotlinx.android.synthetic.main.dialog_select_photo.*
 
 /**
@@ -36,5 +38,12 @@ class SelectHeadPhotoDialog(context: Context) : BottomSheetDialog(context), View
 
     fun setOnChoseListener(onChoseListener: OnChoseListener) {
         mOnChoseListener = onChoseListener
+    }
+
+    fun setImageData(list: MutableList<DefaultHeadPhotoBean.DataBean>) {
+        GlideUtils.showCircle(iv_def1,list[0].headPic,R.mipmap.head1)
+        GlideUtils.showCircle(iv_def2,list[1].headPic,R.mipmap.head2)
+        GlideUtils.showCircle(iv_def3,list[2].headPic,R.mipmap.head3)
+        GlideUtils.showCircle(iv_def4,list[3].headPic,R.mipmap.head4)
     }
 }

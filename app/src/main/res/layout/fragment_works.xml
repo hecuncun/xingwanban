@@ -10,15 +10,16 @@
         android:scrollbars="none"/>
     <LinearLayout
         android:id="@+id/ll_empty_view"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:layout_width="220dp"
+        android:layout_height="180dp"
         android:orientation="vertical">
         <ImageView
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="center"
+            android:scaleType="centerCrop"
             android:src="@mipmap/icon_empty"/>
         <TextView
             android:layout_width="wrap_content"

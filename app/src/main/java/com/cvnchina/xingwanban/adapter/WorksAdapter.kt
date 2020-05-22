@@ -38,13 +38,15 @@ class WorksAdapter :
 
          val player = helper.getView<JzvdStd>(R.id.jz_player)
          player.setUp(item.contDownUrl,"",JzvdStd.SCREEN_FULLSCREEN)
-         player.thumbImageView.scaleType=ImageView.ScaleType.CENTER_CROP
+
          player.backButton.visibility = View.INVISIBLE
          player.startButton.visibility=View.GONE
          player.replayTextView.visibility=View.GONE
          player.batteryTimeLayout.visibility = View.GONE
          player.fullscreenButton.visibility = View.INVISIBLE
-         GlideUtils.showRound(player.thumbImageView,item.overimageurl,R.mipmap.ic_launcher,8)
+        player.thumbImageView.scaleType=ImageView.ScaleType.CENTER_CROP
+         GlideUtils.showRound(player.thumbImageView,item.overimageurl,R.mipmap.icon_def,16)
+
          helper.addOnClickListener(R.id.iv_start)
          helper.addOnClickListener(R.id.iv_share)
          helper.addOnClickListener(R.id.iv_move)

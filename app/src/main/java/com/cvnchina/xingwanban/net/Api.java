@@ -16,6 +16,7 @@ import com.cvnchina.xingwanban.bean.MsgCountBean;
 import com.cvnchina.xingwanban.bean.NewPhotoBean;
 import com.cvnchina.xingwanban.bean.PersonalInfoBean;
 import com.cvnchina.xingwanban.bean.QABean;
+import com.cvnchina.xingwanban.bean.ScanLoginBean;
 import com.cvnchina.xingwanban.bean.TalksBean;
 import com.cvnchina.xingwanban.bean.TokenBean;
 import com.cvnchina.xingwanban.bean.UpdateAppBean;
@@ -220,7 +221,7 @@ public interface Api {
      * 扫码登录
      */
     @POST("vms/appapi/sysMgr/scanLogin")
-    Observable<BaseNoDataBean> scanLoginCall(@Query("imei") String imei);
+    Observable<ScanLoginBean> scanLoginCall(@Query("imei") String imei);
 //
 //    /**
 //     * 用户注册

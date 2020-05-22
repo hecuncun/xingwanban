@@ -5,6 +5,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -52,6 +54,12 @@ public class AudioRecordUtils {
      * @return
      */
     public void startRecord() {
+        if (CheckAudioPermission.validateMicAvailability()){
+            Logger.e("MIC没被占用");
+        }else {
+            Logger.e("MIC被占用");
+        }
+
         // 开始录音
         /* ①Initial：实例化MediaRecorder对象 */
         if (mMediaRecorder == null)
@@ -68,6 +76,7 @@ public class AudioRecordUtils {
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
             filePath = FolderPath + System.currentTimeMillis() + ".amr" ;
+            Logger.e("录音地址=="+filePath);
             /* ③准备 */
             mMediaRecorder.setOutputFile(filePath);
             mMediaRecorder.setMaxDuration(MAX_LENGTH);

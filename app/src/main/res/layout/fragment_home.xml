@@ -14,7 +14,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:statusBarScrim="@android:color/transparent">
@@ -80,7 +80,7 @@
                                 android:layout_marginTop="2dp"
                                 android:text="拍摄"
                                 android:textColor="@color/color_gray_F9F9F9"
-                                android:textSize="18sp" />
+                                android:textSize="15sp" />
 
 
                         </LinearLayout>
@@ -114,13 +114,124 @@
                                 android:layout_marginTop="2dp"
                                 android:text="扫一扫"
                                 android:textColor="@color/color_gray_F9F9F9"
-                                android:textSize="18sp" />
+                                android:textSize="15sp" />
 
 
                         </LinearLayout>
 
                     </LinearLayout>
 
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/ll_edit_container"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_gray_181818_r6"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:paddingLeft="25dp"
+                        android:paddingRight="25dp"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:drawableTop="@mipmap/icon_filter"
+                            android:textSize="12sp"
+                            android:drawablePadding="6dp"
+                            android:textColor="@color/color_gray_CCCCCC"
+                            android:text="滤镜"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:drawableTop="@mipmap/icon_music"
+                            android:textSize="12sp"
+                            android:drawablePadding="6dp"
+                            android:textColor="@color/color_gray_CCCCCC"
+                            android:text="音乐"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:drawableTop="@mipmap/icon_gif"
+                            android:textSize="12sp"
+                            android:drawablePadding="6dp"
+                            android:textColor="@color/color_gray_CCCCCC"
+                            android:text="动图"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:drawableTop="@mipmap/icon_txt"
+                            android:textSize="12sp"
+                            android:drawablePadding="6dp"
+                            android:textColor="@color/color_gray_CCCCCC"
+                            android:text="字幕"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:paddingLeft="25dp"
+                        android:paddingRight="25dp"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:drawableTop="@mipmap/icon_filter_d"
+                            android:textSize="12sp"
+                            android:drawablePadding="6dp"
+                            android:textColor="@color/color_gray_CCCCCC"
+                            android:text="特效"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:drawableTop="@mipmap/icon_mv"
+                            android:textSize="12sp"
+                            android:drawablePadding="6dp"
+                            android:textColor="@color/color_gray_CCCCCC"
+                            android:text="MV"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:drawableTop="@mipmap/icon_sound"
+                            android:textSize="12sp"
+                            android:drawablePadding="6dp"
+                            android:textColor="@color/color_gray_CCCCCC"
+                            android:text="音效"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:drawableTop="@mipmap/icon_draw"
+                            android:textSize="12sp"
+                            android:drawablePadding="6dp"
+                            android:textColor="@color/color_gray_CCCCCC"
+                            android:text="涂鸦"/>
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -148,7 +259,7 @@
 
             <View
                 style="@style/horizontalGrayLine"
-                android:layout_marginTop="48dp" />
+                android:layout_marginTop="40dp" />
 
             <LinearLayout
                 android:id="@+id/rl_works"
@@ -172,14 +283,13 @@
                         android:text="作品"
                         android:textColor="@color/color_gray_F9F9F9" />
 
-                    <ImageView
+                    <View
                         android:id="@+id/iv_works"
                         android:layout_width="40dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="2dp"
                         android:layout_below="@+id/tv_works"
                         android:layout_centerHorizontal="true"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/yellow_line" />
+                        android:background="@color/color_primary_yellow" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -202,11 +312,10 @@
                     <ImageView
                         android:id="@+id/iv_draft"
                         android:layout_width="40dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="2dp"
                         android:layout_below="@+id/tv_draft"
                         android:layout_centerHorizontal="true"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/yellow_line"
+                        android:background="@color/color_primary_yellow"
                         android:visibility="invisible" />
                 </RelativeLayout>
 

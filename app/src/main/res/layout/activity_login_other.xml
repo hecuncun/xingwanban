@@ -12,7 +12,7 @@
         android:layout_height="88dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:src="@mipmap/logo" />
+        android:src="@mipmap/logo_2" />
 
     <LinearLayout
         android:layout_width="match_parent"

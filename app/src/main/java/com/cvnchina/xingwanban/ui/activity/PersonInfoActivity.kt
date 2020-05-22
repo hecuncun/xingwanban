@@ -278,13 +278,13 @@ class PersonInfoActivity : BaseActivity() {
                     }
                 }
                 tv_age.text = "$gen 后"
-                this@PersonInfoActivity.startActivity(
-                    Intent(
-                        this@PersonInfoActivity,
-                        AgeDescriptionActivity::class.java
-                    )
-                )
-            })
+//                this@PersonInfoActivity.startActivity(
+//                    Intent(
+//                        this@PersonInfoActivity,
+//                        AgeDescriptionActivity::class.java
+//                    )
+//                )
+//            })
 //            setOnWheelListener(object : DatePicker.OnWheelListener {
 //                override fun onYearWheeled(index: Int, year: String) {
 //                    setTitleText(year + "-" + selectedMonth + "-" + selectedDay)
@@ -297,7 +297,7 @@ class PersonInfoActivity : BaseActivity() {
 //                override fun onDayWheeled(index: Int, day: String) {
 //                   setTitleText(selectedYear + "-" + selectedMonth + "-" + day)
 //                }
-//            })
+            })
         }
 
     }
@@ -305,6 +305,9 @@ class PersonInfoActivity : BaseActivity() {
     /**
      * 服务器获取默认头像并显示
      */
+
+    private var list = mutableListOf<DefaultHeadPhotoBean.DataBean>()
+
     private fun getDefaultHeadPhoto() {
         val defaultHeadPhotoCall = SLMRetrofit.instance.api.defaultHeadPhotoCall()
         defaultHeadPhotoCall.compose(ThreadSwitchTransformer())
@@ -312,6 +315,7 @@ class PersonInfoActivity : BaseActivity() {
                 override fun onSucceed(t: DefaultHeadPhotoBean) {
                     if (t.msg == "1") {
                         Logger.e("默认头像size==${t.data}")
+                        list = t.data
                     } else {
                         showToast(t.msgCondition)
                     }
@@ -354,16 +358,71 @@ class PersonInfoActivity : BaseActivity() {
                         selectImage(0)
                     }
                     R.id.iv_def1 -> {
-                        iv_head_photo.setImageResource(R.mipmap.head1)
+                        if (list.size<4){
+                            return
+                        }
+                      GlideUtils.showCircle(iv_head_photo,list[0].headPic,R.mipmap.head1)
+                        val changeDefaultHeadPhotoCall =
+                            SLMRetrofit.instance.api.changeDefaultHeadPhotoCall(list[0].id.toInt())
+                        changeDefaultHeadPhotoCall.compose(ThreadSwitchTransformer())
+                            .subscribe(object : CallbackObserver<NewPhotoBean>() {
+                                override fun onSucceed(t: NewPhotoBean?, desc: String?) {
+
+
+                                }
+
+                                override fun onFailed() {
+
+                                }
+                            })
                     }
                     R.id.iv_def2 -> {
-                        iv_head_photo.setImageResource(R.mipmap.head2)
+                        GlideUtils.showCircle(iv_head_photo,list[1].headPic,R.mipmap.head1)
+                        val changeDefaultHeadPhotoCall =
+                            SLMRetrofit.instance.api.changeDefaultHeadPhotoCall(list[1].id.toInt())
+                        changeDefaultHeadPhotoCall.compose(ThreadSwitchTransformer())
+                            .subscribe(object : CallbackObserver<NewPhotoBean>() {
+                                override fun onSucceed(t: NewPhotoBean?, desc: String?) {
+
+
+                                }
+
+                                override fun onFailed() {
+
+                                }
+                            })
                     }
                     R.id.iv_def3 -> {
-                        iv_head_photo.setImageResource(R.mipmap.head3)
+                        GlideUtils.showCircle(iv_head_photo,list[2].headPic,R.mipmap.head1)
+                        val changeDefaultHeadPhotoCall =
+                            SLMRetrofit.instance.api.changeDefaultHeadPhotoCall(list[2].id.toInt())
+                        changeDefaultHeadPhotoCall.compose(ThreadSwitchTransformer())
+                            .subscribe(object : CallbackObserver<NewPhotoBean>() {
+                                override fun onSucceed(t: NewPhotoBean?, desc: String?) {
+
+
+                                }
+
+                                override fun onFailed() {
+
+                                }
+                            })
                     }
                     R.id.iv_def4 -> {
-                        iv_head_photo.setImageResource(R.mipmap.head4)
+                        GlideUtils.showCircle(iv_head_photo,list[3].headPic,R.mipmap.head1)
+                        val changeDefaultHeadPhotoCall =
+                            SLMRetrofit.instance.api.changeDefaultHeadPhotoCall(list[3].id.toInt())
+                        changeDefaultHeadPhotoCall.compose(ThreadSwitchTransformer())
+                            .subscribe(object : CallbackObserver<NewPhotoBean>() {
+                                override fun onSucceed(t: NewPhotoBean?, desc: String?) {
+
+
+                                }
+
+                                override fun onFailed() {
+
+                                }
+                            })
                     }
                     R.id.iv_close -> {
 
@@ -391,6 +450,7 @@ class PersonInfoActivity : BaseActivity() {
         })
         iv_head_photo.setOnClickListener {
             //底部弹出选择框
+            selectHeadPhotoDialog?.setImageData(list)
             selectHeadPhotoDialog?.show()
         }
 
