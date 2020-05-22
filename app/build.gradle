@@ -99,6 +99,9 @@ dependencies {
     }
     //二维码扫描
     implementation project(':lib-zxing')
+
+    //录音
+    implementation 'com.lqr.audio:library:1.0.0'
     //友盟第三方分享库
     implementation project(':UMLibrary')
     //阿里云视频相关

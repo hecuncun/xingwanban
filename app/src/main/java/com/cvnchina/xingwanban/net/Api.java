@@ -221,7 +221,7 @@ public interface Api {
      * 扫码登录
      */
     @POST("vms/appapi/sysMgr/scanLogin")
-    Observable<ScanLoginBean> scanLoginCall(@Query("imei") String imei);
+    Observable<ScanLoginBean> scanLoginCall(@Query("imei") String imei,@Query("isSyn") int isSyn);
 //
 //    /**
 //     * 用户注册

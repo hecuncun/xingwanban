@@ -1,13 +1,14 @@
 package com.cvnchina.xingwanban.ui.activity
 
+import android.app.Activity
 import android.content.Intent
-import com.aliyun.apsara.alivclittlevideo.activity.AlivcLittlePreviewActivity
 import com.aliyun.apsara.alivclittlevideo.constants.LittleVideoParamConfig
 import com.aliyun.qupai.editor.AliyunIComposeCallBack
 import com.aliyun.qupai.editor.impl.AliyunComposeFactory
 import com.aliyun.svideo.base.Constants
 import com.aliyun.svideo.common.utils.image.ImageLoaderImpl
 import com.aliyun.svideo.common.utils.image.ImageLoaderOptions
+import com.aliyun.svideo.editor.publish.CoverEditActivity
 import com.aliyun.svideo.sdk.external.struct.common.AliyunVideoParam
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
@@ -190,7 +191,9 @@ class PublishActivity : BaseActivity() {
 
 
         }
-
+        tv_choose.setOnClickListener {
+                  finish()
+        }
         tv_save.setOnClickListener {
             //1.发布上传 先检查填写的条件完整
             title=et_title.textString
@@ -206,14 +209,14 @@ class PublishActivity : BaseActivity() {
 
         }
 
-        iv_cover.setOnClickListener {
-            val intent = Intent(this, AlivcLittlePreviewActivity::class.java)
-            intent.putExtra(KEY_PARAM_CONFIG, mConfigPath)
-            intent.putExtra(KEY_PARAM_VIDEO_PARAM, mVideoPram)
-            //传入视频比列
-            intent.putExtra(KEY_PARAM_VIDEO_RATIO, videoRatio)
-            startActivity(intent)
-        }
+//        iv_cover.setOnClickListener {
+//            val intent = Intent(this, AlivcLittlePreviewActivity::class.java)
+//            intent.putExtra(KEY_PARAM_CONFIG, mConfigPath)
+//            intent.putExtra(KEY_PARAM_VIDEO_PARAM, mVideoPram)
+//            //传入视频比列
+//            intent.putExtra(KEY_PARAM_VIDEO_RATIO, videoRatio)
+//            startActivity(intent)
+//        }
 
         ll_talk.setOnClickListener {
             startActivity(Intent(this, TalkActivity::class.java))
@@ -268,4 +271,16 @@ class PublishActivity : BaseActivity() {
         isVisible= if (event.visiable) "0" else "1"
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
+            mThumbnailPath = data!!.getStringExtra(CoverEditActivity.KEY_PARAM_RESULT)
+            ImageLoaderImpl().loadImage(
+                this,
+                mThumbnailPath!!,
+                ImageLoaderOptions.Builder().skipMemoryCache().skipDiskCacheCache().build()
+            )
+                .into(iv_cover)
+        }
+    }
 }

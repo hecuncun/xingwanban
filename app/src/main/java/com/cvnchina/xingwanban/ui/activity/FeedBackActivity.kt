@@ -3,6 +3,8 @@ package com.cvnchina.xingwanban.ui.activity
 import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.net.Uri
+import android.os.Environment
 import android.support.v7.widget.GridLayoutManager
 import android.view.MotionEvent
 import android.view.View
@@ -10,18 +12,21 @@ import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.adapter.ComImageAdapter
 import com.cvnchina.xingwanban.adapter.ComImageAdapter.onAddPicClickListener
 import com.cvnchina.xingwanban.adapter.FullyGridLayoutManager
+import com.cvnchina.xingwanban.application.App
 import com.cvnchina.xingwanban.base.BaseActivity
 import com.cvnchina.xingwanban.base.BaseNoDataBean
 import com.cvnchina.xingwanban.ext.showToast
 import com.cvnchina.xingwanban.net.CallbackListObserver
 import com.cvnchina.xingwanban.net.SLMRetrofit
 import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
-import com.cvnchina.xingwanban.utils.AudioRecordUtils
 import com.cvnchina.xingwanban.utils.FileUtils
+import com.lqr.audio.AudioRecordManager
+import com.lqr.audio.IAudioRecordListener
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_feedback.*
 import kotlinx.android.synthetic.main.toolbar.*
 import okhttp3.MediaType
@@ -34,7 +39,6 @@ class FeedBackActivity : BaseActivity() {
 
     private var imageAdapter: ComImageAdapter? = null
     private var selectPhotoList = mutableListOf<LocalMedia>() //已选的照片集合
-    private var audioRecordUtils: AudioRecordUtils? = null
     private var mediaPlayer: MediaPlayer? = null
     override fun attachLayoutRes(): Int {
         return R.layout.activity_feedback
@@ -46,14 +50,16 @@ class FeedBackActivity : BaseActivity() {
 
     override fun initView() {
         toolbar_title.text = "用户反馈"
-        initRvPhoto()
-        audioRecordUtils = AudioRecordUtils()
-
         //检查权限
         if (checkPermissions(
                 arrayOf(
                     android.Manifest.permission.RECORD_AUDIO,
-                    android.Manifest.permission.MODIFY_AUDIO_SETTINGS
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.WAKE_LOCK
+
+
+
                 )
             )
         ) {
@@ -62,42 +68,73 @@ class FeedBackActivity : BaseActivity() {
             requestPermission(
                 arrayOf(
                     android.Manifest.permission.RECORD_AUDIO,
-                    android.Manifest.permission.MODIFY_AUDIO_SETTINGS
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.WAKE_LOCK
                 ), 0x55
             )
         }
 
+        initRvPhoto()
+          file=File(Environment.getExternalStorageDirectory(),"XWB")
+        if (!file!!.exists()){
+            file!!.mkdirs()
+        }
+        AudioRecordManager.getInstance(App.context).setAudioSavePath(file!!.absolutePath)
+        AudioRecordManager.getInstance(App.context).audioRecordListener=object :IAudioRecordListener{
+            override fun initTipView() {
+
+            }
+
+            override fun setRecordingTipView() {
+
+            }
+
+            override fun setAudioShortTipView() {
+
+            }
+
+            override fun onFinish(audioPath: Uri, duration: Int) {
+              Logger.e("audioPath=$audioPath,duration=$duration")
+                voicePath=audioPath.path
+                tv_voice_time.text =duration.toString()+ "''"
+            }
+
+            override fun setCancelTipView() {
+            }
+
+            override fun setTimeoutTipView(counter: Int) {
+            }
+
+            override fun onStartRecord() {
+            }
+
+            override fun destroyTipView() {
+            }
+
+            override fun onAudioDBChanged(db: Int) {
+            }
+        }
         //初始化音频播放器
         mediaPlayer = MediaPlayer()
     }
 
     private var voicePath = ""//录音文件
+    private var file:File?=null
 
     override fun initListener() {
-        //录音回调
-        audioRecordUtils?.setOnAudioStatusUpdateListener(object :
-            AudioRecordUtils.OnAudioStatusUpdateListener {
-            override fun onUpdate(db: Double, time: Long) { //录音中....db为声音分贝，time为录音时长
-                tv_voice_time.text = (time / 1000).toString() + "''"
-            }
-
-            override fun onStop(filePath: String) {
-                voicePath = filePath
-                showToast("录音文件地址==$filePath")
-
-            }
-        })
         iv_start_record.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View, event: MotionEvent): Boolean {
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        audioRecordUtils?.startRecord()
+                        AudioRecordManager.getInstance(App.context).startRecord()
                         ll_recording.visibility = View.VISIBLE
                         ll_recorded.visibility = View.GONE
                         tv_delete.visibility = View.GONE
                     }
                     MotionEvent.ACTION_UP -> {
-                        audioRecordUtils?.stopRecord()
+                        AudioRecordManager.getInstance(App.context).stopRecord()
+                        AudioRecordManager.getInstance(App.context).destroyRecord();
                         ll_recording.visibility = View.GONE
                         ll_recorded.visibility = View.VISIBLE
                         tv_delete.visibility = View.VISIBLE

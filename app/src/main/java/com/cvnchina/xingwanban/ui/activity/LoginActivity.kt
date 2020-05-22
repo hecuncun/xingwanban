@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.View
 import com.alibaba.fastjson.JSON
 import com.cvnchina.xingwanban.R
+import com.cvnchina.xingwanban.application.App
 import com.cvnchina.xingwanban.base.BaseActivity
 import com.cvnchina.xingwanban.base.OtherLoginBean
 import com.cvnchina.xingwanban.ext.showToast
@@ -68,7 +69,7 @@ class LoginActivity : BaseActivity() {
             }
         }
 
-        mAlicomAuthHelper = PhoneNumberAuthHelper.getInstance(this, tokenListener)
+        mAlicomAuthHelper = PhoneNumberAuthHelper.getInstance(App.context, tokenListener)
         mAlicomAuthHelper?.setAuthSDKInfo("pR5Qe8a9GOZy8h2GB0eglyRHIHQv+XKrc/0ChzuXT4MHXgnAZiNTzFam1QDur0TmsbQ7mbCrCvYCVbQtntSlZ9fjDgqbN6HNC6UOBMjW1S/Wg5FtcACCzMenXgrBCzFEJ4ynntHEsxCS/T40TUg/Apy2KyzUHjm/D27C75DJEZ0WSuAAowD2CaMWbU2+JGCO/RxrFKeZYN2iNaDzRvlsGDvvlRL39mwaLuAZIECQWEZkejOG5iWqJCg6q76ZKCg1Zft7TRe2CIj1fKmom8DtXpGiE2VKE3EdfAVCcq7U5MY=")
         mAlicomAuthHelper?.setLoggerEnable(true)
     }
