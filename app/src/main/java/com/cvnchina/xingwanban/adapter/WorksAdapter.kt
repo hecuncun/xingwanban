@@ -18,6 +18,7 @@ import com.cvnchina.xingwanban.glide.GlideUtils
  */
 class WorksAdapter :
     BaseQuickAdapter<WorksBean.ListBean, BaseViewHolder>(R.layout.item_works_list) {
+    val adapter2 = EvaluateAdapter()
     override fun convert(helper: BaseViewHolder, item: WorksBean.ListBean?) {
         item ?: return
         helper.setText(R.id.tv_zan, item.haszannums)
@@ -44,7 +45,7 @@ class WorksAdapter :
          player.replayTextView.visibility=View.GONE
          player.batteryTimeLayout.visibility = View.GONE
          player.fullscreenButton.visibility = View.INVISIBLE
-        player.thumbImageView.scaleType=ImageView.ScaleType.CENTER_CROP
+         player.thumbImageView.scaleType=ImageView.ScaleType.CENTER_CROP
          GlideUtils.showRound(player.thumbImageView,item.overimageurl,R.mipmap.icon_def,16)
 
          helper.addOnClickListener(R.id.iv_start)
@@ -54,7 +55,7 @@ class WorksAdapter :
          helper.getView<ImageView>(R.id.iv_move).visibility= if (item.canDelete) View.VISIBLE else View.GONE
 
         val rv = helper.getView<RecyclerView>(R.id.recyclerView_evaluate)
-        val adapter2 = EvaluateAdapter()
+
         rv.run {
             layoutManager = LinearLayoutManager(App.context)
             adapter = adapter2

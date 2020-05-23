@@ -7,6 +7,7 @@ import android.view.View
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
 import com.cvnchina.xingwanban.bean.UpdateAppBean
+import com.cvnchina.xingwanban.event.LogoutEvent
 import com.cvnchina.xingwanban.ext.showToast
 import com.cvnchina.xingwanban.net.CallbackObserver
 import com.cvnchina.xingwanban.net.SLMRetrofit
@@ -17,6 +18,7 @@ import com.cvnchina.xingwanban.utils.PackageUtils
 import com.cvnchina.xingwanban.widget.ClearCacheDialog
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.greenrobot.eventbus.EventBus
 
 /**
  * Created by hecuncun on 2020-5-5
@@ -86,6 +88,7 @@ private var updateAppBean:UpdateAppBean?=null
             isLogin=false
             token=""
             startActivity(Intent(this@SettingActivity,LoginActivity::class.java))
+            EventBus.getDefault().post(LogoutEvent())
         }
 
         rl_common_problem.setOnClickListener {

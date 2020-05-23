@@ -197,31 +197,37 @@ public interface Api {
      * 删除视频
      */
     @POST("vms/appapi/video/delete")
-    Observable<BaseNoDataBean>  deleteVideoCall(@Query("ids") String ids);
+    Observable<BaseNoDataBean> deleteVideoCall(@Query("ids") String ids);
 
     /**
      * 三方登录
      */
     @POST("vms/appapi/sysMgr/otherLogin")
-    Observable<OtherLoginBean> otherLoginCall(@Query("type") int type,@Query("openId") String openId);
+    Observable<OtherLoginBean> otherLoginCall(@Query("type") int type, @Query("openId") String openId);
 
     /**
      * 绑定手机号
      */
     @POST("vms/appapi/sysMgr/bindPhone")
-    Observable<BindPhoneBean> bindPhoneCall(@Query("phone") String phone,@Query("code") String code);
+    Observable<BindPhoneBean> bindPhoneCall(@Query("phone") String phone, @Query("code") String code);
 
     /**
      * 根据视频id获取评论
      */
     @POST("vms/appapi/video/getCommentsByVideoId")
-    Observable<BaseBean<EvaluateListBean>> evaluateListCall(@Query("videoId") int videoId,@Query("pageNum") int pageNum,@Query("pageSize") int pageSize);
+    Observable<BaseBean<EvaluateListBean>> evaluateListCall(@Query("videoId") int videoId, @Query("pageNum") int pageNum, @Query("pageSize") int pageSize);
+
+    /**
+     * 回复评论
+     */
+    @POST("vms/appapi/video/replyComment")
+    Observable<BaseNoDataBean> replayCall(@Query("commentId") int commentId, @Query("content") String content);
 
     /**
      * 扫码登录
      */
     @POST("vms/appapi/sysMgr/scanLogin")
-    Observable<ScanLoginBean> scanLoginCall(@Query("imei") String imei,@Query("isSyn") int isSyn);
+    Observable<ScanLoginBean> scanLoginCall(@Query("imei") String imei, @Query("isSyn") int isSyn);
 //
 //    /**
 //     * 用户注册
