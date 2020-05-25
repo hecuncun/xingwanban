@@ -528,10 +528,13 @@ class PersonInfoActivity : BaseActivity() {
                         map["cityCode"] = c.code
                         showToast(c.code)
                         Logger.e("所选城市的名称${city!!.name}===${c.code}")
+                        return
                     }
-
-
                 }
+
+                    showToast("当前城市不可选择")
+                    tv_city.text=""
+
                 // tv_city.text = (sb.toString())
 
             }

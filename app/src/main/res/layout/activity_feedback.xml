@@ -36,7 +36,6 @@
         android:background="@drawable/bg_gray_151516_r5"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:padding="15dp"
         app:maxLength="100" />
 
     <TextView

@@ -1,6 +1,7 @@
 package com.aliyun.svideo.recorder.view.control;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
@@ -11,21 +12,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import com.aliyun.svideo.record.R;
-import com.aliyun.svideo.recorder.view.BaseScrollPickerView;
-import com.aliyun.svideo.recorder.view.StringScrollPicker;
 import com.aliyun.svideo.base.UIConfigManager;
 import com.aliyun.svideo.base.utils.FastClickUtil;
 import com.aliyun.svideo.common.utils.image.ImageLoaderImpl;
 import com.aliyun.svideo.common.utils.image.ImageLoaderOptions;
+import com.aliyun.svideo.record.R;
+import com.aliyun.svideo.recorder.view.BaseScrollPickerView;
+import com.aliyun.svideo.recorder.view.StringScrollPicker;
 import com.aliyun.svideo.sdk.external.struct.snap.AliyunSnapVideoParam;
 
 import java.util.ArrayList;
@@ -597,11 +596,14 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
         if (canComplete) {
             aliyunComplete.setSelected(true);
             aliyunComplete.setEnabled(true);
+            aliyunComplete.setBackgroundColor(Color.parseColor("#F37E00"));
             //完成的按钮图片 - 可用
             //UIConfigManager.setImageResourceConfig(aliyunComplete, R.attr.finishImageAble, R.mipmap.alivc_svideo_icon_next_complete);
         } else {
             aliyunComplete.setSelected(false);
             aliyunComplete.setEnabled(false);
+
+            aliyunComplete.setBackgroundColor(Color.parseColor("#333333"));
             //完成的按钮图片 - 不可用
             //UIConfigManager.setImageResourceConfig(aliyunComplete, R.attr.finishImageUnable, R.mipmap.alivc_svideo_icon_next_not_ready);
         }

@@ -21,16 +21,18 @@ class ProgressDialog(context: Context) : Dialog(context) {
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
+    fun setText(text:String){
+        tv_desc.text=text
+    }
+
     fun setProgress(progress:Int){
         progress_bar.setProgress(progress)
         if (progress==100){
             iv_finish.visibility= View.VISIBLE
-            tv_desc.text="视频合成成功，正在上传..."
             progress_bar.visibility=View.GONE
         }else{
             progress_bar.visibility=View.VISIBLE
             iv_finish.visibility= View.GONE
-            tv_desc.text="发布中..."
         }
     }
 

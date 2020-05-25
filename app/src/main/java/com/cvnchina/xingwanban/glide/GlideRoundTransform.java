@@ -8,14 +8,14 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import java.security.MessageDigest;
 
 /**
  * description：glide加载圆角图片
  */
-public class GlideRoundTransform extends BitmapTransformation {
+public class GlideRoundTransform extends CenterCrop {
     private static float radius = 0f;
 
     public GlideRoundTransform() {
@@ -29,7 +29,9 @@ public class GlideRoundTransform extends BitmapTransformation {
 
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-        return roundCrop(pool, toTransform);
+        Bitmap transform = super.transform(pool, toTransform, outWidth, outHeight);
+        return roundCrop(pool, transform);
+      //  return roundCrop(pool, toTransform);
     }
 
     private static Bitmap roundCrop(BitmapPool pool, Bitmap source) {

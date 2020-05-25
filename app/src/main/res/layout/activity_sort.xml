@@ -19,6 +19,7 @@
 
         <ListView
             android:id="@+id/list_right"
+            android:background="@color/color_gray_151516"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

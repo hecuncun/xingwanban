@@ -11,12 +11,11 @@
     <com.cvnchina.xingwanban.widget.LimitScrollEditText
         android:id="@+id/et_desc"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
         android:background="@color/color_gray_151516"
-        android:padding="15dp"
         app:hint="点击此处添加个人说明"
         app:maxLength="100" />
 </LinearLayout>

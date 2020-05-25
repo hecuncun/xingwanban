@@ -77,8 +77,10 @@ public class LeftAdapter extends BaseAdapter {
         viewHolder.tv_group.setText(group);
         if (mCurSelectPosition==position){
             viewHolder.tv_group.setTextColor(mContext.getResources().getColor(R.color.color_primary_yellow));
+            viewHolder.tv_group.setBackgroundColor(mContext.getResources().getColor(R.color.color_gray_151516));
         }else {
             viewHolder.tv_group.setTextColor(mContext.getResources().getColor(R.color.color_gray_F9F9F9));
+            viewHolder.tv_group.setBackgroundColor(mContext.getResources().getColor(R.color.color_primary_bar));
         }
         return convertView;
     }

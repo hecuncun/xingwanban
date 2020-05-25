@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import cn.jzvd.JzvdStd
 import com.aliyun.svideo.common.baseAdapter.BaseQuickAdapter
@@ -24,7 +25,7 @@ class WorksAdapter :
         helper.setText(R.id.tv_zan, item.haszannums)
             .setText(R.id.tv_evaluate, item.commentnums)
             .setText(R.id.tv_title, item.contSubTitle)
-            .setText(R.id.tv_date, item.createtime)
+            .setText(R.id.tv_date, item.createtime.split(" ")[0])
             .setText(R.id.tv_state, if (item.ischeck == "n") "审核中" else "")
         if (item.contTags.isNotEmpty()) {
             helper.setText(R.id.tv_tag, item.contTags[0].tagName)//显示一个标签
@@ -42,11 +43,12 @@ class WorksAdapter :
 
          player.backButton.visibility = View.INVISIBLE
          player.startButton.visibility=View.GONE
+         (player.titleTextView.parent as RelativeLayout).background=null
          player.replayTextView.visibility=View.GONE
          player.batteryTimeLayout.visibility = View.GONE
          player.fullscreenButton.visibility = View.INVISIBLE
          player.thumbImageView.scaleType=ImageView.ScaleType.CENTER_CROP
-         GlideUtils.showRound(player.thumbImageView,item.overimageurl,R.mipmap.icon_def,16)
+         GlideUtils.showRound(player.thumbImageView,item.overimageurl,R.mipmap.icon_def,8)
 
          helper.addOnClickListener(R.id.iv_start)
          helper.addOnClickListener(R.id.iv_share)

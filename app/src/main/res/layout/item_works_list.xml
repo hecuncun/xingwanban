@@ -53,14 +53,14 @@
             android:id="@+id/ll_full"
             android:orientation="vertical">
             <cn.jzvd.JzvdStd
-                android:clickable="false"
                 android:id="@+id/jz_player"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
-        <TextView
+        <FrameLayout
             android:id="@+id/tv_cover"
             android:layout_marginTop="15dp"
+            android:background="@color/transparent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
         <TextView

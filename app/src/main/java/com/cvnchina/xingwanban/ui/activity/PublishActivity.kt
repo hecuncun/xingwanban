@@ -79,6 +79,12 @@ class PublishActivity : BaseActivity() {
      */
     private fun startCompose(upload:Boolean) {
         progressDialog?.show()
+        if (upload){
+            progressDialog?.setText("发布中...")
+        }else{
+            progressDialog?.setText("存草稿中...")
+        }
+
         createAliyunCompose.compose(mConfigPath, videoPath, object : AliyunIComposeCallBack {
             override fun onComposeProgress(p0: Int) {
                 //合成进度
@@ -88,9 +94,11 @@ class PublishActivity : BaseActivity() {
 
             override fun onComposeCompleted() {
                 //合成完成，上传接口
+
                 val file = File(videoPath)
                 Logger.e("视频地址==$videoPath")
                 if (upload){
+                    progressDialog?.setText("上传中...")
                     val requestFile: RequestBody =
                         RequestBody.create(MediaType.parse("multipart/form-data"), file)
                     //retrofit 上传文件api加上 @Multipart注解,然后下面这是个重点 参数1：上传文件的key，参数2：上传的文件名，参数3 请求头
@@ -142,6 +150,7 @@ class PublishActivity : BaseActivity() {
                         }
                     })
                 }else{
+                    progressDialog?.setText("存储成功")
                     //存数据库
                     DraftBean(videoPath,title,tags,mThumbnailPath!!).save()
                     progressDialog?.dismiss()
@@ -179,6 +188,9 @@ class PublishActivity : BaseActivity() {
 
 
     override fun initListener() {
+        iv_back.setOnClickListener {
+            finish()
+        }
         tv_publish.setOnClickListener {
             //1.发布上传 先检查填写的条件完整
             title=et_title.textString
