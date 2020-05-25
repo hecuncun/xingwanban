@@ -3,6 +3,7 @@ package com.cvnchina.xingwanban.ui.activity
 import android.support.v4.app.FragmentTransaction
 import android.view.KeyEvent
 import android.view.View
+import cn.jzvd.JzvdStd
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
 import com.cvnchina.xingwanban.event.LogoutEvent
@@ -114,5 +115,25 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     fun logout(event: LogoutEvent) {
         finish()
     }
+    override fun onBackPressed() {
+        if (JzvdStd.backPress()) {
+            return
+        }
+        super.onBackPressed()
+    }
 
+    override fun onPause() {
+        super.onPause()
+        JzvdStd.goOnPlayOnPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        JzvdStd.goOnPlayOnResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        JzvdStd.releaseAllVideos()
+    }
 }

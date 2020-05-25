@@ -11,6 +11,7 @@ import com.cvnchina.xingwanban.adapter.WorksAdapter
 import com.cvnchina.xingwanban.base.BaseNoDataBean
 import com.cvnchina.xingwanban.bean.DemoWorksBean
 import com.cvnchina.xingwanban.bean.WorksBean
+import com.cvnchina.xingwanban.event.RefreshWorksEvent
 import com.cvnchina.xingwanban.ext.showToast
 import com.cvnchina.xingwanban.net.CallbackListObserver
 import com.cvnchina.xingwanban.net.CallbackObserver
@@ -23,6 +24,8 @@ import com.umeng.socialize.ShareAction
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
 import kotlinx.android.synthetic.main.fragment_works.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * Created by hecuncun on 2020-5-6
@@ -32,6 +35,7 @@ class WorksFragment : BaseFragment() {
     private var total = 0
     private var pageSize = 10
     private var listWorks = mutableListOf<WorksBean.ListBean>()
+    override fun useEventBus(): Boolean=true
     private val worksAdapter: WorksAdapter by lazy {
         WorksAdapter()
     }
@@ -137,6 +141,7 @@ class WorksFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+        listWorks.clear()
         //获取Demo
         val demoWorksCall = SLMRetrofit.instance.api.demoWorksCall()
         demoWorksCall.compose(ThreadSwitchTransformer())
@@ -212,5 +217,10 @@ class WorksFragment : BaseFragment() {
         override fun onStart(p0: SHARE_MEDIA?) {
 
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshList(event:RefreshWorksEvent){
+        lazyLoad()
     }
 }

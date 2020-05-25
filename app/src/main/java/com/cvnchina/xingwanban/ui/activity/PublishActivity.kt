@@ -16,6 +16,7 @@ import com.cvnchina.xingwanban.base.BaseNoDataBean
 import com.cvnchina.xingwanban.bean.DraftBean
 import com.cvnchina.xingwanban.bean.LocationBean
 import com.cvnchina.xingwanban.bean.UploadVideoBean
+import com.cvnchina.xingwanban.event.RefreshWorksEvent
 import com.cvnchina.xingwanban.event.SortEvent
 import com.cvnchina.xingwanban.event.TalkEvent
 import com.cvnchina.xingwanban.event.VisiableEvent
@@ -29,6 +30,7 @@ import kotlinx.android.synthetic.main.activity_publish.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.File
@@ -126,6 +128,7 @@ class PublishActivity : BaseActivity() {
                                     showToast(t.msgCondition)
                                     progressDialog?.dismiss()
                                     startActivity(Intent(this@PublishActivity,MainActivity::class.java))
+                                    EventBus.getDefault().post(RefreshWorksEvent())
                                 }
 
                                 override fun onFailed() {
