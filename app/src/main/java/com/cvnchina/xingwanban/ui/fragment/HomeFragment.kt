@@ -203,7 +203,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                     if (it.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                         var result = it.getString(CodeUtils.RESULT_STRING)
                         Logger.e("二维码==$result")
-                        if (result != null) {
+                        if (result != null&& result.contains("&doType=")) {
 //                            result =
 //                                "http://10.1.17.75:8055/comment?username=13810817985&token=02SGY7BApBRCs5AVsIEXV6VEgQH2Y@DBRXEX56UEELBHJ8VE0FBnV6SVtcXCooAFsIESUqV05RUiYpXBgCAHB4ARsKAiAvUBxUVyFyBEgAUHVyR1UQRjcuFxdTXiFpX1sDAHx6VUEDBH1zUFtP&imei=1820e9306332d5211bef5fb7e84a81c4&video_id=215976&doType=comment"
                             val str1 = result.substring(0, result.indexOf("&doType="))
@@ -267,6 +267,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                                     showToast("不是目标二维码$result")
                                 }
                             }
+                        }else{
+                            showToast("目标二维码错误$result")
                         }
 
 

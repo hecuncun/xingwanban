@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.view.KeyEvent
 import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
 import com.cvnchina.xingwanban.bean.AgreementBean
@@ -11,7 +13,6 @@ import com.cvnchina.xingwanban.net.CallbackObserver
 import com.cvnchina.xingwanban.net.SLMRetrofit
 import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
 import com.cvnchina.xingwanban.widget.MyWebView
-
 import kotlinx.android.synthetic.main.toolbar.*
 
 /**
@@ -42,6 +43,7 @@ class WebViewActivity : BaseActivity() {
 
         if (type==5){
             url=intent.getStringExtra("url")!!
+            setUrl(type)
         }
 
     }
@@ -65,6 +67,15 @@ class WebViewActivity : BaseActivity() {
             2-> toolbar_title.text="用户协议"
             3-> toolbar_title.text="隐私协议"
             4-> toolbar_title.text="关于我们"
+        }
+        mWebView!!.webViewClient=object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                url: String?
+            ): Boolean {
+          view?.loadUrl(url)
+            return true
+            }
         }
         initWeb()
 
