@@ -19,7 +19,7 @@ public class UpdateAppBean implements Parcelable {
      * iosPic5 : http://***********init.jpg
      * iosPic6 : http://***********init.jpg
      * appVersion : app版本（app本地存储一个版本号，如果和最新版本不一致，提醒更新，第一次获取版本不更新）
-     * isForcedUpdate : 是否强制更新
+     * isForcedUpdate : 是否强制更新 0不强制1强制
      * downloadUrl : 下载链接
      * updateDesc : 更新说明
      */

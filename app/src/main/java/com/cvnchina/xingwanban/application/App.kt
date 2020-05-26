@@ -21,6 +21,7 @@ import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.PlatformConfig
 
 import org.litepal.LitePal
+import update.UpdateAppUtils
 import kotlin.properties.Delegates
 
 /**
@@ -62,7 +63,7 @@ class App : MultiDexApplication() {
         LitePal.initialize(this)
         QupaiHttpFinal.getInstance().initOkHttpFinal();
         DownloaderManager.getInstance().init(this)
-
+        UpdateAppUtils.init(context)
         //        友盟统计
         /**
          * 初始化common库

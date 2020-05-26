@@ -22,12 +22,16 @@ class SplashActivity : BaseActivity() {
 
 
     override fun attachLayoutRes(): Int = R.layout.activity_splash
+
+    private var updateAppBean:UpdateAppBean?=null
+
     override fun initData() {
         //获取启动页图片
         val updateAppCall = SLMRetrofit.instance.api.updateAppCall()
         updateAppCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackObserver<UpdateAppBean>(){
             override fun onSucceed(t: UpdateAppBean, desc: String?) {
                GlideUtils.showPlaceholder(this@SplashActivity,iv_splash,t.androidPic3,R.mipmap.splash)
+
             }
 
             override fun onFailed() {
@@ -81,6 +85,7 @@ class SplashActivity : BaseActivity() {
 
     private fun jumpToMain() {
         val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("updateAppBean",updateAppBean)
         startActivity(intent)
         finish()
     }

@@ -1,19 +1,28 @@
 package com.cvnchina.xingwanban.ui.activity
 
+import android.os.Environment
 import android.support.v4.app.FragmentTransaction
 import android.view.KeyEvent
 import android.view.View
 import cn.jzvd.JzvdStd
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.base.BaseActivity
+import com.cvnchina.xingwanban.bean.UpdateAppBean
 import com.cvnchina.xingwanban.event.LogoutEvent
 import com.cvnchina.xingwanban.ext.showToast
+import com.cvnchina.xingwanban.net.CallbackObserver
+import com.cvnchina.xingwanban.net.SLMRetrofit
+import com.cvnchina.xingwanban.net.ThreadSwitchTransformer
 import com.cvnchina.xingwanban.ui.fragment.HomeFragment
 import com.cvnchina.xingwanban.ui.fragment.MineFragment
+import com.cvnchina.xingwanban.utils.PackageUtils
 import com.cvnchina.xingwanban.widget.FullScreenDialog
 import kotlinx.android.synthetic.main.activity_main.*
+import listener.UpdateDownloadListener
+import model.UpdateConfig
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import update.UpdateAppUtils
 
 class MainActivity : BaseActivity(), View.OnClickListener {
     private var homeFragment: HomeFragment? = null
@@ -45,6 +54,62 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 ), 0x333
             )
         }
+
+        //获取启动页图片
+        val updateAppCall = SLMRetrofit.instance.api.updateAppCall()
+        updateAppCall.compose(ThreadSwitchTransformer()).subscribe(object :
+            CallbackObserver<UpdateAppBean>(){
+            override fun onSucceed(updateAppBean: UpdateAppBean, desc: String?) {
+                if (updateAppBean!=null){
+                    if (PackageUtils.getVersionCode(this@MainActivity)<updateAppBean.appVersion.toInt()){
+                        // 更新配置
+                        val updateConfig = UpdateConfig().apply {
+                            force = updateAppBean.isForcedUpdate=="1"
+                            checkWifi = true
+                            needCheckMd5 = false
+                            isShowNotification = true
+                            notifyImgRes = R.mipmap.logo
+                            apkSavePath = Environment.getExternalStorageDirectory().absolutePath +"/xwb"
+                            apkSaveName = "xwb"
+                        }
+
+                        UpdateAppUtils
+                            .getInstance()
+                            .apkUrl(updateAppBean.downloadUrl?:"")
+                            .updateTitle("")
+                            .updateContent(updateAppBean.updateDesc)
+                            .updateConfig(updateConfig)
+                            //.uiConfig(uiConfig)
+                            .setUpdateDownloadListener(object : UpdateDownloadListener {
+                                override fun onDownload(progress: Int) {
+
+                                }
+
+                                override fun onError(e: Throwable) {
+
+                                }
+
+                                override fun onFinish() {
+
+                                }
+
+                                override fun onStart() {
+
+                                }
+                                // do something
+                            })
+                            .update()
+                    }
+                }
+            }
+
+            override fun onFailed() {
+
+            }
+        })
+    val updateAppBean =  intent.getParcelableExtra<UpdateAppBean>("updateAppBean")
+
+
     }
 
     override fun initView() {
