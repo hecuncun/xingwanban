@@ -16,10 +16,7 @@ import com.cvnchina.xingwanban.base.BaseNoDataBean
 import com.cvnchina.xingwanban.bean.DraftBean
 import com.cvnchina.xingwanban.bean.LocationBean
 import com.cvnchina.xingwanban.bean.UploadVideoBean
-import com.cvnchina.xingwanban.event.RefreshWorksEvent
-import com.cvnchina.xingwanban.event.SortEvent
-import com.cvnchina.xingwanban.event.TalkEvent
-import com.cvnchina.xingwanban.event.VisiableEvent
+import com.cvnchina.xingwanban.event.*
 import com.cvnchina.xingwanban.ext.showToast
 import com.cvnchina.xingwanban.net.CallbackListObserver
 import com.cvnchina.xingwanban.net.SLMRetrofit
@@ -155,6 +152,7 @@ class PublishActivity : BaseActivity() {
                     DraftBean(videoPath,title,tags,mThumbnailPath!!).save()
                     progressDialog?.dismiss()
                     startActivity(Intent(this@PublishActivity,MainActivity::class.java))
+                    EventBus.getDefault().post(RefreshDraftEvent())
                 }
 
             }

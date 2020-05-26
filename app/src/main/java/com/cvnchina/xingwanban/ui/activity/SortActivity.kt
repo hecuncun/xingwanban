@@ -31,6 +31,7 @@ class SortActivity : BaseActivity() {
             .subscribe(object : CallbackListObserver<ContentSortBean>() {
                 override fun onSucceed(t: ContentSortBean) {
                     groupList = t.data[0].children
+                    childList= groupList[0].children
                     initLeftListView()
                 }
 

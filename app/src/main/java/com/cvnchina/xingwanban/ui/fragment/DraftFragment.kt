@@ -8,9 +8,12 @@ import com.aliyun.svideo.media.MediaInfo
 import com.cvnchina.xingwanban.R
 import com.cvnchina.xingwanban.adapter.DraftAdapter
 import com.cvnchina.xingwanban.bean.DraftBean
+import com.cvnchina.xingwanban.event.RefreshDraftEvent
 import com.cvnchina.xingwanban.ui.activity.PlayerActivity
 import com.lhzw.bluetooth.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_draft.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.litepal.LitePal
 import java.util.*
 
@@ -73,6 +76,7 @@ class DraftFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+        list.clear()
         list=LitePal.findAll(DraftBean::class.java)
         mAdapter.setNewData(list)
         if (list.isEmpty()){
@@ -96,6 +100,9 @@ class DraftFragment : BaseFragment() {
             isNestedScrollingEnabled = false
         }
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshList(event: RefreshDraftEvent){
+        lazyLoad()
+    }
 
 }

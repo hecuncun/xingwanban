@@ -81,30 +81,63 @@ private var tvToken=""
         }
 
         tv_finish.setOnClickListener {
-            if (state=="1"){
-                val intent = Intent(this@ScanLoginActivity, WebViewActivity::class.java)
-                intent.putExtra("type", 5)
-                intent.putExtra("url", locUrl)
-                startActivity(intent)
-                finish()
-            }else{
-                val scanLoginCall = SLMRetrofit.instance.api.scanLoginCall(imei,1)
-                scanLoginCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackListObserver<ScanLoginBean>(){
-                    override fun onSucceed(t: ScanLoginBean) {
-                        val url =locUrl+"&token=${t.tvToken}&username=&$token"
-                        val intent = Intent(this@ScanLoginActivity, WebViewActivity::class.java)
-                        intent.putExtra("type", 5)
-                        intent.putExtra("url", url)
-                        startActivity(intent)
-                        finish()
-                    }
+                val scanLoginCall = SLMRetrofit.instance.api.scanLoginCall(imei,0)
+                scanLoginCall.compose(ThreadSwitchTransformer())
+                    .subscribe(object : CallbackListObserver<ScanLoginBean>() {
+                        override fun onSucceed(t: ScanLoginBean) {
+                            if (t.msg == "1") {
+                                showToast(t.msgCondition)
+                                tvToken=t.tvToken
+                                //替换后跳转H5
+                                if (state=="1"){
+                                    val url =locUrl.replace(username,token).replace(locToken,  t.tvToken)
+                                    Logger.e("locUrl==$locUrl<===>新url==$url")
+                                    val intent = Intent(this@ScanLoginActivity, WebViewActivity::class.java)
+                                    intent.putExtra("type", 5)
+                                    intent.putExtra("url", url)
+                                    startActivity(intent)
+                                    finish()
+                                }else{
+                                    val url =locUrl+"&token=${t.tvToken}&username=&$token"
+                                    val intent = Intent(this@ScanLoginActivity, WebViewActivity::class.java)
+                                    intent.putExtra("type", 5)
+                                    intent.putExtra("url", url)
+                                    startActivity(intent)
+                                    finish()
+                                }
 
-                    override fun onFailed() {
+                            }
+                        }
 
-                    }
-                })
+                        override fun onFailed() {
 
-            }
+                        }
+                    })
+
+//            if (state=="1"){
+//                val intent = Intent(this@ScanLoginActivity, WebViewActivity::class.java)
+//                intent.putExtra("type", 5)
+//                intent.putExtra("url", locUrl)
+//                startActivity(intent)
+//                finish()
+//            }else{
+//                val scanLoginCall = SLMRetrofit.instance.api.scanLoginCall(imei,1)
+//                scanLoginCall.compose(ThreadSwitchTransformer()).subscribe(object :CallbackListObserver<ScanLoginBean>(){
+//                    override fun onSucceed(t: ScanLoginBean) {
+//                        val url =locUrl+"&token=${t.tvToken}&username=&$token"
+//                        val intent = Intent(this@ScanLoginActivity, WebViewActivity::class.java)
+//                        intent.putExtra("type", 5)
+//                        intent.putExtra("url", url)
+//                        startActivity(intent)
+//                        finish()
+//                    }
+//
+//                    override fun onFailed() {
+//
+//                    }
+//                })
+//
+//            }
 
         }
     }
